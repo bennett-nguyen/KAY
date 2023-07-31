@@ -6,8 +6,8 @@ import preload.constants as const
 
 
 class Host:
-    def __init__(self, arr, invalid_query_val, query_fn, update_fn):
-        self.st = SegmentTree(arr, invalid_query_val, query_fn, update_fn)
+    def __init__(self, st: SegmentTree):
+        self.st = st
         self.visualizer = Visualizer(self, self.st.root)
 
     def redraw(self):
