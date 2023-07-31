@@ -25,13 +25,12 @@ class Visualizer:
 
 
     def draw(self, node: Node):
-        # node: current node
-        # node.left; node.right -> child nodes
-        pg.draw.circle(ds.screen, "Black", node.coordinates, self.NODE_CIRCLE_RADIUS, self.LINE_THICKNESS)
-
         if not node.is_leaf():
             pg.draw.line(ds.screen, "Black", node.coordinates, node.left.coordinates, self.LINE_THICKNESS)
             pg.draw.line(ds.screen, "Black", node.coordinates, node.right.coordinates, self.LINE_THICKNESS)
+        
+        pg.draw.circle(ds.screen, "Black", node.coordinates, self.NODE_CIRCLE_RADIUS)
+        pg.draw.circle(ds.screen, "White", node.coordinates, self.NODE_CIRCLE_RADIUS-self.LINE_THICKNESS)
 
         if node.is_leaf():
             return

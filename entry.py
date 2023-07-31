@@ -5,7 +5,7 @@ from comp.host import Host
 from sys import exit
 from preload.segment_tree import SegmentTree
 
-array = [1, 2, 3, 4, 5, 6]
+array = [2, 3, 1, 5, 1, 3, 5]
 invalid_query_val = float("-inf")
 query_function = update_function = max
 
