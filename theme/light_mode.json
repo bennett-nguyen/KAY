@@ -1,0 +1,9 @@
+{
+    "Name": "Light Mode",
+    "Palette": {
+        "background": [255, 255, 255],
+        "node_outline": [0, 0, 0],
+        "node_fillings": [255, 255, 255],
+        "line": [0, 0, 0]
+    }
+}

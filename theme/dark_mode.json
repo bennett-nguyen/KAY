@@ -1,0 +1,9 @@
+{
+    "Name": "Dark Mode",
+    "Palette": {
+        "background": [0, 0, 0],
+        "node_outline": [255, 255, 255],
+        "node_fillings": [0, 0, 0],
+        "line": [255, 255, 255]
+    }
+}

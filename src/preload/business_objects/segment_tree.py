@@ -1,54 +1,6 @@
-import preload.constants as const
+import src.preload.system.constants as const
 from typing import Callable
-
-
-class Node:
-    def __init__(self):
-        self.left: Node = None
-        self.right: Node = None
-        self.parent: Node = None
-        self.data: int = None
-        self.depth: int = 0
-
-        self.x: int = 0
-        self.y: int = 0
-
-        self._modifier: float = 0.0
-        self._preliminary_x: float = 0.0
-        self._ID = 0
-
-
-    def init_child(self):
-        self.left = Node()
-        self.right = Node()
-
-        self.left.parent = self.right.parent = self
-
-
-    @property
-    def children(self):
-        return (self.left, self.right)
-
-
-    @property
-    def previous_sibling(self):
-        return None if self.parent is None or self.is_left_node() \
-                    else self.parent.left
-
-    @property
-    def coordinates(self) -> tuple[int, int]:
-        return (self.x, self.y)
-
-    def is_leaf(self) -> bool:
-        return self.left is None and self.right is None
-
-
-    def is_left_node(self) -> bool:
-        try:
-            return self is self.parent.left
-        except AttributeError:
-            return True
-
+from src.preload.business_objects.node import Node
 
 
 class SegmentTree:
@@ -73,7 +25,7 @@ class SegmentTree:
 
     def _build(self, node: Node, low: int, high: int, ID: int = 1) -> None:
         node.depth = const.ROOT_DEPTH if node.parent is None else node.parent.depth + 1
-        node._ID = ID
+        node.ID = ID
 
         if low == high:
             node.data = self.arr[low]

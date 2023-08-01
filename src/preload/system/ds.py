@@ -1,6 +1,5 @@
 import pygame as pg
-import preload.constants as const
-from sys import exit
+import src.preload.system.constants as const
 from pygame.locals import *
 
 pg.init()

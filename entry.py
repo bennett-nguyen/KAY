@@ -1,20 +1,20 @@
 import pygame as pg
-import preload.ds as ds
-import preload.constants as const
-from comp.host import Host
-from sys import exit
-from preload.segment_tree import SegmentTree
+import src.preload.system.ds as ds
+import src.preload.system.constants as const
 
-array = [2, 3, 1, 5, 1, 3, 5]
+from sys import exit
+from src.MVC.controller import Controller
+from src.preload.business_objects.segment_tree import SegmentTree
+
+array = [3, 1, 1, 10, 100, 1, 1, 10]
 invalid_query_val = float("-inf")
 query_function = update_function = max
 
 st = SegmentTree(array, invalid_query_val, query_function, update_function)
-
-host = Host(st)
+controller = Controller(st)
 
 while True:
-    ds.screen.fill("White")
+    ds.screen.fill(controller.view.current_theme.BACKGROUND_CLR)
     ds.clock.tick(const.FPS)
 
     events = pg.event.get()
@@ -23,6 +23,7 @@ while True:
         if event.type == pg.QUIT:
             pg.quit()
             exit(0)
-    
-    host.update(events)
+
+    controller.receive_events(events)
+    controller.update_view()
     pg.display.flip()
