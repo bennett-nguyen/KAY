@@ -1,14 +1,20 @@
+import pygame as pg
+import src.preload.system.constants as const
+
 class Node:
     def __init__(self):
         self.left: Node = None
         self.right: Node = None
         self.parent: Node = None
+
         self.data: int = None
-        self.depth: int = 0
+        self.low: int = 0
+        self.high: int = 0
 
         self.x: int = 0
         self.y: int = 0
 
+        self.depth: int = 0
         self.modifier: float = 0.0
         self.preliminary_x: float = 0.0
         self.ID = 0
@@ -18,6 +24,13 @@ class Node:
         self.right = Node()
 
         self.left.parent = self.right.parent = self
+    
+    def construct(self, low: int, high: int, ID: int):
+        self.depth = const.ROOT_DEPTH if self.parent is None else self.parent.depth + 1
+        self.ID = ID
+
+        self.low = low
+        self.high = high
 
     @property
     def children(self):
@@ -30,7 +43,7 @@ class Node:
 
     @property
     def coordinates(self) -> tuple[int, int]:
-        return (self.x, self.y)
+        return (int(self.x), int(self.y))
 
     def is_leaf(self) -> bool:
         return self.left is None and self.right is None

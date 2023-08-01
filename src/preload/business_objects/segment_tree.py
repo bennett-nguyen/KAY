@@ -24,8 +24,7 @@ class SegmentTree:
 
 
     def _build(self, node: Node, low: int, high: int, ID: int = 1) -> None:
-        node.depth = const.ROOT_DEPTH if node.parent is None else node.parent.depth + 1
-        node.ID = ID
+        node.construct(low, high, ID)
 
         if low == high:
             node.data = self.arr[low]
