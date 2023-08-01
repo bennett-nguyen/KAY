@@ -10,6 +10,17 @@ def calculate_node_position(root: Node):
     _compute_final_coordinates(root, 0)
 
 
+def move_node_by_delta_pos(node: Node, delta_x: int, delta_y: int):
+    node.x += delta_x
+    node.y += delta_y
+
+    if node.is_leaf():
+        return
+    
+    for child in node.children:
+        move_node_by_delta_pos(child, delta_x, delta_y)
+
+
 def _compute_prelim_x(node: Node):
     if node.is_leaf():
         if node.is_left_node():
@@ -42,6 +53,7 @@ def _compute_prelim_x(node: Node):
 def _compute_final_coordinates(node: Node, mod_sum: float):
     node.preliminary_x += mod_sum + const.PRELIM_X_OFFSET
     mod_sum += node.modifier
+    node.modifier = 0
 
     if not node.is_leaf():
         for child in node.children:
