@@ -57,6 +57,7 @@ class View:
             ds.screen.blit(text, (x, y))
             x += spacing
 
+
     def draw_tree(self, node: Node, collided_node: tuple[bool, Node]):
         theme = self.current_theme
         is_collided, queried_node = collided_node
