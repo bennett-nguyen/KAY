@@ -51,7 +51,7 @@ def _compute_prelim_x(node: Node):
 
 
 def _compute_final_coordinates(node: Node, mod_sum: float):
-    node.preliminary_x += mod_sum + const.PRELIM_X_OFFSET
+    node.preliminary_x += mod_sum
     mod_sum += node.modifier
     node.modifier = 0
 

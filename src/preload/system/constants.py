@@ -6,7 +6,7 @@ HALF_WIDTH: int = WIDTH//2
 HALF_HEIGHT: int = HEIGHT//2
 
 FPS: int = 48
-VERSION: str = "0.2.0-prealpha"
+VERSION: str = "0.2.1-prealpha"
 
 
 # - RT's algo constants
@@ -14,8 +14,7 @@ VERSION: str = "0.2.0-prealpha"
 SCALE = 200
 VERTICAL_SCALE = 150
 
-# -- Offset (prelim_x offset could be deprecated in the future)
-PRELIM_X_OFFSET: float = 1
+# -- Offset
 DEPTH_OFFSET: float = 1
 ROOT_DEPTH: float = 0
 
