@@ -6,7 +6,7 @@ HALF_WIDTH: int = WIDTH//2
 HALF_HEIGHT: int = HEIGHT//2
 
 FPS: int = 48
-VERSION: str = "0.4.0-prealpha"
+VERSION: str = "0.4.1-prealpha"
 
 # Array viewer and hovered node viewer's constants
 MAX_X_PER_LINE: int = 500
