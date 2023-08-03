@@ -15,8 +15,8 @@ st = SegmentTree(array, invalid_query_val, query_function, update_function)
 controller = Controller(st)
 
 while True:
-    ds.screen.fill(controller.view.current_theme.BACKGROUND_CLR)
-    ds.clock.tick(const.FPS)
+    ds.screen.fill(controller.model.current_theme.BACKGROUND_CLR)
+    dt_time = ds.clock.tick(const.FPS) / 1000.0
 
     events = pg.event.get()
 
@@ -24,7 +24,9 @@ while True:
         if event.type == pg.QUIT:
             pg.quit()
             exit(0)
+    
 
     controller.receive_events(events)
     controller.update_view()
-    pg.display.flip()
+
+    pg.display.update()
