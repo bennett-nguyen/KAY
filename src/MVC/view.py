@@ -10,9 +10,9 @@ class View:
     def __init__(self):
         self.current_theme: Theme = None
 
-        self.CC_FONT = pg.font.Font("./fonts/CascadiaCode.ttf", 27)
-        self.CM_FONT = pg.font.Font("./fonts/cmunrm.ttf", 50)
-        self.CM_ITALIC_FONT = pg.font.Font("./fonts/cmunti.ttf", 50)
+        self.CC_FONT = pg.font.Font("./fonts/CascadiaCode/CascadiaCode.ttf", 27)
+        self.CM_FONT = pg.font.Font("./fonts/CM/cmunrm.ttf", 50)
+        self.CM_ITALIC_FONT = pg.font.Font("./fonts/CM/cmunti.ttf", 50)
 
 
     def request_theme(self, theme: Theme):
