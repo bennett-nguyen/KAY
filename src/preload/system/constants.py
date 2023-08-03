@@ -6,7 +6,14 @@ HALF_WIDTH: int = WIDTH//2
 HALF_HEIGHT: int = HEIGHT//2
 
 FPS: int = 48
-VERSION: str = "0.2.1-prealpha"
+VERSION: str = "0.3.0-prealpha"
+
+# Array viewer and hovered node viewer's constants
+MAX_X_PER_LINE: int = 500
+ELEMENT_SPACING = 30
+LINE_SPACING: int = 0
+X_OFFSET: int = 30
+Y_OFFSET: int = 20
 
 
 # - RT's algo constants
