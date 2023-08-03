@@ -1,5 +1,3 @@
-import os
-import json
 import pygame as pg
 import src.preload.system.ds as ds
 import src.preload.system.constants as const
@@ -11,15 +9,14 @@ from src.preload.business_objects.theme import Theme
 class View:
     def __init__(self):
         self.current_theme: Theme = None
-        self.themes: dict[str: Theme] = {}
-        self.available_themes: list[str] = []
 
         self.CC_FONT = pg.font.Font("./fonts/CascadiaCode.ttf", 27)
         self.CM_FONT = pg.font.Font("./fonts/cmunrm.ttf", 50)
         self.CM_ITALIC_FONT = pg.font.Font("./fonts/cmunti.ttf", 50)
 
-        self.load_themes()
-        self.set_theme("Dark Mode")
+
+    def request_theme(self, theme: Theme):
+        self.current_theme = theme
 
 
     def render_text(self, font: pg.font.Font, text: str, color: pg.Color) -> tuple[pg.Surface, pg.Rect]:
@@ -167,23 +164,3 @@ class View:
         node_display_data, node_display_data_rect = self.render_text(self.CC_FONT, f"{node.data}", display_data_clr)
         node_display_data_rect.center = node.coordinates
         ds.screen.blit(node_display_data, node_display_data_rect)
-
-
-    def load_themes(self):
-        for entry in os.listdir("./theme"):
-            if not entry.endswith(".json"):
-                continue
-
-            with open(f"./theme/{entry}", "r") as f:
-                json_obj = json.load(f)
-                self.themes[json_obj["Name"]] = Theme(json_obj["Palette"])
-                self.available_themes.append(json_obj["Name"])
-
-
-    def set_theme(self, name: str):
-        try:
-            self.current_theme = self.themes[name]
-        except KeyError:
-            print(f"Error: Theme <{name}> not found.")
-            pg.quit()
-            exit(1)
