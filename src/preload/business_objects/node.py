@@ -1,4 +1,3 @@
-import pygame as pg
 import src.preload.system.constants as const
 
 class Node:
@@ -17,7 +16,7 @@ class Node:
         self.depth: int = 0
         self.modifier: float = 0.0
         self.preliminary_x: float = 0.0
-        self.ID = 0
+        self.ID: int = 0
 
     def init_child(self):
         self.left = Node()

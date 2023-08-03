@@ -1,4 +1,3 @@
-import src.preload.system.constants as const
 from typing import Callable
 from src.preload.business_objects.node import Node
 

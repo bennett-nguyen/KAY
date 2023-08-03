@@ -6,11 +6,11 @@ HALF_WIDTH: int = WIDTH//2
 HALF_HEIGHT: int = HEIGHT//2
 
 FPS: int = 48
-VERSION: str = "0.3.0-prealpha"
+VERSION: str = "0.3.1-prealpha"
 
 # Array viewer and hovered node viewer's constants
 MAX_X_PER_LINE: int = 500
-ELEMENT_SPACING = 30
+ELEMENT_SPACING: int = 30
 LINE_SPACING: int = 0
 X_OFFSET: int = 30
 Y_OFFSET: int = 20
@@ -18,8 +18,8 @@ Y_OFFSET: int = 20
 
 # - RT's algo constants
 # -- Scalar
-SCALE = 200
-VERTICAL_SCALE = 150
+SCALE: int = 200
+VERTICAL_SCALE: int = 150
 
 # -- Offset
 DEPTH_OFFSET: float = 1
@@ -35,5 +35,5 @@ SIBLING_DISTANCE: float = 0.0
 TREE_DISTANCE: float = 0.0
 
 # -- Contours
-CONTOUR_LEFT = "left"
-CONTOUR_RIGHT = "right"
+CONTOUR_LEFT: str = "left"
+CONTOUR_RIGHT: str = "right"
