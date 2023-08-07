@@ -4,21 +4,21 @@ from typing import Union, Tuple
 
 class Node:
     def __init__(self):
-        self.left: Node
-        self.right: Node
-        self.parent: Node
+        self.left: Union[Node, None] = None
+        self.right: Union[Node, None] = None
+        self.parent: Union[Node, None] = None
 
-        self.data: int
-        self.low: int
-        self.high: int
+        self.data: int = 0
+        self.low: int = 0
+        self.high: int = 0
 
-        self.x: int
-        self.y: int
+        self.x: int = 0
+        self.y: int = 0
 
-        self.depth: int
-        self.modifier: float
-        self.preliminary_x: float
-        self.ID: int
+        self.depth: int = 0
+        self.modifier: float = 0.0
+        self.preliminary_x: float = 0.0
+        self.ID: int = 0
 
     def init_child(self):
         self.left = Node()
