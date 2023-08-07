@@ -24,7 +24,6 @@ while True:
         if event.type == pg.QUIT:
             pg.quit()
             exit(0)
-    
 
     controller.receive_events(events)
     controller.update_view()

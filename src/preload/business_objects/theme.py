@@ -1,7 +1,10 @@
 import pygame as pg
+from typing import Dict
+from src.preload.system.app_type import ThemeField, ValidJSONColorFormats
+
 
 class Theme:
-    def __init__(self, palette_obj):
+    def __init__(self, palette_obj: Dict[ThemeField, ValidJSONColorFormats]):
         __slots__ = (
             "BACKGROUND_CLR",
             "NODE_FILLINGS_CLR",

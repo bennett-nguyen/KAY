@@ -1,6 +1,12 @@
 import pygame as pg
 import src.preload.system.constants as const
-from pygame.locals import *
+from pygame.locals import (
+    QUIT,
+    KEYDOWN,
+    KEYUP,
+    MOUSEBUTTONDOWN,
+    MOUSEBUTTONUP
+)
 
 pg.init()
 

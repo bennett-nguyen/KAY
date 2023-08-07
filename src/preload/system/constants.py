@@ -1,4 +1,6 @@
-# - General 
+from src.preload.system.app_type import ContourType
+
+# - General
 WIDTH: int = 1300
 HEIGHT: int = 700
 
@@ -6,7 +8,7 @@ HALF_WIDTH: int = WIDTH//2
 HALF_HEIGHT: int = HEIGHT//2
 
 FPS: int = 48
-VERSION: str = "0.4.2-prealpha"
+VERSION: str = "0.4.3-prealpha"
 
 # Array viewer and hovered node viewer's constants
 MAX_X_PER_LINE: int = 500
@@ -23,7 +25,7 @@ VERTICAL_SCALE: int = 150
 
 # -- Offset
 DEPTH_OFFSET: float = 1
-ROOT_DEPTH: float = 0
+ROOT_DEPTH: int = 0
 
 # -- Shape's properties
 LINE_THICKNESS: int = 4
@@ -35,5 +37,5 @@ SIBLING_DISTANCE: float = 0.0
 TREE_DISTANCE: float = 0.0
 
 # -- Contours
-CONTOUR_LEFT: str = "left"
-CONTOUR_RIGHT: str = "right"
+CONTOUR_LEFT: ContourType = ContourType("left")
+CONTOUR_RIGHT: ContourType = ContourType("right")
