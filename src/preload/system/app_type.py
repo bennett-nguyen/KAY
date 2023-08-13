@@ -50,8 +50,10 @@ ValidJSONColorFormats: TypeAlias = Union[
     HTMLColorFormat,
     NamedColors
 ]
-
 # --
 
 # Contours
 ContourType = NewType("ContourType", str)
+
+# Visibility Field
+VisibilityField = NewType("VisibilityField", str)
