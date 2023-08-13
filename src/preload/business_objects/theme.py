@@ -1,19 +1,26 @@
 import pygame as pg
-from typing import Dict
+from typing import Dict, Any
 from src.preload.system.app_type import ThemeField, ValidJSONColorFormats
 
 
 class Theme:
-    def __init__(self, palette_obj: Dict[ThemeField, ValidJSONColorFormats]):
-        __slots__ = (
-            "BACKGROUND_CLR",
-            "NODE_FILLINGS_CLR",
-            "NODE_OUTLINE_CLR",
-            "NODE_DISPLAY_DATA_CLR"
-            "LINE_CLR",
-            "NODE_DISPLAY_DATA_HIGHLIGHT",
-            "NODE_OUTLINE_HIGHLIGHT"
-        )
+    __slots__ = (
+        "NAME",
+        "APP_UI_PATH",
+        "BACKGROUND_CLR",
+        "NODE_FILLINGS_CLR",
+        "NODE_OUTLINE_CLR",
+        "NODE_DISPLAY_DATA_CLR",
+        "LINE_CLR",
+        "NODE_DISPLAY_DATA_HIGHLIGHT_CLR",
+        "NODE_OUTLINE_HIGHLIGHT_CLR"
+    )
+
+    def __init__(self, json_obj: Dict[str, Any], app_ui_path: str):
+        name: str = json_obj["Name"]
+        palette_obj: Dict[ThemeField, ValidJSONColorFormats] = json_obj["Palette"]
+
+        self.NAME: str = name
 
         # Background
         self.BACKGROUND_CLR: pg.Color = pg.Color(palette_obj["background"])
@@ -28,3 +35,6 @@ class Theme:
 
         # Line
         self.LINE_CLR: pg.Color = pg.Color(palette_obj["line"])
+
+        # App UI
+        self.APP_UI_PATH: str = app_ui_path
