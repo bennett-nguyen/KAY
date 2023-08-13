@@ -1,0 +1,171 @@
+{
+    "#visibility-window": {
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "5"
+        }
+    },
+
+    "#visibility-window.#title_bar": {
+        "font": {
+            "name": "CascadiaCode",
+            "size": "16",
+            "regular_path": "./fonts/CascadiaCode/CascadiaCode-Regular.ttf",
+            "bold_path": "./fonts/CascadiaCode/CascadiaCode-Bold.ttf",
+            "italic_path": "./fonts/CascadiaCode/CascadiaCode-Italic.ttf",
+            "bold_italic_path": "./fonts/CascadiaCode/CascadiaCode-BoldItalic.ttf"
+        }
+    },
+
+    "#visibility-window.#close_button": {
+        "colours": {
+            "normal_bg": "#B02828",
+            "hovered_bg": "#A33636",
+            "active_bg": "#6E1B1B",
+            "active_border": "#73787B"
+        }
+    },
+
+    "#visibility-drop-down": {
+        "misc": {
+            "border_width": "5",
+            "list_item_height": "40"
+        },
+
+        "colours": {
+            "normal_border": "#313338",
+            "dark_bg": "#313338"
+        }
+    },
+
+    "#visibility-drop-down.@selection_list_item": {
+        "colours": {
+            "normal_text": "#B5B2B4",
+            "normal_bg": "#313338"
+        },
+
+        "misc": {
+            "shape_corner_radius": "5",
+            "border_width": "3",
+            "text_horiz_alignment": "center",
+            "text_vert_alignment": "top",
+            "text_horiz_alignment_padding": "10",
+            "text_vert_alignment_padding": "3"
+        },
+
+        "font": {
+            "name": "CascadiaCode",
+            "size": "16",
+            "regular_path": "./fonts/CascadiaCode/CascadiaCode-Regular.ttf",
+            "bold_path": "./fonts/CascadiaCode/CascadiaCode-Bold.ttf",
+            "italic_path": "./fonts/CascadiaCode/CascadiaCode-Italic.ttf",
+            "bold_italic_path": "./fonts/CascadiaCode/CascadiaCode-BoldItalic.ttf"
+        }
+    },
+
+    "#theme-selection-drop-down": {
+        "misc": {
+            "open_button_width": "35",
+            "expand_direction": "up",
+            "shape": "rounded_rectangle"
+        }
+    },
+
+    "#theme-selection-drop-down.#selected_option": {
+        "misc": {
+            "shape_corner_radius": "5",
+            "border_width": "3",
+            "text_horiz_alignment": "center",
+            "text_vert_alignment": "top",
+            "text_horiz_alignment_padding": "10",
+            "text_vert_alignment_padding": "3"
+        },
+
+        "colours": {
+            "normal_text": "#B5B2B4",
+            "normal_bg": "#313338"
+        },
+
+        "font": {
+            "name": "CascadiaCode",
+            "size": "16",
+            "regular_path": "./fonts/CascadiaCode/CascadiaCode-Regular.ttf",
+            "bold_path": "./fonts/CascadiaCode/CascadiaCode-Bold.ttf",
+            "italic_path": "./fonts/CascadiaCode/CascadiaCode-Italic.ttf",
+            "bold_italic_path": "./fonts/CascadiaCode/CascadiaCode-BoldItalic.ttf"
+        }
+    },
+
+    "#theme-selection-drop-down.#drop_down_options_list": {
+        "misc": {
+            "list_item_height": "40",
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "5"
+        }
+    },
+
+    "#theme-selection-drop-down.#drop_down_options_list.#vertical_scroll_bar": {
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "5"
+        }
+    },
+
+    "#theme-selection-drop-down.#drop_down_options_list.vertical_scroll_bar.#top_button": {
+        "misc": {
+            "border_width": "2"
+        },
+
+        "colours": {
+            "normal_text": "#B5B2B4",
+            "normal_bg": "#313338"
+        }
+    },
+
+    "#theme-selection-drop-down.#drop_down_options_list.vertical_scroll_bar.#bottom_button": {
+        "misc": {
+            "border_width": "2"
+        },
+
+        "colours": {
+            "normal_text": "#B5B2B4",
+            "normal_bg": "#313338"
+        }
+    },
+
+    "#theme-selection-drop-down.#drop_down_options_list.button": {
+        "misc": {
+            "shape_corner_radius": "5",
+            "border_width": "3",
+            "text_horiz_alignment": "center",
+            "text_vert_alignment": "top",
+            "text_horiz_alignment_padding": "10",
+            "text_vert_alignment_padding": "5"
+        },
+
+        "colours": {
+            "normal_text": "#B5B2B4",
+            "normal_bg": "#313338"
+        },
+
+        "font": {
+            "name": "CascadiaCode",
+            "size": "14",
+            "regular_path": "./fonts/CascadiaCode/CascadiaCode-Regular.ttf",
+            "bold_path": "./fonts/CascadiaCode/CascadiaCode-Bold.ttf",
+            "italic_path": "./fonts/CascadiaCode/CascadiaCode-Italic.ttf",
+            "bold_italic_path": "./fonts/CascadiaCode/CascadiaCode-BoldItalic.ttf"
+        }
+    },
+
+    "#theme-selection-drop-down.#expand_button": {
+        "misc": {
+            "border_width": "2"
+        },
+
+        "colours": {
+            "normal_text": "#B5B2B4",
+            "normal_bg": "#313338"
+        }
+    }
+}
