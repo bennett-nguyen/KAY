@@ -94,8 +94,6 @@ def _check_for_conflicts(node: Node):
 
 
 def _get_contour(node: Node, mod_sum: float, values: Dict[int, float], side: ContourType):
-    side = side.lower()
-
     if side not in [const.CONTOUR_LEFT, const.CONTOUR_RIGHT]:
         raise ValueError("'side' only accepts either 2 values: 'left' or 'right'.")
 
