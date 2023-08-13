@@ -4,20 +4,26 @@ import src.preload.system.constants as const
 from pygame import gfxdraw
 from src.preload.business_objects.node import Node
 from src.preload.business_objects.theme import Theme
+from src.preload.business_objects.app_ui import AppUI
+from src.preload.system.app_type import VisibilityField
 
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 
 class View:
     def __init__(self):
         self.current_theme: Theme
+        self.visibility_dict: Dict[VisibilityField, bool]
 
-        self.CC_FONT = pg.font.Font("./fonts/CascadiaCode/CascadiaCode.ttf", 27)
+        self.CC_FONT = pg.font.Font("./fonts/CascadiaCode/CascadiaCode-Regular.ttf", 27)
         self.CM_FONT = pg.font.Font("./fonts/CM/cmunrm.ttf", 50)
         self.CM_ITALIC_FONT = pg.font.Font("./fonts/CM/cmunti.ttf", 50)
 
     def request_theme(self, theme: Theme):
         self.current_theme = theme
+
+    def request_visibility(self, visibility_dict: Dict[VisibilityField, bool]):
+        self.visibility_dict = visibility_dict
 
     def render_text(self, font: pg.font.Font, text: str, color: pg.Color) -> Tuple[pg.Surface, pg.Rect]:
         surf = font.render(text, True, color)
@@ -45,7 +51,18 @@ class View:
 
         return (False, node)
 
+    def view_app_ui(self, app_ui: AppUI):
+        if self.visibility_dict[const.DISPLAY_THEME_SELECTION_FIELD]:
+            app_ui.theme_selection_ui.UI.show()
+        else:
+            app_ui.theme_selection_ui.UI.hide()
+
+        app_ui.GUI_MANAGER.draw_ui(ds.screen)
+
     def view_hovered_node_info(self, hovered_node: Tuple[bool, Node]):
+        if not self.visibility_dict[const.VIEW_NODE_INFO_FIELD]:
+            return
+
         is_hovered, queried_node = hovered_node
 
         if not is_hovered:
@@ -58,6 +75,9 @@ class View:
         self._view_ID(x, y, queried_node)
 
     def view_array(self, array: List[int], hovered_node: Tuple[bool, Node]):
+        if not self.visibility_dict[const.VIEW_ARRAY_FIELD]:
+            return
+
         x, y = (const.X_OFFSET, const.Y_OFFSET)
         theme = self.current_theme
 
@@ -90,7 +110,9 @@ class View:
 
         self._draw_lines(node)
         self._draw_circles(node, node_outline_clr)
-        self._draw_node_data(node, display_data_clr)
+
+        if self.visibility_dict[const.VIEW_NODE_DATA_FIELD]:
+            self._draw_node_data(node, display_data_clr)
 
         if node.is_leaf():
             return
