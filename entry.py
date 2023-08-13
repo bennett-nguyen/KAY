@@ -25,7 +25,7 @@ while True:
             pg.quit()
             exit(0)
 
-    controller.receive_events(events)
+    controller.process(events, dt_time)
     controller.update_view()
 
     pg.display.update()
