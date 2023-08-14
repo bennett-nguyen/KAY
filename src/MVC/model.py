@@ -8,12 +8,13 @@ from src.preload.business_objects.app_ui import AppUI
 from src.preload.system.app_type import VisibilityField
 from src.preload.business_objects.segment_tree import SegmentTree
 
-from typing import List, Dict
+from typing import List, Dict, Any
+from src.preload.system.app_type import ThemeField, ValidJSONColorFormats
 
 
 class Model:
-    def __init__(self, st: SegmentTree):
-        self.st = st
+    def __init__(self, segment_tree: SegmentTree):
+        self.segment_tree = segment_tree
         self.app_ui = AppUI()
 
         self.visibility_dict: Dict[VisibilityField, bool] = {
@@ -36,15 +37,15 @@ class Model:
         self.previous_mouse_pos = (0, 0)
         self.current_mouse_pos = (0, 0)
 
-        RT.calculate_node_position(self.st.root)
+        RT.calculate_node_position(self.segment_tree.root)
 
         # center the root node by the width of the screen
-        delta_x = const.HALF_WIDTH - self.st.root.x
-        RT.move_node_by_delta_pos(self.st.root, delta_x, 0)
+        delta_x = const.HALF_WIDTH - self.segment_tree.root.x
+        RT.move_node_by_delta_pos(self.segment_tree.root, delta_x, 0)
 
     def handle_input(self, events: List[pg.event.Event]):
         visibility_ui = self.app_ui.visibility_ui
-        self.change_visibility_dict(visibility_ui.UI.get_multi_selection())
+        self.change_visibility_dict()
 
         for event in events:
             if event.type == pg_gui.UI_DROP_DOWN_MENU_CHANGED:
@@ -58,13 +59,13 @@ class Model:
                 else:
                     visibility_ui.container.show()
 
-            self.app_ui.GUI_MANAGER.process_events(event)
+            self.app_ui.gui_manager.process_events(event)
 
         if not visibility_ui.container.visible:
             self.pan()
 
     def update_ui(self, delta_time: float):
-        self.app_ui.GUI_MANAGER.update(delta_time)
+        self.app_ui.gui_manager.update(delta_time)
 
     def pan(self):
         mouse_pressed = pg.mouse.get_pressed()
@@ -81,12 +82,30 @@ class Model:
         delta_x = self.current_mouse_pos[0] - self.previous_mouse_pos[0]
         delta_y = self.current_mouse_pos[1] - self.previous_mouse_pos[1]
 
-        RT.move_node_by_delta_pos(self.st.root, delta_x, delta_y)
+        RT.move_node_by_delta_pos(self.segment_tree.root, delta_x, delta_y)
         self.previous_mouse_pos = self.current_mouse_pos
 
-    def change_visibility_dict(self, chosen_field: List[str]):
+    def change_visibility_dict(self):
+        chosen_field: List[str] = self.app_ui.visibility_ui.UI.get_multi_selection()
+
         for field, _ in self.visibility_dict.items():
             self.visibility_dict[field] = field in chosen_field
+
+    def create_theme(self, json_obj: Dict[str, Any], app_ui_path) -> Theme:
+        name: str = json_obj["Name"]
+        palette_obj: Dict[ThemeField, ValidJSONColorFormats] = json_obj["Palette"]
+
+        return Theme(
+            NAME=name,
+            APP_UI_PATH=app_ui_path,
+            LINE_CLR=pg.Color(palette_obj["line"]),
+            BACKGROUND_CLR=pg.Color(palette_obj["background"]),
+            NODE_OUTLINE_CLR=pg.Color(palette_obj["node_outline"]),
+            NODE_FILLINGS_CLR=pg.Color(palette_obj["node_fillings"]),
+            NODE_DISPLAY_DATA_CLR=pg.Color(palette_obj["node_display_data"]),
+            NODE_OUTLINE_HIGHLIGHT_CLR=pg.Color(palette_obj["node_outline_highlight"]),
+            NODE_DISPLAY_DATA_HIGHLIGHT_CLR=pg.Color(palette_obj["node_display_data_highlight"]),
+        )
 
     def load_themes(self):
         for entry in os.listdir("./theme"):
@@ -103,7 +122,7 @@ class Model:
                 if not json_obj["use_default_app_ui"]:
                     ui_path = f"./theme/{entry}/{const.CUSTOM_UI_FILE}"
 
-                self.themes[json_obj["Name"]] = Theme(json_obj, ui_path)
+                self.themes[json_obj["Name"]] = self.create_theme(json_obj, ui_path)
                 self.available_themes.append(json_obj["Name"])
 
     def set_theme(self, name: str):
