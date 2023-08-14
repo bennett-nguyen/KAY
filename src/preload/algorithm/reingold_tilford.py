@@ -44,13 +44,12 @@ def _compute_prelim_x(node: Node):
 
     if node.is_left_node():
         node.preliminary_x = mid
-    else:
-        node.preliminary_x = node.previous_sibling.preliminary_x \
-            + const.SIBLING_DISTANCE + const.NODE_DISTANCE
-        node.modifier = node.preliminary_x - mid
+        return
 
-    if not node.is_left_node():
-        _check_for_conflicts(node)
+    node.preliminary_x = node.previous_sibling.preliminary_x \
+        + const.SIBLING_DISTANCE + const.NODE_DISTANCE
+    node.modifier = node.preliminary_x - mid
+    _check_for_conflicts(node)
 
 
 def _compute_final_coordinates(node: Node, mod_sum: float):
@@ -58,12 +57,15 @@ def _compute_final_coordinates(node: Node, mod_sum: float):
     mod_sum += node.modifier
     node.modifier = 0
 
-    if not node.is_leaf():
-        for child in node.children:
-            _compute_final_coordinates(child, mod_sum)
-
     node.x = int(node.preliminary_x * const.SCALE)
     node.y = int((node.depth + const.DEPTH_OFFSET) * const.VERTICAL_SCALE)
+
+    if node.is_leaf():
+        return
+
+    for child in node.children:
+        _compute_final_coordinates(child, mod_sum)
+
 
 
 def _check_for_conflicts(node: Node):
@@ -85,12 +87,16 @@ def _check_for_conflicts(node: Node):
         )+1
     ):
         distance = node_contour[level] - sibling_contour[level]
-        if distance + shift_value < min_distance:
-            shift_value = max(min_distance - distance, shift_value)
+        if distance + shift_value >= min_distance:
+            continue
 
-    if shift_value > 0:
-        node.preliminary_x += shift_value
-        node.modifier += shift_value
+        shift_value = max(min_distance - distance, shift_value)
+
+    if shift_value == 0:
+        return
+
+    node.preliminary_x += shift_value
+    node.modifier += shift_value
 
 
 def _get_contour(node: Node, mod_sum: float, values: Dict[int, float], side: ContourType):
