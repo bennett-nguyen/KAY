@@ -10,7 +10,7 @@ HALF_WIDTH: int = WIDTH//2
 HALF_HEIGHT: int = HEIGHT//2
 
 FPS: int = 48
-VERSION: str = "0.5.0-prealpha"
+VERSION: str = "0.5.1-prealpha"
 
 # -- App UI
 THEME_DROP_DOWN_OBJ_ID: str = "#theme-selection-drop-down"
