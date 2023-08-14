@@ -57,7 +57,7 @@ class View:
         else:
             app_ui.theme_selection_ui.UI.hide()
 
-        app_ui.GUI_MANAGER.draw_ui(ds.screen)
+        app_ui.gui_manager.draw_ui(ds.screen)
 
     def view_hovered_node_info(self, hovered_node: Tuple[bool, Node]):
         if not self.visibility_dict[const.VIEW_NODE_INFO_FIELD]:
