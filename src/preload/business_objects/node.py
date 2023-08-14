@@ -3,6 +3,14 @@ from typing import Union, Tuple
 
 
 class Node:
+    __slots__ = (
+        "left", "right", "parent",
+        "low", "high",
+        "x", "y",
+        "preliminary_x", "modifier", "depth",
+        "data", "ID"
+    )
+
     def __init__(self):
         self.left: Union[Node, None] = None
         self.right: Union[Node, None] = None
