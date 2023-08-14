@@ -14,10 +14,12 @@ class Window(pg_gui.elements.UIWindow):
 
 
 class ThemeSelectionUI:
+    __slots__ = "manager", "UI", "_layout_rect"
+
     def __init__(self, manager, theme_list: List[str], default_theme: str):
         self.manager = manager
-        self.layout_rect = pg.Rect(0, 0, const.THEME_DROP_DOWN_WIDTH, const.THEME_DROP_DOWN_HEIGHT)
-        self.layout_rect.bottomright = (
+        self._layout_rect = pg.Rect(0, 0, const.THEME_DROP_DOWN_WIDTH, const.THEME_DROP_DOWN_HEIGHT)
+        self._layout_rect.bottomright = (
             const.WIDTH-const.THEME_DROP_DOWN_OFFSET-10,
             const.HEIGHT-const.THEME_DROP_DOWN_OFFSET
         )
@@ -26,21 +28,23 @@ class ThemeSelectionUI:
             options_list=theme_list,
             starting_option=default_theme,
             manager=self.manager,
-            relative_rect=self.layout_rect,
+            relative_rect=self._layout_rect,
             object_id=const.THEME_DROP_DOWN_OBJ_ID,
             expansion_height_limit=205
         )
 
 
 class VisibilityUI:
+    __slots__ = "manager", "container", "UI", "_container_layout_rect", "_UI_layout_rect"
+
     def __init__(self, manager: pg_gui.UIManager, visibility_dict: Dict[VisibilityField, bool]):
         self.manager = manager
-        self.container_layout_rect = pg.Rect((0, 0), (const.VISIBILITY_WINDOW_WIDTH, const.VISIBILITY_WINDOW_HEIGHT))
-        self.container_layout_rect.bottomleft = (50, const.HEIGHT-50)
+        self._container_layout_rect = pg.Rect((0, 0), (const.VISIBILITY_WINDOW_WIDTH, const.VISIBILITY_WINDOW_HEIGHT))
+        self._container_layout_rect.bottomleft = (50, const.HEIGHT-50)
 
-        self.UI_layout_rect = pg.Rect((0, 0), (const.VISIBILITY_DROP_DOWN_WIDTH, const.VISIBILITY_DROP_DOWN_HEIGHT))
+        self._UI_layout_rect = pg.Rect((0, 0), (const.VISIBILITY_DROP_DOWN_WIDTH, const.VISIBILITY_DROP_DOWN_HEIGHT))
         self.container = Window(
-            rect=self.container_layout_rect,
+            rect=self._container_layout_rect,
             manager=self.manager,
             window_display_title="Visibility Panel",
             object_id=const.VISIBILITY_WINDOW_OBJ_ID,
@@ -48,7 +52,7 @@ class VisibilityUI:
         )
 
         self.UI = pg_gui.elements.UISelectionList(
-            relative_rect=self.UI_layout_rect,
+            relative_rect=self._UI_layout_rect,
             item_list=list(visibility_dict.keys()),
             manager=self.manager,
             container=self.container,
@@ -59,15 +63,17 @@ class VisibilityUI:
 
 
 class AppUI:
+    __slots__ = "gui_manager", "theme_selection_ui", "visibility_ui"
+
     def __init__(self):
-        self.GUI_MANAGER = pg_gui.UIManager(const.RESOLUTION, theme_path=const.ACTIVE_UI_FILE)
+        self.gui_manager = pg_gui.UIManager(const.RESOLUTION, theme_path=const.ACTIVE_UI_FILE)
 
     def init_theme_selection_ui(self, theme_list: List[str], current_theme: Theme):
-        self.theme_selection_ui = ThemeSelectionUI(self.GUI_MANAGER, theme_list, current_theme.NAME)
+        self.theme_selection_ui = ThemeSelectionUI(self.gui_manager, theme_list, current_theme.NAME)
         self.set_theme(current_theme)
 
     def init_visibility_ui(self, visibility_dict: Dict[VisibilityField, bool]):
-        self.visibility_ui = VisibilityUI(self.GUI_MANAGER, visibility_dict)
+        self.visibility_ui = VisibilityUI(self.gui_manager, visibility_dict)
 
     def set_theme(self, theme: Theme):
         app_ui_path = theme.APP_UI_PATH
