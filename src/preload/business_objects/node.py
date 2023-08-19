@@ -1,5 +1,6 @@
-import src.preload.system.constants as const
 from typing import Union, Tuple
+
+import src.preload.system.constants as const
 
 
 class Node:
