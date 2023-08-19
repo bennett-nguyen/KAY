@@ -1,6 +1,8 @@
 import pygame as pg
-from typing import Union, TypeAlias, NewType
+from collections import namedtuple
 from collections.abc import Sequence
+from typing import Union, TypeAlias, NewType
+
 
 # -- Theme
 ThemeField: TypeAlias = str
@@ -57,3 +59,9 @@ ContourType = NewType("ContourType", str)
 
 # Visibility Field
 VisibilityField = NewType("VisibilityField", str)
+
+# Command's Argument metadata
+Argument = namedtuple("Argument", ("name", "type", "is_optional"))
+
+# Message Box Links
+WebLink = NewType("WebLink", str)
