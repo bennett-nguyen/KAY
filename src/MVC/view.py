@@ -1,13 +1,15 @@
+from typing import List, Tuple, Dict
+
 import pygame as pg
+from pygame import gfxdraw
+
 import src.preload.system.ds as ds
 import src.preload.system.constants as const
-from pygame import gfxdraw
 from src.preload.business_objects.node import Node
 from src.preload.business_objects.theme import Theme
 from src.preload.business_objects.app_ui import AppUI
 from src.preload.system.app_type import VisibilityField
 
-from typing import List, Tuple, Dict
 
 
 class View:
@@ -52,10 +54,13 @@ class View:
         return (False, node)
 
     def view_app_ui(self, app_ui: AppUI):
-        if self.visibility_dict[const.DISPLAY_THEME_SELECTION_FIELD]:
+        if self.visibility_dict[const.DISPLAY_BOTTOM_BAR]:
             app_ui.theme_selection_ui.UI.show()
+            app_ui.cmd_textbox_ui.UI.show()
         else:
             app_ui.theme_selection_ui.UI.hide()
+            app_ui.cmd_textbox_ui.UI.hide()
+            app_ui.message_box_ui.UI.hide()
 
         app_ui.gui_manager.draw_ui(ds.screen)
 
@@ -127,7 +132,7 @@ class View:
         highlight_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
 
         text_to_render: List[str] = ["[", f"{hovered_node.low}", "; ", f"{hovered_node.high}", "]"]
-        font_for_text: List[pg.font.Font] = [self.CM_FONT, self.CM_ITALIC_FONT, self.CM_FONT, self.CM_ITALIC_FONT, self.CM_FONT]
+        font_for_text: List[pg.font.Font] = [self.CM_FONT, self.CM_FONT, self.CM_FONT, self.CM_FONT, self.CM_FONT]
         color_for_text: List[pg.Color] = [data_clr, highlight_data_clr, data_clr, highlight_data_clr, data_clr]
 
         text_surf_and_rect: List[Tuple[pg.Surface, pg.Rect]] = []
@@ -150,8 +155,8 @@ class View:
     def _view_ID(self, x: int, y: int, hovered_node: Node):
         theme = self.current_theme
 
-        ID_text, ID_rect = self.render_text(self.CM_ITALIC_FONT, "ID: ", theme.NODE_DISPLAY_DATA_CLR)
-        ID_dat_text, ID_dat_rect = self.render_text(self.CM_ITALIC_FONT, f"{hovered_node.ID}", theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR)
+        ID_text, ID_rect = self.render_text(self.CM_FONT, "ID: ", theme.NODE_DISPLAY_DATA_CLR)
+        ID_dat_text, ID_dat_rect = self.render_text(self.CM_FONT, f"{hovered_node.ID}", theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR)
 
         ID_dat_rect.topright = (x, y)
         ID_rect.midright = ID_dat_rect.midleft
