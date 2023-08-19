@@ -1,9 +1,14 @@
 import pygame as pg
-import src.preload.system.constants as const
+
 from pygame.locals import *
 from pygame_gui._constants import (
-    UI_DROP_DOWN_MENU_CHANGED
+    UI_DROP_DOWN_MENU_CHANGED,
+    UI_TEXT_ENTRY_FINISHED,
+    UI_TEXT_BOX_LINK_CLICKED
 )
+
+import src.preload.system.constants as const
+
 
 pg.init()
 pg.event.set_allowed(
@@ -14,7 +19,9 @@ pg.event.set_allowed(
         MOUSEBUTTONDOWN,
         MOUSEBUTTONUP,
         MOUSEMOTION,
-        UI_DROP_DOWN_MENU_CHANGED
+        UI_DROP_DOWN_MENU_CHANGED,
+        UI_TEXT_ENTRY_FINISHED,
+        UI_TEXT_BOX_LINK_CLICKED
     ]
 )
 
