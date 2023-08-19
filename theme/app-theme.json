@@ -8,11 +8,7 @@
     "#visibility-window.#title_bar": {
         "font": {
             "name": "CascadiaCode",
-            "size": "16",
-            "regular_path": "./fonts/CascadiaCode/CascadiaCode-Regular.ttf",
-            "bold_path": "./fonts/CascadiaCode/CascadiaCode-Bold.ttf",
-            "italic_path": "./fonts/CascadiaCode/CascadiaCode-Italic.ttf",
-            "bold_italic_path": "./fonts/CascadiaCode/CascadiaCode-BoldItalic.ttf"
+            "size": "16"
         }
     },
     "#visibility-window.#close_button": {
@@ -25,7 +21,6 @@
     },
     "#visibility-drop-down": {
         "misc": {
-            "border_width": "5",
             "list_item_height": "40"
         },
         "colours": {
@@ -39,20 +34,15 @@
             "normal_bg": "#313338"
         },
         "misc": {
-            "shape_corner_radius": "5",
             "border_width": "3",
             "text_horiz_alignment": "center",
             "text_vert_alignment": "top",
             "text_horiz_alignment_padding": "10",
-            "text_vert_alignment_padding": "3"
+            "text_vert_alignment_padding": "5"
         },
         "font": {
             "name": "CascadiaCode",
-            "size": "16",
-            "regular_path": "./fonts/CascadiaCode/CascadiaCode-Regular.ttf",
-            "bold_path": "./fonts/CascadiaCode/CascadiaCode-Bold.ttf",
-            "italic_path": "./fonts/CascadiaCode/CascadiaCode-Italic.ttf",
-            "bold_italic_path": "./fonts/CascadiaCode/CascadiaCode-BoldItalic.ttf"
+            "size": "16"
         }
     },
     "#theme-selection-drop-down": {
@@ -64,12 +54,11 @@
     },
     "#theme-selection-drop-down.#selected_option": {
         "misc": {
-            "shape_corner_radius": "5",
-            "border_width": "3",
+            "border_width": "2",
             "text_horiz_alignment": "center",
             "text_vert_alignment": "top",
             "text_horiz_alignment_padding": "10",
-            "text_vert_alignment_padding": "3"
+            "text_vert_alignment_padding": "8"
         },
         "colours": {
             "normal_text": "#B5B2B4",
@@ -77,11 +66,7 @@
         },
         "font": {
             "name": "CascadiaCode",
-            "size": "16",
-            "regular_path": "./fonts/CascadiaCode/CascadiaCode-Regular.ttf",
-            "bold_path": "./fonts/CascadiaCode/CascadiaCode-Bold.ttf",
-            "italic_path": "./fonts/CascadiaCode/CascadiaCode-Italic.ttf",
-            "bold_italic_path": "./fonts/CascadiaCode/CascadiaCode-BoldItalic.ttf"
+            "size": "16"
         }
     },
     "#theme-selection-drop-down.#drop_down_options_list": {
@@ -116,6 +101,10 @@
         }
     },
     "#theme-selection-drop-down.#drop_down_options_list.button": {
+        "font": {
+            "name": "CascadiaCode",
+            "size": "14"
+        },
         "misc": {
             "shape_corner_radius": "5",
             "border_width": "3",
@@ -127,14 +116,6 @@
         "colours": {
             "normal_text": "#B5B2B4",
             "normal_bg": "#313338"
-        },
-        "font": {
-            "name": "CascadiaCode",
-            "size": "14",
-            "regular_path": "./fonts/CascadiaCode/CascadiaCode-Regular.ttf",
-            "bold_path": "./fonts/CascadiaCode/CascadiaCode-Bold.ttf",
-            "italic_path": "./fonts/CascadiaCode/CascadiaCode-Italic.ttf",
-            "bold_italic_path": "./fonts/CascadiaCode/CascadiaCode-BoldItalic.ttf"
         }
     },
     "#theme-selection-drop-down.#expand_button": {
@@ -145,5 +126,43 @@
             "normal_text": "#B5B2B4",
             "normal_bg": "#313338"
         }
+    },
+    "#command-textbox": {
+        "font": {
+            "name": "CascadiaCode",
+            "size": "16"
+        },
+        "colours": {
+            "dark_bg": "#313338",
+            "normal_text": "#B5B2B4"
+        },
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "5",
+            "border_width": "3",
+            "padding": "7, 7"
+        }
+    },
+    "#message-textbox": {
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "5",
+            "border_width": "3",
+            "padding": "13, 7"
+        },
+        "colours": {
+            "dark_bg": "#313338"
+        }
+    },
+    "Message Box Content Palette": {
+        "normal_text": "#B5B2B4",
+        "horizontal_line": "#808080",
+        "error_text": "#FC0A3D",
+        "output_text": "#00FF00",
+        "command": "#61AFEF",
+        "argument_name": "#E5C17A",
+        "optional_notation": "#56B7C3",
+        "colon": "#B5B2B4",
+        "type": "#56B7C3"
     }
 }
