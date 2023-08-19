@@ -1,27 +1,36 @@
-from typing import Callable
-from src.preload.business_objects.node import Node
+from typing import Callable, List
 
-from typing import List
+from src.preload.business_objects.node import Node
 
 
 class SegmentTree:
     def __init__(self, arr: List[int], invalid_query_val: int, query_fn: Callable[[int, int], int], update_fn: Callable[[int, int], int]):
         self.arr = arr
-        self.length = len(arr)
         self.root = Node()
 
         self._query_fn = query_fn
         self._update_fn = update_fn
         self._INVALID_QUERY = invalid_query_val
-        self._build(self.root, 0, self.length-1)
+        self._build(self.root, 0, self.array_length-1)
+
+    @property
+    def array_length(self) -> int:
+        return len(self.arr)
 
     def query(self, q_low: int, q_high: int) -> int:
-        return self._query(q_low, q_high, self.root, 0, self.length-1)
+        return self._query(q_low, q_high, self.root, 0, self.array_length-1)
 
     def update(self, pos: int, val: int) -> None:
-        self._update(pos, val, self.root, 0, self.length-1)
+        self._update(pos, val, self.root, 0, self.array_length-1)
+
+    def rebuild(self):
+        self.root = Node()
+        self._build(self.root, 0, self.array_length-1)
 
     def _build(self, node: Node, low: int, high: int, ID: int = 1) -> None:
+        if self.array_length == 0:
+            return
+
         node.construct(low, high, ID)
 
         if low == high:
