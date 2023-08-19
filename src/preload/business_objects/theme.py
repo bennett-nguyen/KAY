@@ -1,6 +1,9 @@
 import pygame as pg
 from dataclasses import dataclass
 
+from src.preload.system.app_type import HexStrFormat
+
+
 @dataclass(slots=True, frozen=True)
 class Theme:
     NAME: str
@@ -21,3 +24,15 @@ class Theme:
 
     # App UI
     APP_UI_PATH: str
+
+
+    # Message Box Content
+    NORMAL_TEXT_CLR: HexStrFormat
+    HORIZONTAL_LINE_CLR: HexStrFormat
+    ERROR_TEXT_CLR: HexStrFormat
+    OUTPUT_TEXT_CLR: HexStrFormat
+    COMMAND_CLR: HexStrFormat
+    OPTIONAL_NOTATION_CLR: HexStrFormat
+    ARGUMENT_NAME_CLR: HexStrFormat
+    COLON_CLR: HexStrFormat
+    TYPE_CLR: HexStrFormat
