@@ -100,7 +100,7 @@ class MessageTextBoxUI:
         self.UI.set_text(f"<b>{self.generate_text('ERROR', current_theme.ERROR_TEXT_CLR, const.H1)}</b><br>")
         self.UI.append_html_text(f"{self.generate_text('raised from: ', current_theme.NORMAL_TEXT_CLR, const.H3)}<i>{self.generate_text(command_name, current_theme.COMMAND_CLR, const.H3)}</i><br>")
         self.UI.append_html_text(f"{self.generate_horizontal_rule()}<br><br>")
-        self.UI.append_html_text(self.generate_text(text=f'message: {html_content}', color=current_theme.NORMAL_TEXT_CLR, size=const.H3))
+        self.UI.append_html_text(self.generate_text(text=f'message: {html_content}', color=current_theme.NORMAL_TEXT_CLR, pixel_size=const.H3))
 
     def create_output(self, command_name: str, html_content: str):
         self.should_display = True
