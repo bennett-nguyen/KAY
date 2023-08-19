@@ -1,11 +1,12 @@
 from typing import Dict
-from src.preload.system.app_type import ContourType
-from src.preload.business_objects.node import Node
+
 import src.preload.system.constants as const
+from src.preload.business_objects.node import Node
+from src.preload.system.app_type import ContourType
 
 
 # Implementation of the Reingold-Tilford algorithm for drawing trees
-# Designed specifically for drawing complete binary trees
+# Designed specifically for drawing full binary trees
 
 
 def calculate_node_position(root: Node):
