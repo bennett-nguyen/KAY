@@ -117,7 +117,7 @@ class MessageTextBoxUI:
         current_theme = self.current_theme
 
         self.UI.set_text(f"<b>{self.generate_text('KAY - Segment Tree Visualizer', current_theme.NORMAL_TEXT_CLR, const.H1)}</b><br>")
-        self.UI.append_html_text(f"{self.generate_text('Copyright © 2023 Bennett Nguyen', current_theme.NORMAL_TEXT_CLR, const.H3)}<br>")
+        self.UI.append_html_text(f"{self.generate_text('Copyright © 2023 Nguyen Vinh Phu', current_theme.NORMAL_TEXT_CLR, const.H3)}<br>")
         self.UI.append_html_text(f"{self.generate_text(f'Version: v{const.VERSION}', current_theme.NORMAL_TEXT_CLR, const.H3)}<br><br>")
         self.UI.append_html_text(f"&bullet; <a href='{const.GITHUB_LINK}'>Github</a><br>&bullet; <a href='{const.LICENSE_LINK}'>License</a>")
 
