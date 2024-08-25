@@ -24,7 +24,7 @@ NumberFormat: TypeAlias = int
 
 # Format: "0xrrggbb" or "0xrrggbbaa"
 # Where rr, gg, bb, and aa are 2-digit hex numbers within [0x00; 0xFF]
-HexStrFormat: TypeAlias = str
+HexStrColorFormat: TypeAlias = str
 
 # Format: "#rrggbb" or "#rrggbbaa"
 # Where rr, gg, bb, and aa are 2-digit hex numbers within [0x00; 0xFF]
@@ -38,7 +38,7 @@ ValidColorFormats: TypeAlias = Union[
     RGB_Format,
     RGBA_Format,
     NumberFormat,
-    HexStrFormat,
+    HexStrColorFormat,
     HTMLColorFormat,
     NamedColors,
     pg.Color
@@ -48,7 +48,7 @@ ValidColorFormats: TypeAlias = Union[
 ValidJSONColorFormats: TypeAlias = Union[
     RGB_Format,
     RGBA_Format,
-    HexStrFormat,
+    HexStrColorFormat,
     HTMLColorFormat,
     NamedColors
 ]
