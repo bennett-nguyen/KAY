@@ -1,11 +1,11 @@
-from typing import List, Tuple
+from typing import List, Optional
 
 import pygame as pg
 
 from src.MVC.view import View
 from src.MVC.model import Model
-from src.preload.business_objects.node import Node
-from src.preload.business_objects.segment_tree import SegmentTree
+from src.preload.tree.node import Node
+from src.preload.tree.segment_tree import SegmentTree
 
 
 class Controller:
@@ -23,11 +23,9 @@ class Controller:
         self.model.app_ui.message_box_ui.request_theme(self.model.current_theme)
 
         if self.model.segment_tree.array_length != 0:
-            # hovered_node[0]: is the mouse hovering on the queried node
-            # hovered_node[1]: return the queried node if mouse is hovering on that node
-            hovered_node: Tuple[bool, Node] = self.view.mouse_hover_node(self.model.segment_tree.root)
+            hovered_node: Optional[Node] = self.model.find_hovered_node(self.model.segment_tree.root)
             self.view.draw_tree(self.model.segment_tree.root, hovered_node)
-            self.view.view_array(self.model.segment_tree.arr, hovered_node)
+            self.view.view_array(self.model.segment_tree.array, hovered_node)
             self.view.view_hovered_node_info(hovered_node)
 
         self.view.view_app_ui(self.model.app_ui)

@@ -1,19 +1,19 @@
 import os
 import json
 import webbrowser
-from typing import List, Dict, Any
+from collections import deque
+from typing import List, Dict, Any, Optional
 
 import pygame as pg
 import pygame_gui as pg_gui
 
 import src.preload.system.constants as const
 import src.preload.algorithm.reingold_tilford as RT
-from src.preload.business_objects.theme import Theme
-from src.preload.business_objects.app_ui import AppUI
-from src.preload.business_objects.commands import CommandManager
-from src.preload.business_objects.segment_tree import SegmentTree
-from src.preload.system.app_type import VisibilityField, ThemeField, ValidJSONColorFormats, HexStrFormat
-
+from src.preload.ui.theme import Theme
+from src.preload.ui.app_ui import AppUI
+from src.preload.command.command import CommandManager
+from src.preload.tree.segment_tree import SegmentTree, Node
+from src.preload.system.app_type import VisibilityField, ThemeField, ValidJSONColorFormats, HexStrColorFormat
 
 
 class Model:
@@ -65,22 +65,22 @@ class Model:
         self.change_visibility_dict()
 
         for event in events:
-            if event.type == pg_gui.UI_DROP_DOWN_MENU_CHANGED:
-                if event.ui_object_id == const.THEME_DROP_DOWN_OBJ_ID:
-                    self.set_theme(event.text)
-                    self.app_ui.set_theme(self.current_theme)
+            if event.type == pg_gui.UI_DROP_DOWN_MENU_CHANGED \
+                and event.ui_object_id == const.THEME_DROP_DOWN_OBJ_ID:
+                self.set_theme(event.text)
+                self.app_ui.set_theme(self.current_theme)
 
             if event.type == pg.KEYDOWN:
                 self._keydown_event_processor(event)
 
-            if event.type == pg_gui.UI_TEXT_ENTRY_FINISHED:
-                if event.ui_object_id == const.COMMAND_TEXTBOX_OBJ_ID and event.text:
+            if event.type == pg_gui.UI_TEXT_ENTRY_FINISHED \
+                and event.ui_object_id == const.COMMAND_TEXTBOX_OBJ_ID and event.text:
                     self.parse_command(event.text)
                     cmd_textbox.UI.clear()
                     cmd_textbox.UI.focus()
             
-            if event.type == pg_gui.UI_TEXT_BOX_LINK_CLICKED:
-                if event.ui_object_id == const.MESSAGE_TEXTBOX_OBJ_ID:
+            if event.type == pg_gui.UI_TEXT_BOX_LINK_CLICKED \
+                and event.ui_object_id == const.MESSAGE_TEXTBOX_OBJ_ID:
                     webbrowser.open(event.link_target, new=2)
 
             self.app_ui.gui_manager.process_events(event)
@@ -91,7 +91,27 @@ class Model:
         ]):
             self.pan()
     
-    def _keydown_event_processor(self, event):
+    def find_hovered_node(self, root_node: Node) -> Optional[Node]:
+        mouse_pos = pg.mouse.get_pos()
+        hit_box = pg.Rect((0, 0), (const.NODE_CIRCLE_RADIUS+25, const.NODE_CIRCLE_RADIUS+25))
+
+        queue: deque[Node] = deque([root_node])
+
+        while queue:
+            node = queue.popleft()
+            hit_box.center = node.coordinates
+
+            if hit_box.collidepoint(mouse_pos):
+                return node
+
+            if node.is_leaf():
+                continue;
+
+            for child in node.children:
+                queue.append(child)
+
+    
+    def _keydown_event_processor(self, event: pg.event.Event):
         cmd_textbox = self.app_ui.cmd_textbox_ui
         message_box = self.app_ui.message_box_ui
 
@@ -172,7 +192,7 @@ class Model:
         palette_obj: Dict[ThemeField, ValidJSONColorFormats] = json_obj["Palette"]
         
         with open(app_ui_path, "r") as f:
-            message_box_palette_obj: Dict[ThemeField, HexStrFormat] = json.load(f)["Message Box Content Palette"]
+            message_box_palette_obj: Dict[ThemeField, HexStrColorFormat] = json.load(f)["Message Box Content Palette"]
 
         return Theme(
             NAME=name,
