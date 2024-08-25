@@ -1,13 +1,13 @@
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
 
 import pygame as pg
 from pygame import gfxdraw
 
-import src.preload.system.ds as ds
+import src.preload.system.window as window
 import src.preload.system.constants as const
-from src.preload.business_objects.node import Node
-from src.preload.business_objects.theme import Theme
-from src.preload.business_objects.app_ui import AppUI
+from src.preload.tree.node import Node
+from src.preload.ui.theme import Theme
+from src.preload.ui.app_ui import AppUI
 from src.preload.system.app_type import VisibilityField
 
 
@@ -33,26 +33,6 @@ class View:
 
         return (surf, rect)
 
-    def mouse_hover_node(self, node: Node) -> Tuple[bool, Node]:
-        mouse_pos = pg.mouse.get_pos()
-        hit_box = pg.Rect((0, 0), (const.NODE_CIRCLE_RADIUS+25, const.NODE_CIRCLE_RADIUS+25))
-        hit_box.center = node.coordinates
-
-        if hit_box.collidepoint(mouse_pos):
-            return (True, node)
-
-        if node.is_leaf():
-            return (False, node)
-
-        for child in node.children:
-            is_hovered, queried_node = self.mouse_hover_node(child)
-            if not is_hovered:
-                continue
-
-            return (is_hovered, queried_node)
-
-        return (False, node)
-
     def view_app_ui(self, app_ui: AppUI):
         if self.visibility_dict[const.DISPLAY_BOTTOM_BAR]:
             app_ui.theme_selection_ui.UI.show()
@@ -62,24 +42,22 @@ class View:
             app_ui.cmd_textbox_ui.UI.hide()
             app_ui.message_box_ui.UI.hide()
 
-        app_ui.gui_manager.draw_ui(ds.screen)
+        app_ui.gui_manager.draw_ui(window.screen)
 
-    def view_hovered_node_info(self, hovered_node: Tuple[bool, Node]):
+    def view_hovered_node_info(self, hovered_node: Optional[Node]):
         if not self.visibility_dict[const.VIEW_NODE_INFO_FIELD]:
             return
 
-        is_hovered, queried_node = hovered_node
-
-        if not is_hovered:
+        if hovered_node is None:
             return
 
         x, y = (const.WIDTH - const.X_OFFSET, const.Y_OFFSET)
-        segment_rect_bounding_box_bottom = self._view_segment(x, y, queried_node)
+        segment_rect_bounding_box_bottom = self._view_segment(x, y, hovered_node)
 
         y = segment_rect_bounding_box_bottom + const.LINE_SPACING
-        self._view_ID(x, y, queried_node)
+        self._view_ID(x, y, hovered_node)
 
-    def view_array(self, array: List[int], hovered_node: Tuple[bool, Node]):
+    def view_array(self, array: List[int], hovered_node: Optional[Node]):
         if not self.visibility_dict[const.VIEW_ARRAY_FIELD]:
             return
 
@@ -87,29 +65,26 @@ class View:
         theme = self.current_theme
 
         for (idx, element) in enumerate(array):
-            is_hovered, queried_node = hovered_node
             data_color = theme.NODE_DISPLAY_DATA_CLR
-            if is_hovered and queried_node.low <= idx <= queried_node.high:
+            if hovered_node is not None and hovered_node.low <= idx <= hovered_node.high:
                 data_color = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
 
             text, rect = self.render_text(self.CM_FONT, f"{element}", data_color)
             rect.topleft = (x, y)
 
-            ds.screen.blit(text, rect)
+            window.screen.blit(text, rect)
             x = rect.right + const.ELEMENT_SPACING
 
             if x >= const.MAX_X_PER_LINE:
                 x = const.X_OFFSET
                 y = rect.bottom + const.LINE_SPACING
 
-    def draw_tree(self, node: Node, hovered_node: Tuple[bool, Node]):
+    def draw_tree(self, node: Node, hovered_node: Optional[Node]):
         theme = self.current_theme
-        is_hovered, queried_node = hovered_node
-
         node_outline_clr = theme.NODE_OUTLINE_CLR
         display_data_clr = theme.NODE_DISPLAY_DATA_CLR
 
-        if is_hovered and queried_node is node:
+        if hovered_node is node:
             node_outline_clr = theme.NODE_OUTLINE_HIGHLIGHT_CLR
             display_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
 
@@ -148,7 +123,7 @@ class View:
             text_surf_and_rect[idx][1].midright = text_surf_and_rect[idx-1][1].midleft
 
         for surf, rect in text_surf_and_rect:
-            ds.screen.blit(surf, rect)
+            window.screen.blit(surf, rect)
 
         return text_surf_and_rect[0][1].bottom
 
@@ -161,16 +136,16 @@ class View:
         ID_dat_rect.topright = (x, y)
         ID_rect.midright = ID_dat_rect.midleft
 
-        ds.screen.blit(ID_text, ID_rect)
-        ds.screen.blit(ID_dat_text, ID_dat_rect)
+        window.screen.blit(ID_text, ID_rect)
+        window.screen.blit(ID_dat_text, ID_dat_rect)
 
     def _draw_circles(self, node: Node, outline_clr: pg.Color):
         theme = self.current_theme
-        pg.draw.circle(ds.screen, theme.NODE_FILLINGS_CLR, node.coordinates, const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS)
+        pg.draw.circle(window.screen, theme.NODE_FILLINGS_CLR, node.coordinates, const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS)
 
         for depth in range(const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS, const.NODE_CIRCLE_RADIUS):
-            gfxdraw.aacircle(ds.screen, *node.coordinates, depth, outline_clr)
-            gfxdraw.aacircle(ds.screen, *node.coordinates, depth, outline_clr)
+            gfxdraw.aacircle(window.screen, *node.coordinates, depth, outline_clr)
+            gfxdraw.aacircle(window.screen, *node.coordinates, depth, outline_clr)
 
     def _draw_lines(self, node: Node):
         theme = self.current_theme
@@ -179,7 +154,7 @@ class View:
             return
 
         pg.draw.line(
-            ds.screen,
+            window.screen,
             theme.LINE_CLR,
             node.coordinates,
             node.left.coordinates,
@@ -187,7 +162,7 @@ class View:
         )
 
         pg.draw.line(
-            ds.screen,
+            window.screen,
             theme.LINE_CLR,
             node.coordinates,
             node.right.coordinates,
@@ -197,4 +172,4 @@ class View:
     def _draw_node_data(self, node: Node, display_data_clr: pg.Color):
         node_display_data, node_display_data_rect = self.render_text(self.CC_FONT, f"{node.data}", display_data_clr)
         node_display_data_rect.center = node.coordinates
-        ds.screen.blit(node_display_data, node_display_data_rect)
+        window.screen.blit(node_display_data, node_display_data_rect)
