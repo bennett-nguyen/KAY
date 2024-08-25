@@ -3,15 +3,15 @@ from typing import Tuple
 from src.preload.system.app_type import ContourType, VisibilityField, WebLink
 
 # - General
-WIDTH: int = 1300
-HEIGHT: int = 700
+WIDTH: int = 1440
+HEIGHT: int = 900
 RESOLUTION: Tuple[int, int] = (WIDTH, HEIGHT)
 
 HALF_WIDTH: int = WIDTH//2
 HALF_HEIGHT: int = HEIGHT//2
 
 FPS: int = 48
-VERSION: str = "0.6.0-prealpha"
+VERSION: str = "0.6.1-prealpha"
 
 # -- App UI
 THEME_DROP_DOWN_OBJ_ID: str = "#theme-selection-drop-down"
