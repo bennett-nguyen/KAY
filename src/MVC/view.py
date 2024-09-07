@@ -1,4 +1,5 @@
 from typing import Optional
+from collections import deque
 
 import pygame as pg
 from pygame import gfxdraw
@@ -64,26 +65,43 @@ class View:
                 x = const.X_OFFSET
                 y = rect.bottom + const.LINE_SPACING
 
-    def draw_tree(self, node: Node, hovered_node: Optional[Node]):
+    def draw_tree(self, root: Node):
         theme = self.current_theme
         node_outline_clr = theme.NODE_OUTLINE_CLR
         display_data_clr = theme.NODE_DISPLAY_DATA_CLR
 
-        if hovered_node is node:
-            node_outline_clr = theme.NODE_OUTLINE_HIGHLIGHT_CLR
-            display_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
+        hovered_node = None
 
-        self._draw_lines(node)
-        self._draw_circles(node, node_outline_clr)
+        mouse_pos = pg.mouse.get_pos()
+        hit_box = pg.Rect((0, 0), (const.NODE_CIRCLE_RADIUS+25, const.NODE_CIRCLE_RADIUS+25))
 
-        if self.visibility_dict[Visibility.NODE_DATA_FIELD]:
-            self._draw_node_data(node, display_data_clr)
+        queue: deque[Node] = deque([root])
 
-        if node.is_leaf():
-            return
+        while queue:
+            node = queue.popleft()
+            hit_box.center = node.coordinates
 
-        for child in node.children:
-            self.draw_tree(child, hovered_node)
+            if hit_box.collidepoint(mouse_pos):
+                hovered_node = node
+                node_outline_clr = theme.NODE_OUTLINE_HIGHLIGHT_CLR
+                display_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
+            else:
+                node_outline_clr = theme.NODE_OUTLINE_CLR
+                display_data_clr = theme.NODE_DISPLAY_DATA_CLR
+
+            self._draw_lines(node)
+            self._draw_circles(node, node_outline_clr)
+
+            if self.visibility_dict[Visibility.NODE_DATA_FIELD]:
+                self._draw_node_data(node, display_data_clr)
+
+            if node.is_leaf():
+                continue
+
+            for child in node.children:
+                queue.append(child)
+
+        return hovered_node
 
     def _view_segment(self, x: int, y: int, hovered_node: Node) -> int:
         theme = self.current_theme

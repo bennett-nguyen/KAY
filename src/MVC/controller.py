@@ -22,7 +22,6 @@ class Controller:
         self.view.request_visibility(self.model.visibility_dict)
 
         if tree_manager.segment_tree.array_length != 0:
-            hovered_node: Optional[Node] = self.model.find_hovered_node()
-            self.view.draw_tree(tree_manager.segment_tree.root, hovered_node)
+            hovered_node: Optional[Node] = self.view.draw_tree(tree_manager.segment_tree.root)
             self.view.view_array(tree_manager.segment_tree.array, hovered_node)
             self.view.view_hovered_node_info(hovered_node)
