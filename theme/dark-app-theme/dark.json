@@ -1,5 +1,5 @@
 {
-    "Name": "Midnight (Built-in)",
+    "Name": "Dark (built-in)",
 
     "Palette": {
         "background": [0, 0, 0],
@@ -9,7 +9,5 @@
         "node_display_data": [255, 255, 255],
         "node_display_data_highlight": [255, 215, 0],
         "line": [255, 255, 255]
-    },
-
-    "use_default_app_ui": true
+    }
 }

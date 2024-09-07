@@ -54,12 +54,6 @@ ValidJSONColorFormats: TypeAlias = Union[
 ]
 # --
 
-# Contours
-ContourType = NewType("ContourType", str)
-
-# Visibility Field
-VisibilityField = NewType("VisibilityField", str)
-
 # Command's Argument metadata
 Argument = namedtuple("Argument", ("name", "type", "is_optional"))
 
