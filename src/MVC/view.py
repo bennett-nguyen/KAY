@@ -12,6 +12,13 @@ from src.preload.system.app_enum import Visibility
 
 
 class View:
+    """
+    Handles the rendering and display of the application's user interface. This
+    class manages themes, visibility settings, and the graphical representation
+    of the segment tree, allowing for dynamic updates and visual feedback based
+    on user interactions.
+    """
+
     def __init__(self):
         self.current_theme: Theme
         self.visibility_dict: dict[Visibility, bool]
@@ -19,22 +26,64 @@ class View:
         self.tree_properties_font = pg.font.Font("./fonts/JetBrainsMono-Medium.ttf", 40)
 
     def request_theme(self, theme: Theme):
+        """
+        Requests to change the current theme of the view. This method updates the
+        view's theme to the specified theme, allowing for dynamic visual changes
+        in the user interface.
+
+        Args:
+            theme (Theme): The new theme to be applied to the view.
+        """
+
         self.current_theme = theme
 
     def request_visibility(self, visibility_dict: dict[Visibility, bool]):
+        """
+        Requests to update the visibility settings of the view. This method sets the
+        visibility of various UI elements based on the provided dictionary, allowing
+        for dynamic control over what is displayed in the user interface.
+
+        Args:
+            visibility_dict (dict[Visibility, bool]): A dictionary that maps visibility
+            fields to their corresponding visibility states.
+        """
+
         self.visibility_dict = visibility_dict
 
     def render_text(self, font: pg.font.Font, text: str, color: pg.Color) -> tuple[pg.Surface, pg.Rect]:
+        """
+        Renders text using the specified font and color, returning the rendered surface
+        and its rectangle. This method creates a graphical representation of the text
+        that can be displayed on the screen.
+
+        Args:
+            font (pg.font.Font): The font to be used for rendering the text.
+            text (str): The text string to be rendered.
+            color (pg.Color): The color of the text.
+
+        Returns:
+            tuple[pg.Surface, pg.Rect]: A tuple containing the rendered text surface
+            and its bounding rectangle.
+        """
+        
         surf = font.render(text, True, color)
         rect = surf.get_rect()
 
         return (surf, rect)
 
     def view_hovered_node_info(self, hovered_node: Optional[Node]):
-        if not self.visibility_dict[Visibility.NODE_INFO_FIELD]:
-            return
+        """
+        Displays information about the currently hovered node if visibility settings
+        allow it. This method checks the visibility of the node information field and,
+        if visible, renders the relevant details of the hovered node on the screen.
 
-        if hovered_node is None:
+        Args:
+            hovered_node (Optional[Node]): The node currently being hovered over, or
+            None if no node is hovered.
+        """
+
+        if not self.visibility_dict[Visibility.NODE_INFO_FIELD] \
+                or hovered_node is None:
             return
 
         x, y = (const.WIDTH - const.X_OFFSET, const.Y_OFFSET)
@@ -44,6 +93,18 @@ class View:
         self._view_ID(x, y, hovered_node)
 
     def view_array(self, array: list[int], hovered_node: Optional[Node]):
+        """
+        Renders the elements of the segment tree's array in the user interface. This 
+        method checks the visibility settings and displays each element with appropriate
+        colors, highlighting the any element that is within the hovered node's boundary
+        if applicable.
+
+        Args:
+            array (list[int]): The list of integers to be displayed.
+            hovered_node (Optional[Node]): The node currently being hovered over, which
+            may affect the display color of the elements.
+        """
+
         if not self.visibility_dict[Visibility.ARRAY_FIELD]:
             return
 
@@ -65,7 +126,20 @@ class View:
                 x = const.X_OFFSET
                 y = rect.bottom + const.LINE_SPACING
 
-    def draw_tree(self, root: Node):
+    def draw_tree(self, root: Node) -> Optional[Node]:
+        """
+        Draws the tree structure starting from the specified root node. This method
+        visually represents the nodes and their connections, highlighting the hovered
+        node and displaying data if visibility settings allow it. Returns the hovered
+        node it found during the drawing process.
+
+        Args:
+            root (Node): The root node of the tree to be drawn.
+
+        Returns:
+            Optional[Node]: The node that is currently hovered over, or None if no node is hovered.
+        """
+
         theme = self.current_theme
         node_outline_clr = theme.NODE_OUTLINE_CLR
         display_data_clr = theme.NODE_DISPLAY_DATA_CLR
@@ -104,6 +178,21 @@ class View:
         return hovered_node
 
     def _view_segment(self, x: int, y: int, hovered_node: Node) -> int:
+        """
+        Displays the segment information for the hovered node. This method renders
+        the low and high values of the hovered node in a formatted manner, using
+        appropriate colors and fonts based on the current theme.
+
+        Args:
+            x (int): The x-coordinate for positioning the segment display.
+            y (int): The y-coordinate for positioning the segment display.
+            hovered_node (Node): The node currently being hovered over, whose segment
+            information will be displayed.
+
+        Returns:
+            int: The bottom coordinate of the rendered segment display.
+        """
+
         theme = self.current_theme
 
         data_clr = theme.NODE_DISPLAY_DATA_CLR
@@ -131,6 +220,17 @@ class View:
         return text_surf_and_rect[0][1].bottom
 
     def _view_ID(self, x: int, y: int, hovered_node: Node):
+        """
+        Displays the ID of the currently hovered node in the user interface. This method
+        renders the ID label and its corresponding value, positioning them according to
+        the specified coordinates and applying the current theme's colors.
+
+        Args:
+            x (int): The x-coordinate for positioning the ID display.
+            y (int): The y-coordinate for positioning the ID display.
+            hovered_node (Node): The node currently being hovered over, whose ID will be displayed.
+        """
+
         theme = self.current_theme
 
         ID_text, ID_rect = self.render_text(self.tree_properties_font, "ID: ", theme.NODE_DISPLAY_DATA_CLR)
@@ -143,6 +243,16 @@ class View:
         window.screen.blit(ID_dat_text, ID_dat_rect)
 
     def _draw_circles(self, node: Node, outline_clr: pg.Color):
+        """
+        Draws filled and outlined circles representing a specified node in the user 
+        interface. This method uses the current theme's colors to render the circles,
+        visually representing the node's position and enhancing its appearance.
+
+        Args:
+            node (Node): The node for which the circles are to be drawn.
+            outline_clr (pg.Color): The color used for the outline of the circles.
+        """
+
         theme = self.current_theme
         pg.draw.circle(window.screen, theme.NODE_FILLINGS_CLR, node.coordinates, const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS)
 
@@ -151,6 +261,15 @@ class View:
             gfxdraw.aacircle(window.screen, *node.coordinates, depth, outline_clr)
 
     def _draw_lines(self, node: Node):
+        """
+        Draws lines connecting the specified node to its children in the user interface.
+        This method visually represents the relationships between nodes in the tree 
+        structure, enhancing the overall clarity of the tree's layout.
+
+        Args:
+            node (Node): The node for which the connecting lines to its children will be drawn.
+        """
+
         theme = self.current_theme
 
         if node.is_leaf():
@@ -173,6 +292,16 @@ class View:
         )
 
     def _draw_node_data(self, node: Node, display_data_clr: pg.Color):
+        """
+        Displays the data value of the specified node in the user interface. This method
+        renders the node's data at the node's coordinates using the specified color, 
+        ensuring that the information is visually accessible.
+
+        Args:
+            node (Node): The node whose data value will be displayed.
+            display_data_clr (pg.Color): The color used for rendering the node's data.
+        """
+
         node_display_data, node_display_data_rect = self.render_text(self.node_data_font, f"{node.data}", display_data_clr)
         node_display_data_rect.center = node.coordinates
         window.screen.blit(node_display_data, node_display_data_rect)

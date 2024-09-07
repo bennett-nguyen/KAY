@@ -2,8 +2,6 @@ import math
 
 from src.preload.function import Function
 
-_lcm = lambda x, y: x * y / math.gcd(x, y)
-
 min_f = Function("min_f", min, -1)
 max_f = Function("max_f", max, -1)
 
@@ -17,7 +15,7 @@ and_f = Function("and_f", lambda x, y: x & y, -1)
 or_f = Function("or_f", lambda x, y: x | y, -1)
 xor_f = Function("xor_f", lambda x, y: x ^ y, -1)
 
-lcm_f = Function("lcm_f", _lcm, -1)
+lcm_f = Function("lcm_f", math.lcm, -1)
 gcd_f = Function("gcd_f", math.gcd, 1)
 
 avg_f = Function("avg_f", lambda x, y: int((x+y)/2), 0)

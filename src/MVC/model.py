@@ -6,7 +6,20 @@ from src.MVC.model_helpers.tree_manager import TreeManager
 from src.preload.system.app_enum import Visibility
 
 class Model:
+    """
+    Manages the application's data and interactions, including theme management and
+    tree structure handling. This class initializes the necessary components for
+    rendering and user interaction, providing methods for zooming and panning the view.
+    """
+
     def __init__(self):
+        """
+        Initializes the model with the necessary components for managing themes and
+        tree structures. This constructor sets up the theme manager, tree manager,
+        visibility settings, and initial positions, ensuring that the application is
+        ready for interaction.
+        """
+
         self.theme_manager = ThemeManager()
         self.tree_manager = TreeManager([1, 3, -2, 8, -7])
 
@@ -32,6 +45,17 @@ class Model:
         self.tree_manager.compute_transformed_coordinates(self.zoom_level)
 
     def zoom(self, y: int):
+        """
+        Adjusts the zoom level of the view based on the input value. This method
+        increases or decreases the zoom level within defined limits and updates the
+        tree's transformed coordinates accordingly.
+
+        Args:
+            y (int): The value indicating the zoom direction (an attribute of
+            pygame.event.Event where event.type == pygame.MOUSEWHEEL); positive
+            values zoom in and negative values zoom out.
+        """
+
         if (y > 0):
             self.zoom_level = min(self.zoom_level+0.1, const.MAX_ZOOM_LEVEL)
         else:
@@ -40,6 +64,12 @@ class Model:
         self.tree_manager.compute_transformed_coordinates(self.zoom_level)
 
     def pan(self):
+        """
+        Handles the panning action based on mouse movement. This method updates
+        the position of the tree in response to mouse drag events, allowing the
+        user to navigate the view by moving the mouse while holding down the left button.
+        """
+
         mouse_pressed = pg.mouse.get_pressed()
 
         if not mouse_pressed[0]:

@@ -8,7 +8,23 @@ from src.preload.function import Function
 from src.preload.exports.segment_tree_functions import exported_functions as st_exported_functions
 
 class TreeManager:
+    """
+    Manages the operations and structure of a tree, including loading functions,
+    generating node positions, and manipulating tree coordinates. This class
+    provides methods to switch functions, move the tree, and compute coordinates
+    for rendering.
+    """
     def __init__(self, data: list[int]):
+        """
+        Initializes the TreeManager with the provided data and sets up the available
+        functions. This constructor loads functions into the manager and initializes
+        the segment tree with the specified data and a default function.
+
+        Args:
+            data (list[int]): A list of integers representing the data to be managed
+            by the segment tree.
+        """
+
         self.available_functions: dict[str, Function] = {}
         self.load_functions(st_exported_functions)
 
@@ -18,17 +34,38 @@ class TreeManager:
     def generate_node_position(self, zoom_level: float):
         """Generate the position of nodes in a tree structure.
 
-        This function computes the preliminary x-coordinates for each node starting from the root and then calculates the final coordinates based on those preliminary values. It ensures that the nodes are positioned correctly for rendering in a visual representation of the tree.
+        This function computes the preliminary x-coordinates for each node starting
+        from the root and then calculates the final coordinates based on those 
+        preliminary values. It ensures that the nodes are positioned correctly for
+        rendering in a visual representation of the tree.
         """
         self._compute_prelim_x(self.segment_tree.root)
         self._compute_final_coordinates(self.segment_tree.root, 0)
         self.compute_transformed_coordinates(zoom_level)
 
     def switch_function(self, name: str):
+        """
+        Switches the current function to the specified function by name. This method
+        updates the current function and applies it to the segment tree.
+
+        Args:
+            name (str): The name of the function to switch to.
+        """
         self.current_function = self.available_functions[name]
         self.segment_tree.switch_function(self.current_function)
 
     def load_functions(self, exported_functions: list[Function]):
+        """
+        Loads a list of functions into the available functions dictionary. If a 
+        function already exists, it skips adding it and prints a message indicating
+        the function was skipped.
+
+        Args:
+            exported_functions (list[Function]): A list of Function objects to be loaded.
+
+        Returns:
+            None
+        """
         for function in exported_functions:
             if function in self.available_functions:
                 print(f"Function <{function.name}> already existed! Skipping...")
@@ -39,7 +76,9 @@ class TreeManager:
     def move_tree_by_delta_pos(self, delta_x: int, delta_y: int):
         """Move a tree and its children by specified delta values.
 
-        This function adjusts the position of the root node of a tree by adding the specified delta values to its x and y coordinates. It then propagates these changes to all child nodes, ensuring that the entire tree is moved consistently.
+        This function adjusts the position of the root node of a tree by adding the
+        specified delta values to its x and y coordinates. It then propagates these 
+        changes to all child nodes, ensuring that the entire tree is moved consistently.
 
         Args:
             delta_x (int): The change in the x-coordinate.
@@ -61,7 +100,10 @@ class TreeManager:
     def compute_transformed_coordinates(self, zoom_level: float):
         """Compute and update the transformed coordinates of all nodes in the tree.
 
-        This function iterates through each node in the segment tree, applying a zoom factor to the original coordinates and adjusting them with any specified offsets. The updated coordinates are stored back in the node, allowing for accurate rendering based on the current zoom level.
+        This function iterates through each node in the segment tree, applying a 
+        zoom factor to the original coordinates and adjusting them with any specified
+        offsets. The updated coordinates are stored back in the node, allowing for 
+        accurate rendering based on the current zoom level.
 
         Args:
             zoom_level (float): The factor by which to scale the original coordinates of the nodes.
@@ -85,7 +127,10 @@ class TreeManager:
     def _compute_final_coordinates(self, node: Node, mod_sum: float):
         """Compute the final coordinates for a node in a tree structure.
 
-        This function updates the final x and y coordinates of a node based on its preliminary x value and depth in the tree. It also propagates any modifications to the coordinates down to the node's children, ensuring that the entire tree is positioned correctly for rendering.
+        This function updates the final x and y coordinates of a node based on its
+        preliminary x value and depth in the tree. It also propagates any 
+        modifications to the coordinates down to the node's children, ensuring that
+        the entire tree is positioned correctly for rendering.
 
         Args:
             node (Node): The node for which to compute the final coordinates.
@@ -107,7 +152,10 @@ class TreeManager:
     def _compute_prelim_x(self, node: Node):
         """Compute the preliminary x-coordinate for a node in a tree.
 
-        This function calculates the preliminary x-coordinate for a given node based on its position relative to its siblings and children. It ensures that the x-coordinates are set correctly for rendering the tree structure visually, taking into account the distances between nodes.
+        This function calculates the preliminary x-coordinate for a given node based
+        on its position relative to its siblings and children. It ensures that the 
+        x-coordinates are set correctly for rendering the tree structure visually, 
+        taking into account the distances between nodes.
 
         Args:
             node (Node): The node for which to compute the preliminary x-coordinate.
@@ -141,7 +189,10 @@ class TreeManager:
     def _check_for_conflicts(self, node: Node):
         """Check and resolve conflicts in node positioning within the tree.
 
-        This function evaluates the positioning of a node relative to its previous sibling to ensure that the minimum required distance between them is maintained. If a conflict is detected, it adjusts the node's preliminary x-coordinate and modifier accordingly to resolve the overlap.
+        This function evaluates the positioning of a node relative to its previous
+        sibling to ensure that the minimum required distance between them is 
+        maintained. If a conflict is detected, it adjusts the node's preliminary
+        x-coordinate and modifier accordingly to resolve the overlap.
 
         Args:
             node (Node): The node to check for positioning conflicts.
@@ -178,7 +229,10 @@ class TreeManager:
     def _get_contour(self, node: Node, mod_sum: float, values: dict[int, float], side: Contour):
         """Retrieve the contour values for a node in the tree.
 
-        This function populates a dictionary with the contour values of a node based on its position and depth, either from the left or right side. It recursively processes the node's children to ensure that all relevant contour values are captured, adjusting for any modifiers as necessary.
+        This function populates a dictionary with the contour values of a node based
+        on its position and depth, either from the left or right side. It 
+        recursively processes the node's children to ensure that all relevant 
+        contour values are captured, adjusting for any modifiers as necessary.
 
         Args:
             node (Node): The node for which to compute contour values.
