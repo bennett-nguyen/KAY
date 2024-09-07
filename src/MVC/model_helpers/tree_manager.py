@@ -15,13 +15,14 @@ class TreeManager:
         self.current_function: Function = self.available_functions["add_f"]
         self.segment_tree = SegmentTree(data, self.current_function)
 
-    def generate_node_position(self):
+    def generate_node_position(self, zoom_level: float):
         """Generate the position of nodes in a tree structure.
 
         This function computes the preliminary x-coordinates for each node starting from the root and then calculates the final coordinates based on those preliminary values. It ensures that the nodes are positioned correctly for rendering in a visual representation of the tree.
         """
         self._compute_prelim_x(self.segment_tree.root)
         self._compute_final_coordinates(self.segment_tree.root, 0)
+        self.compute_transformed_coordinates(zoom_level)
 
     def switch_function(self, name: str):
         self.current_function = self.available_functions[name]
@@ -48,8 +49,8 @@ class TreeManager:
 
         while queue:
             node = queue.popleft()
-            node.x += delta_x
-            node.y += delta_y
+            node.x_offset += delta_x
+            node.y_offset += delta_y
 
             if node.is_leaf():
                 continue
@@ -57,6 +58,30 @@ class TreeManager:
             for child in node.children:
                 queue.append(child)
 
+    def compute_transformed_coordinates(self, zoom_level: float):
+        """Compute and update the transformed coordinates of all nodes in the tree.
+
+        This function iterates through each node in the segment tree, applying a zoom factor to the original coordinates and adjusting them with any specified offsets. The updated coordinates are stored back in the node, allowing for accurate rendering based on the current zoom level.
+
+        Args:
+            zoom_level (float): The factor by which to scale the original coordinates of the nodes.
+
+        Returns:
+            None
+        """
+        queue: deque[Node] = deque([self.segment_tree.root])
+
+        while queue:
+            node = queue.popleft()
+            node.x = int(node.original_x * zoom_level) + node.x_offset
+            node.y = int(node.original_y * zoom_level) + node.y_offset
+
+            if node.is_leaf():
+                continue
+
+            for child in node.children:
+                queue.append(child)
+        
     def _compute_final_coordinates(self, node: Node, mod_sum: float):
         """Compute the final coordinates for a node in a tree structure.
 
@@ -70,8 +95,8 @@ class TreeManager:
         mod_sum += node.modifier
         node.modifier = 0
 
-        node.x = int(node.preliminary_x * const.SCALE)
-        node.y = int((node.depth + const.DEPTH_OFFSET) * const.VERTICAL_SCALE)
+        node.original_x = int(node.preliminary_x * const.SCALE)
+        node.original_y = int((node.depth + const.DEPTH_OFFSET) * const.VERTICAL_SCALE)
 
         if node.is_leaf():
             return

@@ -9,7 +9,10 @@ class Node:
         "low", "high",
         "x", "y",
         "preliminary_x", "modifier", "depth",
-        "data", "ID"
+        "data", "ID",
+        "x_offset", "y_offset",
+        "original_x", "original_y",
+        "x", "y"
     )
 
     def __init__(self):
@@ -20,6 +23,12 @@ class Node:
         self.data: int = 0
         self.low: int = 0
         self.high: int = 0
+
+        self.original_x: int = 0
+        self.original_y: int = 0
+
+        self.x_offset: int = 0
+        self.y_offset: int = 0
 
         self.x: int = 0
         self.y: int = 0

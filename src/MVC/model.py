@@ -22,11 +22,22 @@ class Model:
         self.previous_mouse_pos = (0, 0)
         self.current_mouse_pos = (0, 0)
 
-        self.tree_manager.generate_node_position()
+        self.zoom_level: float = 1.0
+
+        self.tree_manager.generate_node_position(self.zoom_level)
 
         # center the root node by the width of the screen
         delta_x = const.HALF_WIDTH - self.tree_manager.segment_tree.root.x
         self.tree_manager.move_tree_by_delta_pos(delta_x, 0)
+        self.tree_manager.compute_transformed_coordinates(self.zoom_level)
+
+    def zoom(self, y: int):
+        if (y > 0):
+            self.zoom_level = min(self.zoom_level+0.1, const.MAX_ZOOM_LEVEL)
+        else:
+            self.zoom_level = max(self.zoom_level-0.1, const.MIN_ZOOM_LEVEL)
+
+        self.tree_manager.compute_transformed_coordinates(self.zoom_level)
 
     def pan(self):
         mouse_pressed = pg.mouse.get_pressed()
@@ -45,3 +56,4 @@ class Model:
 
         self.tree_manager.move_tree_by_delta_pos(delta_x, delta_y)
         self.previous_mouse_pos = self.current_mouse_pos
+        self.tree_manager.compute_transformed_coordinates(self.zoom_level)

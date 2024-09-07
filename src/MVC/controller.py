@@ -14,6 +14,10 @@ class Controller:
     
     def process_input(self, events: list[pg.event.Event], dt_time: float):
         self.model.pan()
+        
+        for event in events:
+            if event.type == pg.MOUSEWHEEL:
+                self.model.zoom(event.y)
 
     def update_view(self):
         tree_manager = self.model.tree_manager

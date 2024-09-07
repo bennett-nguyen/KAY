@@ -19,6 +19,9 @@ LINE_SPACING: int = 0
 X_OFFSET: int = 30
 Y_OFFSET: int = 20
 
+# Zooming
+MIN_ZOOM_LEVEL: float = 0.1
+MAX_ZOOM_LEVEL: float = 2.0
 
 # - RT's algo constants
 # -- Scalar
