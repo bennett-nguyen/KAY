@@ -12,7 +12,7 @@ from src.preload.system.app_enum import Visibility
 class Model:
     def __init__(self):
         self.theme_manager = ThemeManager()
-        self.tree_manager = TreeManager([1, 3, -2, 8, -7], 0, lambda x, y: x + y)
+        self.tree_manager = TreeManager([1, 3, -2, 8, -7])
 
         self.visibility_dict: dict[Visibility, bool] = {
             Visibility.ARRAY_FIELD: True,

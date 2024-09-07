@@ -1,25 +1,21 @@
-from typing import Callable, List
-
 from src.preload.tree.node import Node
-
+from src.preload.function import Function
 
 class SegmentTree:
-    def __init__(self, array: List[int], invalid_query_val: int, function: Callable[[int, int], int]):
-        """Initialize a segment tree with the given array and query function.
+    def __init__(self, array: list[int], function_obj: Function):
+        """Initialize a segment tree with the given array and function object.
 
-        This constructor sets up the segment tree by storing the input array, defining the function used for queries, and initializing the root node. It also builds the segment tree structure based on the provided array.
+        This constructor sets up the segment tree by storing the input array and defining the function used for queries. It initializes the root node and builds the segment tree structure based on the provided array.
 
         Args:
-            array (List[int]): The array of integers to be represented in the segment tree.
-            invalid_query_val (int): The value to return for invalid queries.
-            function (Callable[[int, int], int]): The function used to combine values in the segment tree.
-
+            array (list[int]): The array of integers to be represented in the segment tree.
+            function_obj (Function): An object containing the function used for combining values and the value to return for invalid queries.
         """
         self.array = array
         self.root = Node()
 
-        self._fn = function
-        self._INVALID_QUERY = invalid_query_val
+        self._fn = function_obj.fn
+        self._INVALID_QUERY = function_obj.invalid_query_val
         self._build(self.root, 0, self.array_length-1)
 
     @property
@@ -32,6 +28,10 @@ class SegmentTree:
             int: The length of the array.
         """
         return len(self.array)
+
+    def switch_function(self, function_obj: Function):
+        self._fn = function_obj._fn
+        self._INVALID_QUERY = function_obj.invalid_query_val
 
     def query(self, q_low: int, q_high: int) -> int:
         """Retrieve the result of a query on the segment tree for a specified range.

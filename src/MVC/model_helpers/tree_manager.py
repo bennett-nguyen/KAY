@@ -1,15 +1,19 @@
 from collections import deque
 
-from typing import Callable
 from src.preload.tree.segment_tree import SegmentTree
 from src.preload.tree.node import Node
 import src.preload.system.constants as const
 from src.preload.system.app_enum import Contour
-
+from src.preload.function import Function
+from src.preload.exports.segment_tree_functions import exported_functions as st_exported_functions
 
 class TreeManager:
-    def __init__(self, data: list[int], invalid_query_val: int, function: Callable[[int, int], int]):
-        self.segment_tree = SegmentTree(data, invalid_query_val, function)
+    def __init__(self, data: list[int]):
+        self.available_functions: dict[str, Function] = {}
+        self.load_functions(st_exported_functions)
+
+        self.current_function: Function = self.available_functions["add_f"]
+        self.segment_tree = SegmentTree(data, self.current_function)
 
     def generate_node_position(self):
         """Generate the position of nodes in a tree structure.
@@ -18,6 +22,18 @@ class TreeManager:
         """
         self._compute_prelim_x(self.segment_tree.root)
         self._compute_final_coordinates(self.segment_tree.root, 0)
+
+    def switch_function(self, name: str):
+        self.current_function = self.available_functions[name]
+        self.segment_tree.switch_function(self.current_function)
+
+    def load_functions(self, exported_functions: list[Function]):
+        for function in exported_functions:
+            if function in self.available_functions:
+                print(f"Function <{function.name}> already existed! Skipping...")
+                continue
+
+            self.available_functions[function.name] = function
 
     def move_tree_by_delta_pos(self, delta_x: int, delta_y: int):
         """Move a tree and its children by specified delta values.

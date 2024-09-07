@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional
 
 import src.preload.system.constants as const
 
@@ -43,7 +43,7 @@ class Node:
         self.high = high
 
     @property
-    def children(self) -> Tuple['Node', 'Node']:
+    def children(self) -> tuple['Node', 'Node']:
         return (self.left, self.right)
 
     @property
@@ -52,7 +52,7 @@ class Node:
             else self.parent.left
 
     @property
-    def coordinates(self) -> Tuple[int, int]:
+    def coordinates(self) -> tuple[int, int]:
         return (self.x, self.y)
 
     def is_leaf(self) -> bool:
