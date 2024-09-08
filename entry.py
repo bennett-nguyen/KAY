@@ -2,9 +2,9 @@ from sys import exit
 
 import pygame as pg
 
-import src.preload.system.window as window
-import src.preload.system.constants as const
-from src.MVC.controller import Controller
+from src.core import window
+from src.core.utils import const
+from src.mvc.controller import Controller
 
 controller = Controller()
 model = controller.model
@@ -20,7 +20,7 @@ while True:
         if event.type == pg.QUIT:
             pg.quit()
             exit(0)
-        
+
         if event.type == pg.WINDOWFOCUSLOST:
             focus_gained = False
         elif event.type == pg.WINDOWFOCUSGAINED:
@@ -31,6 +31,7 @@ while True:
     else:
         dt_time = window.clock.tick(const.IDLE_FPS) / 1000.0
 
-    controller.process_input(events, dt_time)
-    controller.update_view()
+    controller.process_input(events)
+    controller.update_view(dt_time)
+
     pg.display.update()

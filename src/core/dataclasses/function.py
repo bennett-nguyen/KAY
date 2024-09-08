@@ -1,7 +1,7 @@
 from typing import Callable
 from dataclasses import dataclass
 
-@dataclass(init=True, slots=True, unsafe_hash=True, frozen=True)
+@dataclass(slots=True, unsafe_hash=True, frozen=True)
 class Function:
     """
     Represents a function that can be used for making segment tree queries. This 

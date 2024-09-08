@@ -1,0 +1,26 @@
+{
+    "#command-box": {
+        "colours": {
+            "normal_border": "#2c2e31",
+            "dark_bg": "#2c2e31",
+            "normal_text": "#e6e5dd",
+            "selected_bg": "#646669",
+            "selected_text": "#e2ba1e"
+        },
+
+        "font": {
+            "name": "Jetbrains Mono",
+            "size": 20,
+            "regular_path": "fonts/JetBrainsMonoNL-Regular.ttf",
+            "bold_path": "fonts/JetBrainsMono-Bold.ttf",
+            "italic_path": "fonts/JetBrainsMonoNL-LightItalic.ttf",
+            "bold_italic_path": "fonts/JetBrainsMono-BoldItalic.ttf"
+        },
+
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": 10,
+            "padding": "10,2"
+        }
+    }
+}

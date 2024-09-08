@@ -4,12 +4,10 @@ from collections import deque
 import pygame as pg
 from pygame import gfxdraw
 
-import src.preload.system.window as window
-import src.preload.system.constants as const
-from src.preload.tree.node import Node
-from src.preload.ui.theme import Theme
-from src.preload.system.app_enum import Visibility
-
+from src.core import window
+from src.core.utils import VisibilityEnum, const
+from src.core.tree_utils import Node
+from src.core.dataclasses import Theme
 
 class View:
     """
@@ -21,9 +19,9 @@ class View:
 
     def __init__(self):
         self.current_theme: Theme
-        self.visibility_dict: dict[Visibility, bool]
-        self.node_data_font = pg.font.Font("./fonts/JetBrainsMono-Medium.ttf", 27)
-        self.tree_properties_font = pg.font.Font("./fonts/JetBrainsMono-Medium.ttf", 40)
+        self.visibility_dict: dict[VisibilityEnum, bool]
+        self.node_data_font = pg.font.Font("./fonts/JetBrainsMonoNL-Regular.ttf", 27)
+        self.tree_properties_font = pg.font.Font("./fonts/JetBrainsMonoNL-Regular.ttf", 40)
 
     def request_theme(self, theme: Theme):
         """
@@ -37,14 +35,14 @@ class View:
 
         self.current_theme = theme
 
-    def request_visibility(self, visibility_dict: dict[Visibility, bool]):
+    def request_visibility(self, visibility_dict: dict[VisibilityEnum, bool]):
         """
         Requests to update the visibility settings of the view. This method sets the
         visibility of various UI elements based on the provided dictionary, allowing
         for dynamic control over what is displayed in the user interface.
 
         Args:
-            visibility_dict (dict[Visibility, bool]): A dictionary that maps visibility
+            visibility_dict (dict[VisibilityEnum, bool]): A dictionary that maps visibility
             fields to their corresponding visibility states.
         """
 
@@ -82,7 +80,7 @@ class View:
             None if no node is hovered.
         """
 
-        if not self.visibility_dict[Visibility.NODE_INFO_FIELD] \
+        if not self.visibility_dict[VisibilityEnum.NODE_INFO_FIELD] \
                 or hovered_node is None:
             return
 
@@ -105,7 +103,7 @@ class View:
             may affect the display color of the elements.
         """
 
-        if not self.visibility_dict[Visibility.ARRAY_FIELD]:
+        if not self.visibility_dict[VisibilityEnum.ARRAY_FIELD]:
             return
 
         x, y = (const.X_OFFSET, const.Y_OFFSET)
@@ -166,7 +164,7 @@ class View:
             self._draw_lines(node)
             self._draw_circles(node, node_outline_clr)
 
-            if self.visibility_dict[Visibility.NODE_DATA_FIELD]:
+            if self.visibility_dict[VisibilityEnum.NODE_DATA_FIELD]:
                 self._draw_node_data(node, display_data_clr)
 
             if node.is_leaf():

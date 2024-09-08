@@ -1,8 +1,12 @@
 import pygame as pg
+
+from typing import Optional
 from dataclasses import dataclass
 
 @dataclass(slots=True, frozen=True)
 class Theme:
+    CMD_UI_FILE_PATH: Optional[str]
+
     NAME: str
 
     # Background

@@ -1,9 +1,8 @@
 import pygame as pg
 
-import src.preload.system.constants as const
-from src.MVC.model_helpers.theme_manager import ThemeManager
-from src.MVC.model_helpers.tree_manager import TreeManager
-from src.preload.system.app_enum import Visibility
+from src.core.utils import const, VisibilityEnum
+from src.mvc.model_helpers import ThemeManager, TreeManager, CMDLineInterface
+
 
 class Model:
     """
@@ -22,15 +21,17 @@ class Model:
 
         self.theme_manager = ThemeManager()
         self.tree_manager = TreeManager([1, 3, -2, 8, -7])
+        self.cmdline_interface = CMDLineInterface()
 
-        self.visibility_dict: dict[Visibility, bool] = {
-            Visibility.ARRAY_FIELD: True,
-            Visibility.NODE_DATA_FIELD: True,
-            Visibility.NODE_INFO_FIELD: True,
+        self.visibility_dict: dict[VisibilityEnum, bool] = {
+            VisibilityEnum.ARRAY_FIELD: True,
+            VisibilityEnum.NODE_DATA_FIELD: True,
+            VisibilityEnum.NODE_INFO_FIELD: True,
         }
 
         self.theme_manager.load_themes()
-        self.theme_manager.set_theme("Dark (built-in)")
+        self.theme_manager.set_theme("Seria Dark")
+        self.cmdline_interface.set_theme(self.theme_manager.current_theme)
 
         self.previous_mouse_pos = (0, 0)
         self.current_mouse_pos = (0, 0)
@@ -51,7 +52,7 @@ class Model:
         tree's transformed coordinates accordingly.
 
         Args:
-            y (int): The value indicating the zoom direction (an attribute of
+            y (int): The value indicating the zoom direction - an attribute of
             pygame.event.Event where event.type == pygame.MOUSEWHEEL); positive
             values zoom in and negative values zoom out.
         """

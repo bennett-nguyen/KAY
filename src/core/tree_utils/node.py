@@ -1,7 +1,6 @@
+from src.core.utils import const
+
 from typing import Optional
-
-import src.preload.system.constants as const
-
 
 class Node:
     """

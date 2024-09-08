@@ -1,11 +1,9 @@
 from collections import deque
 
-from src.preload.tree.segment_tree import SegmentTree
-from src.preload.tree.node import Node
-import src.preload.system.constants as const
-from src.preload.system.app_enum import Contour
-from src.preload.function import Function
-from src.preload.exports.segment_tree_functions import exported_functions as st_exported_functions
+from src.core.utils import const, ContourEnum
+from src.core.tree_utils import Node, SegmentTree
+from src.core.dataclasses import Function
+from src.exports import st_exported_functions
 
 class TreeManager:
     """
@@ -201,11 +199,11 @@ class TreeManager:
         shift_value: float = 0.0
 
         node_contour: dict[int, float] = {}
-        self._get_contour(node, 0, node_contour, Contour.LEFT)
+        self._get_contour(node, 0, node_contour, ContourEnum.LEFT)
 
         sibling = node.previous_sibling
         sibling_contour: dict[int, float] = {}
-        self._get_contour(sibling, 0, sibling_contour, Contour.RIGHT)
+        self._get_contour(sibling, 0, sibling_contour, ContourEnum.RIGHT)
 
         for level in range(
             node.depth+1,
@@ -226,7 +224,7 @@ class TreeManager:
         node.preliminary_x += shift_value
         node.modifier += shift_value
 
-    def _get_contour(self, node: Node, mod_sum: float, values: dict[int, float], side: Contour):
+    def _get_contour(self, node: Node, mod_sum: float, values: dict[int, float], side: ContourEnum):
         """Retrieve the contour values for a node in the tree.
 
         This function populates a dictionary with the contour values of a node based
@@ -238,19 +236,19 @@ class TreeManager:
             node (Node): The node for which to compute contour values.
             mod_sum (float): The cumulative modifier to adjust the contour values.
             values (dict[int, float]): A dictionary to store the contour values indexed by depth.
-            side (Contour): Specifies whether to compute the left or right contour.
+            side (ContourEnum): Specifies whether to compute the left or right contour.
 
         Raises:
             ValueError: If 'side' is not one of the accepted values (left or right).
         """
 
-        if side not in [Contour.LEFT, Contour.RIGHT]:
+        if side not in [ContourEnum.LEFT, ContourEnum.RIGHT]:
             raise ValueError("'side' only accepts either 2 values: 'left' or 'right'.")
 
         if node.depth not in values:
             values[node.depth] = node.preliminary_x + mod_sum
         else:
-            fn = min if side == Contour.LEFT else max
+            fn = min if side == ContourEnum.LEFT else max
             values[node.depth] = fn(values[node.depth], node.preliminary_x + mod_sum)
 
         mod_sum += node.modifier

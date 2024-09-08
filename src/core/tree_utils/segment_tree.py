@@ -1,5 +1,5 @@
-from src.preload.tree.node import Node
-from src.preload.function import Function
+from src.core.tree_utils import Node
+from src.core.dataclasses import Function 
 
 class SegmentTree:
     """

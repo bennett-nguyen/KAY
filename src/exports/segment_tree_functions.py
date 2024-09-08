@@ -1,6 +1,6 @@
 import math
 
-from src.preload.function import Function
+from src.core.dataclasses import Function
 
 min_f = Function("min_f", min, -1)
 max_f = Function("max_f", max, -1)
@@ -20,7 +20,7 @@ gcd_f = Function("gcd_f", math.gcd, 1)
 
 avg_f = Function("avg_f", lambda x, y: int((x+y)/2), 0)
 
-exported_functions: list[Function] = [
+st_exported_functions: list[Function] = [
     min_f,
     max_f,
 

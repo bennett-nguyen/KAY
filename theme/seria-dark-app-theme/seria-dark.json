@@ -1,0 +1,15 @@
+{
+    "Name": "Seria Dark",
+
+    "Palette": {
+        "background": "#323437",
+        "node_outline": "#e6e5dd",
+        "node_outline_highlight": "#e2ba1e",
+        "node_fillings": "#323437",
+        "node_display_data": "#e6e5dd",
+        "node_display_data_highlight": "#e2ba1e",
+        "line": "#e6e5dd"
+    },
+
+    "use_default_cmd_ui": false
+}

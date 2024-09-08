@@ -2,8 +2,7 @@ import pygame as pg
 
 from pygame.locals import *
 
-import src.preload.system.constants as const
-
+from src.core.utils import const
 
 pg.init()
 pg.event.set_allowed(

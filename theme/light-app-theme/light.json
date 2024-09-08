@@ -1,5 +1,5 @@
 {
-    "Name": "Light (built-in)",
+    "Name": "Light",
 
     "Palette": {
         "background": [255, 255, 255],
@@ -9,5 +9,7 @@
         "node_display_data": [0, 0, 0],
         "node_display_data_highlight": [255, 0, 0],
         "line": [0, 0, 0]
-    }
+    },
+
+    "use_default_cmd_ui": true
 }

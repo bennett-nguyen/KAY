@@ -1,7 +1,7 @@
 from enum import Enum, unique, auto
 
 @unique
-class Contour(Enum):
+class ContourEnum(Enum):
     """
     Enumerates the possible sides for contour representation in a
     tree structure. This class defines two constants, LEFT and RIGHT,
@@ -15,7 +15,7 @@ class Contour(Enum):
     RIGHT = "right"
 
 @unique
-class Visibility(Enum):
+class VisibilityEnum(Enum):
     """
     Enumerates the different visibility fields used in the application.
     This class defines constants for various fields that can be displayed or hidden.
@@ -28,3 +28,17 @@ class Visibility(Enum):
     ARRAY_FIELD = auto()
     NODE_DATA_FIELD = auto()
     NODE_INFO_FIELD = auto()
+
+@unique
+class JSONThemeFieldsEnum(Enum):
+    NAME = "Name"
+    PALETTE = "Palette"
+    USE_DEFAULT_CMD_UI = "use_default_cmd_ui"
+
+    BACKGROUND = "background"
+    NODE_OUTLINE = "node_outline"
+    NODE_OUTLINE_HIGHLIGHT = "node_outline_highlight"
+    NODE_FILLINGS = "node_fillings"
+    NODE_DISPLAY_DATA = "node_display_data"
+    NODE_DISPLAY_DATA_HIGHLIGHT = "node_display_data_highlight"
+    LINE = "line"
