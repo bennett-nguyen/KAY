@@ -9,7 +9,7 @@ The tree is drawn using the modification version of the Reingold-Tilford algorit
 Requirements:
 - Python 3.10+
 - Pygame Community Edition 2.1.4+
-- pygame_gui 0.6.9+
+- pygame-gui 0.6.9+
 
 Clone this repository or download the code as `ZIP`, run the `entry.py` in the project directory.
 # License

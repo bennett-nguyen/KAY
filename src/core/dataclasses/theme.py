@@ -9,7 +9,7 @@ class Theme:
 
     NAME: str
 
-    # Background
+    # Background 
     BACKGROUND_CLR: pg.Color
 
     # Node
