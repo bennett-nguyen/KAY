@@ -12,6 +12,7 @@ class TreeManager:
     provides methods to switch functions, move the tree, and compute coordinates
     for rendering.
     """
+
     def __init__(self, data: list[int]):
         """
         Initializes the TreeManager with the provided data and sets up the available
@@ -37,6 +38,7 @@ class TreeManager:
         preliminary values. It ensures that the nodes are positioned correctly for
         rendering in a visual representation of the tree.
         """
+
         self._compute_prelim_x(self.segment_tree.root)
         self._compute_final_coordinates(self.segment_tree.root, 0)
         self.compute_transformed_coordinates(zoom_level)
@@ -49,6 +51,7 @@ class TreeManager:
         Args:
             name (str): The name of the function to switch to.
         """
+
         self.current_function = self.available_functions[name]
         self.segment_tree.switch_function(self.current_function)
 
@@ -64,6 +67,7 @@ class TreeManager:
         Returns:
             None
         """
+
         for function in exported_functions:
             if function in self.available_functions:
                 print(f"Function <{function.name}> already existed! Skipping...")
@@ -82,6 +86,7 @@ class TreeManager:
             delta_x (int): The change in the x-coordinate.
             delta_y (int): The change in the y-coordinate.
         """
+
         queue: deque[Node] = deque([self.segment_tree.root])
 
         while queue:
@@ -109,6 +114,7 @@ class TreeManager:
         Returns:
             None
         """
+
         queue: deque[Node] = deque([self.segment_tree.root])
 
         while queue:
@@ -134,6 +140,7 @@ class TreeManager:
             node (Node): The node for which to compute the final coordinates.
             mod_sum (float): The cumulative modifier to adjust the x-coordinate.
         """
+
         node.preliminary_x += mod_sum
         mod_sum += node.modifier
         node.modifier = 0
@@ -158,6 +165,7 @@ class TreeManager:
         Args:
             node (Node): The node for which to compute the preliminary x-coordinate.
         """
+
         if node.is_leaf():
             if node.is_left_node():
                 node.preliminary_x = 0
@@ -195,6 +203,7 @@ class TreeManager:
         Args:
             node (Node): The node to check for positioning conflicts.
         """
+
         min_distance: float = const.TREE_DISTANCE + const.NODE_DISTANCE
         shift_value: float = 0.0
 

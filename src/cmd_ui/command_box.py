@@ -6,12 +6,18 @@ from src.core import pygame_window
 from src.core.utils import const
 
 class CommandBox:
-    def __init__(self, manager: pygame_gui.core.interfaces.IUIManagerInterface):
-        self.relative_rect = pg.Rect(0, 0, pygame_window.window_width - const.COMMAND_BOX_ANCHOR_OFFSET * 2, 50)
-        self.relative_rect.bottomleft = (const.COMMAND_BOX_ANCHOR_OFFSET, -const.COMMAND_BOX_ANCHOR_OFFSET)
+    """
+    Represents a command input box for user interactions within the
+    application. This class initializes the command box UI element and manages
+    its dimensions based on window size changes.
+    """
 
-        self.command_box = pygame_gui.elements.UITextEntryLine(
-            relative_rect=self.relative_rect,
+    def __init__(self, manager: pygame_gui.core.interfaces.IUIManagerInterface):
+        relative_rect = pg.Rect(0, 0, pygame_window.window_width - const.COMMAND_BOX_ANCHOR_OFFSET * 2, 50)
+        relative_rect.bottomleft = (const.COMMAND_BOX_ANCHOR_OFFSET, -const.COMMAND_BOX_ANCHOR_OFFSET)
+
+        self.UI = pygame_gui.elements.UITextEntryLine(
+            relative_rect=relative_rect,
             manager=manager,
             anchors={
                 "left": "left",
@@ -21,7 +27,11 @@ class CommandBox:
             object_id=const.COMMAND_BOX_OBJECT_ID
         )
 
-        self.command_box.show()
+        self.UI.show()
 
     def on_window_size_changed(self):
-        self.command_box.set_dimensions((pygame_window.window_width - const.COMMAND_BOX_ANCHOR_OFFSET * 2, 50))
+        """
+        Updates the dimensions of the command box when the window size changes. 
+        """
+    
+        self.UI.set_dimensions((pygame_window.window_width - const.COMMAND_BOX_ANCHOR_OFFSET * 2, const.COMMAND_BOX_HEIGHT))

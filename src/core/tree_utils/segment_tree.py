@@ -20,6 +20,7 @@ class SegmentTree:
             function_obj (Function): An object containing the function used for 
             combining values and the value to return for invalid queries.
         """
+
         self.array = array
         self.root = Node()
 
@@ -38,6 +39,7 @@ class SegmentTree:
         Returns:
             int: The length of the array.
         """
+
         return len(self.array)
 
     def switch_function(self, function_obj: Function):
@@ -69,6 +71,7 @@ class SegmentTree:
         Returns:
             int: The result of the query for the specified range.
         """
+
         return self._query(q_low, q_high, self.root, 0, self.array_length-1)
 
     def update(self, pos: int, val: int) -> None:
@@ -85,6 +88,7 @@ class SegmentTree:
         Returns:
             None
         """
+
         self.array[pos] = val
         self._update(pos, val, self.root, 0, self.array_length-1)
 
@@ -95,6 +99,7 @@ class SegmentTree:
         the tree structure based on the current array. It ensures that the segment 
         tree is updated to reflect any changes in the underlying data.
         """
+
         self.root = Node()
         self._build(self.root, 0, self.array_length-1)
 
@@ -112,6 +117,7 @@ class SegmentTree:
             high (int): The upper index of the range for the current node.
             ID (int, optional): The identifier for the current node. Defaults to 1.
         """
+
         if self.array_length == 0:
             return
 
@@ -144,6 +150,7 @@ class SegmentTree:
             low (int): The lower index of the range for the current node.
             high (int): The upper index of the range for the current node.
         """
+
         if low == high:
             node.data = val
             return
@@ -172,6 +179,7 @@ class SegmentTree:
             low (int): The lower index of the range for the current node.
             high (int): The upper index of the range for the current node.
         """
+
         if self._is_query_invalid(q_low, q_high, low, high):
             return self._INVALID_QUERY
         if self._is_query_within_range(q_low, q_high, low, high):
@@ -200,6 +208,7 @@ class SegmentTree:
         Returns:
             bool: True if the query range is invalid, otherwise False.
         """
+
         return low > high or low > q_high or high < q_low
 
     def _is_query_within_range(self, q_low: int, q_high: int, low: int, high: int) -> bool:
@@ -219,4 +228,5 @@ class SegmentTree:
         Returns:
             bool: True if the current range is within the query range, otherwise False.
         """
+
         return q_low <= low and high <= q_high

@@ -43,6 +43,7 @@ CMD_THEME_FILE: str = "theme/cmdline_ui-DO-NOT-EDIT.json"
 # -- Command box
 COMMAND_BOX_OBJECT_ID = "#command-box"
 COMMAND_BOX_ANCHOR_OFFSET = 20
+COMMAND_BOX_HEIGHT = 50
 
 # Links
 GITHUB_LINK: WebLink = WebLink("https://github.com/bennett-nguyen/KAY")

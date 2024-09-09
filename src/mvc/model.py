@@ -6,12 +6,6 @@ from src.mvc.model_helpers import ThemeManager, TreeManager, CMDLineInterface
 
 
 class Model:
-    """
-    Manages the application's data and interactions, including theme management and
-    tree structure handling. This class initializes the necessary components for
-    rendering and user interaction, providing methods for zooming and panning the view.
-    """
-
     def __init__(self):
         """
         Initializes the model with the necessary components for managing themes and
@@ -89,6 +83,12 @@ class Model:
         self.tree_manager.move_tree_by_delta_pos(delta_x, delta_y)
         self.previous_mouse_pos = self.current_mouse_pos
         self.tree_manager.compute_transformed_coordinates(self.zoom_level)
-    
+
     def on_window_size_changed(self):
+        """
+        Updates the command line interface when the window size changes. 
+        This method ensures that the command line interface adapts to the new dimensions 
+        of the window, maintaining a consistent user experience.
+        """
+
         self.cmdline_interface.on_window_size_changed()

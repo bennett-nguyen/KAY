@@ -11,6 +11,7 @@ class ContourEnum(Enum):
         LEFT (str): Represents the left side contour.
         RIGHT (str): Represents the right side contour.
     """
+
     LEFT = "left"
     RIGHT = "right"
 
@@ -25,12 +26,19 @@ class VisibilityEnum(Enum):
         NODE_DATA_FIELD: Represents the visibility of the node data field.
         NODE_INFO_FIELD: Represents the visibility of the node information field.
     """
+
     ARRAY_FIELD = auto()
     NODE_DATA_FIELD = auto()
     NODE_INFO_FIELD = auto()
 
 @unique
 class JSONThemeFieldsEnum(Enum):
+    """
+    Enumerates the fields used in JSON theme files that this app uses. 
+    This class provides a set of constants that represent the various attributes 
+    listed in a JSON theme file, facilitating safer data access.
+    """
+
     NAME = "Name"
     PALETTE = "Palette"
     USE_DEFAULT_CMD_UI = "use_default_cmd_ui"

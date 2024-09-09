@@ -58,6 +58,7 @@ class ThemeManager:
         Raises:
             KeyError: If the required keys are not present in the JSON object.
         """
+
         palette_obj = json_obj[JSONThemeFieldsEnum.PALETTE.value]
 
         cmd_ui_file_path = None
@@ -89,6 +90,7 @@ class ThemeManager:
         Raises:
             KeyError: If the specified theme name does not exist in the themes dictionary.
         """
+
         try:
             self.current_theme = self.themes[name]
         except KeyError:

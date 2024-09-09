@@ -27,10 +27,11 @@ class Controller:
         Args:
             events (list[pg.event.Event]): A list of Pygame event objects to be processed.
         """
+
         cmdline_interface = self.model.cmdline_interface
 
         for event in events:
-            if event.type == pg.MOUSEWHEEL and not cmdline_interface.command_box.command_box.is_focused:
+            if event.type == pg.MOUSEWHEEL and not cmdline_interface.command_box.UI.is_focused:
                 self.model.zoom(event.y)
 
             if event.type == pg.VIDEORESIZE:
@@ -38,7 +39,7 @@ class Controller:
 
             cmdline_interface.process_event(event)
 
-        if not cmdline_interface.command_box.command_box.is_focused:
+        if not cmdline_interface.command_box.UI.is_focused:
             self.model.pan()
 
 
@@ -67,4 +68,4 @@ class Controller:
             self.view.view_array(tree_manager.segment_tree.array, hovered_node)
             self.view.view_hovered_node_info(hovered_node)
 
-        cmdline_interface.draw_ui(pygame_window.screen)
+        cmdline_interface.draw_ui()
