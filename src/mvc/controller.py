@@ -32,7 +32,8 @@ class Controller:
         for event in events:
             if event.type == pg.MOUSEWHEEL and not cmdline_interface.command_box.command_box.is_focused:
                 self.model.zoom(event.y)
-            elif event.type == pg.VIDEORESIZE:
+
+            if event.type == pg.VIDEORESIZE:
                 self.model.on_window_size_changed()
 
             cmdline_interface.process_event(event)

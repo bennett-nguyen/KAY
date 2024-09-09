@@ -17,11 +17,11 @@ class CommandBox:
                 "left": "left",
                 "bottom": "bottom",
             },
-            placeholder_text="real",
-            object_id="#command-box"
+            placeholder_text="Press '/' to start typing commands!",
+            object_id=const.COMMAND_BOX_OBJECT_ID
         )
 
         self.command_box.show()
-    
+
     def on_window_size_changed(self):
         self.command_box.set_dimensions((pygame_window.window_width - const.COMMAND_BOX_ANCHOR_OFFSET * 2, 50))

@@ -41,6 +41,7 @@ THEME_IDENTIFIER_SUFFIX: str = "-app-theme"
 CMD_THEME_FILE: str = "theme/cmdline_ui-DO-NOT-EDIT.json"
 
 # -- Command box
+COMMAND_BOX_OBJECT_ID = "#command-box"
 COMMAND_BOX_ANCHOR_OFFSET = 20
 
 # Links

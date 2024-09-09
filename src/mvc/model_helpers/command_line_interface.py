@@ -1,6 +1,7 @@
 import json
 
 import pygame as pg
+import pygame_gui
 
 from src.core.utils import const 
 from src.core.dataclasses import Theme
@@ -10,9 +11,26 @@ class CMDLineInterface:
     def __init__(self):
         self.ui_manager = UIManager()
         self.command_box = CommandBox(self.ui_manager.manager)
-    
+        self._focused_textbox = False
+
     def process_event(self, event: pg.event.Event):
         self.ui_manager.process_event(event)
+
+        if self._focused_textbox:
+            self.command_box.command_box.focus()
+            self._focused_textbox = False
+
+        if event.type == pg.KEYDOWN: 
+            if event.key == pg.K_SLASH:
+                self._focused_textbox = True
+
+            elif event.key == pg.K_ESCAPE:
+                self.command_box.command_box.unfocus()
+
+        elif event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED \
+            and event.ui_object_id == const.COMMAND_BOX_OBJECT_ID and event.text:
+                self.command_box.command_box.clear()
+                self.command_box.command_box.focus()
 
     def update(self, dt_time: float):
         self.ui_manager.update(dt_time)
