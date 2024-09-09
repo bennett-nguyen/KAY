@@ -1,5 +1,6 @@
 import pygame as pg
 
+from src.core import pygame_window
 from src.core.utils import const, VisibilityEnum
 from src.mvc.model_helpers import ThemeManager, TreeManager, CMDLineInterface
 
@@ -41,7 +42,7 @@ class Model:
         self.tree_manager.generate_node_position(self.zoom_level)
 
         # center the root node by the width of the screen
-        delta_x = const.HALF_WIDTH - self.tree_manager.segment_tree.root.x
+        delta_x = pygame_window.half_window_width - self.tree_manager.segment_tree.root.x
         self.tree_manager.move_tree_by_delta_pos(delta_x, 0)
         self.tree_manager.compute_transformed_coordinates(self.zoom_level)
 
@@ -88,3 +89,6 @@ class Model:
         self.tree_manager.move_tree_by_delta_pos(delta_x, delta_y)
         self.previous_mouse_pos = self.current_mouse_pos
         self.tree_manager.compute_transformed_coordinates(self.zoom_level)
+    
+    def on_window_size_changed(self):
+        self.cmdline_interface.on_window_size_changed()

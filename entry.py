@@ -2,7 +2,7 @@ from sys import exit
 
 import pygame as pg
 
-from src.core import window
+from src.core import pygame_window
 from src.core.utils import const
 from src.mvc.controller import Controller
 
@@ -13,7 +13,6 @@ theme_manager = model.theme_manager
 focus_gained: bool = True
 
 while True:
-    window.screen.fill(theme_manager.current_theme.BACKGROUND_CLR)
     events = pg.event.get()
 
     for event in events:
@@ -27,9 +26,9 @@ while True:
             focus_gained = True
 
     if focus_gained:
-        dt_time = window.clock.tick(const.ACTIVE_FPS) / 1000.0
+        dt_time = pygame_window.set_framerate(const.ACTIVE_FPS) / 1000.0
     else:
-        dt_time = window.clock.tick(const.IDLE_FPS) / 1000.0
+        dt_time = pygame_window.set_framerate(const.IDLE_FPS) / 1000.0
 
     controller.process_input(events)
     controller.update_view(dt_time)

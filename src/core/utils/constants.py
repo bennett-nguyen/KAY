@@ -1,12 +1,7 @@
 from src.core.utils.app_type import WebLink
 
 # - General
-WIDTH: int = 1440
-HEIGHT: int = 900
-RESOLUTION: tuple[int, int] = (WIDTH, HEIGHT)
-
-HALF_WIDTH: int = WIDTH//2
-HALF_HEIGHT: int = HEIGHT//2
+DEFAULT_SCREEN_OCCUPATION_PERCENTAGE: float = 80 / 100
 
 ACTIVE_FPS: int = 48
 IDLE_FPS: int = 1
@@ -44,6 +39,9 @@ TREE_DISTANCE: float = 0.0
 # -- UI config files
 THEME_IDENTIFIER_SUFFIX: str = "-app-theme"
 CMD_THEME_FILE: str = "theme/cmdline_ui-DO-NOT-EDIT.json"
+
+# -- Command box
+COMMAND_BOX_ANCHOR_OFFSET = 20
 
 # Links
 GITHUB_LINK: WebLink = WebLink("https://github.com/bennett-nguyen/KAY")

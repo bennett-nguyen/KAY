@@ -2,7 +2,7 @@ from typing import Optional
 
 import pygame as pg
 
-from src.core import window
+from src.core import pygame_window
 from src.core.tree_utils import Node
 from src.mvc.view import View
 from src.mvc.model import Model
@@ -32,6 +32,8 @@ class Controller:
         for event in events:
             if event.type == pg.MOUSEWHEEL and not cmdline_interface.command_box.command_box.is_focused:
                 self.model.zoom(event.y)
+            elif event.type == pg.VIDEORESIZE:
+                self.model.on_window_size_changed()
 
             cmdline_interface.process_event(event)
 
@@ -57,9 +59,11 @@ class Controller:
         self.view.request_theme(theme_manager.current_theme)
         self.view.request_visibility(self.model.visibility_dict)
 
+        pygame_window.fill_background(theme_manager.current_theme.BACKGROUND_CLR)
+
         if tree_manager.segment_tree.array_length != 0:
             hovered_node: Optional[Node] = self.view.draw_tree(tree_manager.segment_tree.root)
             self.view.view_array(tree_manager.segment_tree.array, hovered_node)
             self.view.view_hovered_node_info(hovered_node)
 
-        cmdline_interface.draw_ui(window.screen)
+        cmdline_interface.draw_ui(pygame_window.screen)

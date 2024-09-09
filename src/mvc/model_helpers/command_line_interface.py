@@ -29,3 +29,7 @@ class CMDLineInterface:
 
         with open(const.CMD_THEME_FILE, "w") as cmd_ui_file:
             json.dump(json_obj, indent=4, fp=cmd_ui_file)
+    
+    def on_window_size_changed(self):
+        self.ui_manager.on_window_size_changed()
+        self.command_box.on_window_size_changed()

@@ -4,7 +4,7 @@ from collections import deque
 import pygame as pg
 from pygame import gfxdraw
 
-from src.core import window
+from src.core import pygame_window
 from src.core.utils import VisibilityEnum, const
 from src.core.tree_utils import Node
 from src.core.dataclasses import Theme
@@ -84,7 +84,7 @@ class View:
                 or hovered_node is None:
             return
 
-        x, y = (const.WIDTH - const.X_OFFSET, const.Y_OFFSET)
+        x, y = (pygame_window.window_width - const.X_OFFSET, const.Y_OFFSET)
         segment_rect_bounding_box_bottom = self._view_segment(x, y, hovered_node)
 
         y = segment_rect_bounding_box_bottom + const.LINE_SPACING
@@ -117,7 +117,7 @@ class View:
             text, rect = self.render_text(self.tree_properties_font, f"{element}", data_color)
             rect.topleft = (x, y)
 
-            window.screen.blit(text, rect)
+            pygame_window.screen.blit(text, rect)
             x = rect.right + const.ELEMENT_SPACING
 
             if x >= const.MAX_X_PER_LINE:
@@ -213,7 +213,7 @@ class View:
             text_surf_and_rect[idx][1].midright = text_surf_and_rect[idx-1][1].midleft
 
         for surf, rect in text_surf_and_rect:
-            window.screen.blit(surf, rect)
+            pygame_window.screen.blit(surf, rect)
 
         return text_surf_and_rect[0][1].bottom
 
@@ -237,8 +237,8 @@ class View:
         ID_dat_rect.topright = (x, y)
         ID_rect.midright = ID_dat_rect.midleft
 
-        window.screen.blit(ID_text, ID_rect)
-        window.screen.blit(ID_dat_text, ID_dat_rect)
+        pygame_window.screen.blit(ID_text, ID_rect)
+        pygame_window.screen.blit(ID_dat_text, ID_dat_rect)
 
     def _draw_circles(self, node: Node, outline_clr: pg.Color):
         """
@@ -252,11 +252,11 @@ class View:
         """
 
         theme = self.current_theme
-        pg.draw.circle(window.screen, theme.NODE_FILLINGS_CLR, node.coordinates, const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS)
+        pg.draw.circle(pygame_window.screen, theme.NODE_FILLINGS_CLR, node.coordinates, const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS)
 
         for depth in range(const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS, const.NODE_CIRCLE_RADIUS):
-            gfxdraw.aacircle(window.screen, *node.coordinates, depth, outline_clr)
-            gfxdraw.aacircle(window.screen, *node.coordinates, depth, outline_clr)
+            gfxdraw.aacircle(pygame_window.screen, *node.coordinates, depth, outline_clr)
+            gfxdraw.aacircle(pygame_window.screen, *node.coordinates, depth, outline_clr)
 
     def _draw_lines(self, node: Node):
         """
@@ -274,7 +274,7 @@ class View:
             return
 
         pg.draw.line(
-            window.screen,
+            pygame_window.screen,
             theme.LINE_CLR,
             node.coordinates,
             node.left.coordinates,
@@ -282,7 +282,7 @@ class View:
         )
 
         pg.draw.line(
-            window.screen,
+            pygame_window.screen,
             theme.LINE_CLR,
             node.coordinates,
             node.right.coordinates,
@@ -302,4 +302,4 @@ class View:
 
         node_display_data, node_display_data_rect = self.render_text(self.node_data_font, f"{node.data}", display_data_clr)
         node_display_data_rect.center = node.coordinates
-        window.screen.blit(node_display_data, node_display_data_rect)
+        pygame_window.screen.blit(node_display_data, node_display_data_rect)

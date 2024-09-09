@@ -60,9 +60,9 @@ class ThemeManager:
         """
         palette_obj = json_obj[JSONThemeFieldsEnum.PALETTE.value]
 
-        if (json_obj[JSONThemeFieldsEnum.USE_DEFAULT_CMD_UI.value]):
-            cmd_ui_file_path = None
-        else:
+        cmd_ui_file_path = None
+
+        if not json_obj[JSONThemeFieldsEnum.USE_DEFAULT_CMD_UI.value]:
             cmd_ui_file_path = f"{file_name}-cmd.json"
 
         return Theme(
