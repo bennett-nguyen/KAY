@@ -1,11 +1,10 @@
-from src.core.utils.app_type import WebLink
-
+from src.utils import kay_typing
 # - General
 DEFAULT_SCREEN_OCCUPATION_PERCENTAGE: float = 80 / 100
 
 ACTIVE_FPS: int = 48
 IDLE_FPS: int = 1
-VERSION: str = "0.7.0-prealpha"
+VERSION: str = "0.8.0-prealpha"
 
 # -- Array viewer and hovered node viewer's constants
 MAX_X_PER_LINE: int = 500
@@ -46,8 +45,8 @@ COMMAND_BOX_ANCHOR_OFFSET = 20
 COMMAND_BOX_HEIGHT = 50
 
 # Links
-GITHUB_LINK: WebLink = WebLink("https://github.com/bennett-nguyen/KAY")
-LICENSE_LINK: WebLink = WebLink("https://github.com/bennett-nguyen/KAY/blob/main/LICENSE")
+GITHUB_LINK: kay_typing.WebLink = kay_typing.WebLink("https://github.com/bennett-nguyen/KAY")
+LICENSE_LINK: kay_typing.WebLink = kay_typing.WebLink("https://github.com/bennett-nguyen/KAY/blob/main/LICENSE")
 
 DEFAULT_CMD_THEME: str = """
 {

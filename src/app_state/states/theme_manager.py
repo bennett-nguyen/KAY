@@ -3,9 +3,9 @@ from typing import Any
 
 import pygame as pg
 
-from src.core.utils import const
-from src.core.dataclasses import Theme
-from src.core.utils import JSONThemeFieldsEnum
+from src.utils import const
+from src.utils import JSONThemeFieldsEnum
+from src.dataclass import Theme
 
 class ThemeManager:
     """

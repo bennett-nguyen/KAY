@@ -1,9 +1,10 @@
 from collections import deque
 
-from src.core.utils import const, ContourEnum
-from src.core.tree_utils import Node, SegmentTree
-from src.core.dataclasses import Function
-from src.exports import st_exported_functions
+from src.window import pygame_window
+from src.utils import const, ContourEnum
+from src.dataclass import Node, QueryFunction
+from src.segment_tree import SegmentTree
+from src.exports.query_functions import exported_core_query_functions
 
 class TreeManager:
     """
@@ -24,13 +25,14 @@ class TreeManager:
             by the segment tree.
         """
 
-        self.available_functions: dict[str, Function] = {}
-        self.load_functions(st_exported_functions)
+        self.available_functions: dict[str, QueryFunction] = {}
+        self.load_functions(exported_core_query_functions)
 
-        self.current_function: Function = self.available_functions["add_f"]
+        self.current_function: QueryFunction = self.available_functions["add_f"]
         self.segment_tree = SegmentTree(data, self.current_function)
+        self.zoom_level: float = 1.0
 
-    def generate_node_position(self, zoom_level: float):
+    def generate_node_position(self):
         """Generate the position of nodes in a tree structure.
 
         This function computes the preliminary x-coordinates for each node starting
@@ -41,7 +43,12 @@ class TreeManager:
 
         self._compute_prelim_x(self.segment_tree.root)
         self._compute_final_coordinates(self.segment_tree.root, 0)
-        self.compute_transformed_coordinates(zoom_level)
+        self.compute_transformed_coordinates()
+
+    def center_tree(self):
+        delta_x = pygame_window.half_window_width - self.segment_tree.root.x
+        self.move_tree_by_delta_pos(delta_x, 0)
+        self.compute_transformed_coordinates()
 
     def switch_function(self, name: str):
         """
@@ -52,17 +59,20 @@ class TreeManager:
             name (str): The name of the function to switch to.
         """
 
-        self.current_function = self.available_functions[name]
-        self.segment_tree.switch_function(self.current_function)
-
-    def load_functions(self, exported_functions: list[Function]):
+        try:
+            self.current_function = self.available_functions[name]
+            self.segment_tree.switch_function(self.current_function)
+        except KeyError:
+            print(f"QueryFunction named <{name}> doesn't exist!")
+        
+    def load_functions(self, exported_functions: list[QueryFunction]):
         """
         Loads a list of functions into the available functions dictionary. If a 
         function already exists, it skips adding it and prints a message indicating
         the function was skipped.
 
         Args:
-            exported_functions (list[Function]): A list of Function objects to be loaded.
+            exported_functions (list[QueryFunction]): A list of QueryFunction objects to be loaded.
 
         Returns:
             None
@@ -70,7 +80,7 @@ class TreeManager:
 
         for function in exported_functions:
             if function in self.available_functions:
-                print(f"Function <{function.name}> already existed! Skipping...")
+                print(f"QueryFunction <{function.name}> already existed! Skipping...")
                 continue
 
             self.available_functions[function.name] = function
@@ -100,34 +110,28 @@ class TreeManager:
             for child in node.children:
                 queue.append(child)
 
-    def compute_transformed_coordinates(self, zoom_level: float):
+    def compute_transformed_coordinates(self):
         """Compute and update the transformed coordinates of all nodes in the tree.
 
         This function iterates through each node in the segment tree, applying a 
         zoom factor to the original coordinates and adjusting them with any specified
         offsets. The updated coordinates are stored back in the node, allowing for 
         accurate rendering based on the current zoom level.
-
-        Args:
-            zoom_level (float): The factor by which to scale the original coordinates of the nodes.
-
-        Returns:
-            None
         """
 
         queue: deque[Node] = deque([self.segment_tree.root])
 
         while queue:
             node = queue.popleft()
-            node.x = int(node.original_x * zoom_level) + node.x_offset
-            node.y = int(node.original_y * zoom_level) + node.y_offset
+            node.x = int(node.original_x * self.zoom_level) + node.x_offset
+            node.y = int(node.original_y * self.zoom_level) + node.y_offset
 
             if node.is_leaf():
                 continue
 
             for child in node.children:
                 queue.append(child)
-        
+
     def _compute_final_coordinates(self, node: Node, mod_sum: float):
         """Compute the final coordinates for a node in a tree structure.
 

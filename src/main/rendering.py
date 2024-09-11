@@ -4,12 +4,11 @@ from collections import deque
 import pygame as pg
 from pygame import gfxdraw
 
-from src.core import pygame_window
-from src.core.utils import VisibilityEnum, const
-from src.core.tree_utils import Node
-from src.core.dataclasses import Theme
+from src.window import pygame_window
+from src.utils import VisibilityEnum, const
+from src.dataclass import Theme, Node
 
-class View:
+class Rendering:
     """
     Handles the rendering and display of the application's user interface. This
     class manages themes, visibility settings, and the graphical representation

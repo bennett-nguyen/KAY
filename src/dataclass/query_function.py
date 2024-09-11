@@ -2,7 +2,7 @@ from typing import Callable
 from dataclasses import dataclass
 
 @dataclass(slots=True, unsafe_hash=True, frozen=True)
-class Function:
+class QueryFunction:
     """
     Represents a function that can be used for making segment tree queries. This 
     class encapsulates the function's name, the callable itself, and a value to 

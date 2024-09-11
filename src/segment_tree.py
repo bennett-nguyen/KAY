@@ -1,5 +1,5 @@
-from src.core.tree_utils import Node
-from src.core.dataclasses import Function 
+from src.dataclass import Node
+from src.dataclass import QueryFunction 
 
 class SegmentTree:
     """
@@ -8,7 +8,7 @@ class SegmentTree:
     the tree, perform queries, update values, and rebuild the tree as needed.
     """
 
-    def __init__(self, array: list[int], function_obj: Function):
+    def __init__(self, array: list[int], function_obj: QueryFunction):
         """Initialize a segment tree with the given array and function object.
 
         This constructor sets up the segment tree by storing the input array and 
@@ -17,7 +17,7 @@ class SegmentTree:
 
         Args:
             array (list[int]): The array of integers to be represented in the segment tree.
-            function_obj (Function): An object containing the function used for 
+            function_obj (QueryFunction): An object containing the function used for 
             combining values and the value to return for invalid queries.
         """
 
@@ -42,7 +42,7 @@ class SegmentTree:
 
         return len(self.array)
 
-    def switch_function(self, function_obj: Function):
+    def switch_function(self, function_obj: QueryFunction):
         """
         Switches the function used for queries in the segment tree. This method 
         updates the internal function reference and the value returned for invalid

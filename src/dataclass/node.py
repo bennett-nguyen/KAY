@@ -1,4 +1,4 @@
-from src.core.utils import const
+from src.utils import const
 
 from typing import Optional
 

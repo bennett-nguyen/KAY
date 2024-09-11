@@ -1,11 +1,11 @@
 import json
+from typing import Optional
 
 import pygame as pg
 import pygame_gui
 
-from src.core import pygame_window
-from src.core.utils import const 
-from src.core.dataclasses import Theme
+from src.utils import const 
+from src.dataclass import Theme
 from src.cmd_ui import CommandBox, UIManager
 
 class CMDLineInterface:
@@ -20,7 +20,7 @@ class CMDLineInterface:
         self.command_box = CommandBox(self.ui_manager.manager)
         self._focused_textbox = False
 
-    def process_event(self, event: pg.event.Event):
+    def process_event(self, event: pg.event.Event) -> Optional[str]:
         """
         Processes input events for the command line interface. 
         This method handles keyboard events to manage the focus state of the command box 
@@ -30,6 +30,8 @@ class CMDLineInterface:
             event (pg.event.Event): The event to be processed, which may include keyboard 
             inputs and UI interactions.
         """
+
+        returned_text = None
 
         self.ui_manager.process_event(event)
 
@@ -46,8 +48,11 @@ class CMDLineInterface:
 
         elif event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED \
             and event.ui_object_id == const.COMMAND_BOX_OBJECT_ID and event.text:
+                returned_text = event.text
                 self.command_box.UI.clear()
                 self.command_box.UI.focus()
+        
+        return returned_text
 
     def update(self, dt_time: float):
         """
@@ -60,13 +65,13 @@ class CMDLineInterface:
 
         self.ui_manager.update(dt_time)
     
-    def draw_ui(self):
+    def draw_ui(self, screen: pg.Surface):
         """
         Draws the user interface elements onto the main application screen. 
         This method utilizes the UI manager to render all of its visible components.
         """
 
-        self.ui_manager.draw(pygame_window.screen)
+        self.ui_manager.draw(screen)
 
     def set_theme(self, theme: Theme):
         """

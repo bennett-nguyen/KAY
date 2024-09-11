@@ -1,8 +1,8 @@
 import pygame as pg
 import pygame_gui
 
-from src.core.utils import const
-from src.core import pygame_window
+from src.utils import const
+from src.window import pygame_window
 
 class UIManager:
     """
