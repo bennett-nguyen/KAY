@@ -16,6 +16,7 @@ Y_OFFSET: int = 20
 # Zooming
 MIN_ZOOM_LEVEL: float = 0.1
 MAX_ZOOM_LEVEL: float = 2.0
+ZOOM_INTENSITY: float = 0.1
 
 # - RT's algo constants
 # -- Scalar

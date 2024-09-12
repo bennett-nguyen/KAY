@@ -7,7 +7,6 @@ class ListTheme(BaseCommand):
         super().__init__(
             name="list-theme",
             description="List out available themes.",
-            exit_on_error=False
         )
     
     def execute(self, args: list[str], app_state: AppState):

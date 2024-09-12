@@ -7,7 +7,6 @@ class Theme(BaseCommand):
         super().__init__(
             name="theme",
             description="Set the application's theme.",
-            exit_on_error=False
         )
 
         self.parser.add_argument("theme_name", type=str)

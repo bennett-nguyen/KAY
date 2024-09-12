@@ -7,7 +7,6 @@ class QueryFN(BaseCommand):
         super().__init__(
             name="query-fn",
             description="Change the segment tree's query function.",
-            exit_on_error=False
         )
         
         self.parser.add_argument("fn_name", type=str)

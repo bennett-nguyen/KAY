@@ -7,7 +7,6 @@ class ListQueryFN(BaseCommand):
         super().__init__(
             name="list-queryfn",
             description="List out available query functions.",
-            exit_on_error=False
         )
 
     def execute(self, args: list[str], app_state: AppState):

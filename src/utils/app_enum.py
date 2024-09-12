@@ -50,3 +50,8 @@ class JSONThemeFieldsEnum(Enum):
     NODE_DISPLAY_DATA = "node_display_data"
     NODE_DISPLAY_DATA_HIGHLIGHT = "node_display_data_highlight"
     LINE = "line"
+
+@unique
+class CommandRequestFields(Enum):
+    HIGHLIGHT_RANGE_LOW = auto()
+    HIGHLIGHT_RANGE_HIGH = auto()

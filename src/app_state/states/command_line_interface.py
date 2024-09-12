@@ -1,4 +1,4 @@
-import json
+import json, re
 from typing import Optional
 
 import pygame as pg
@@ -31,7 +31,7 @@ class CMDLineInterface:
             inputs and UI interactions.
         """
 
-        returned_text = None
+        returned_text: Optional[str] = None
 
         self.ui_manager.process_event(event)
 
@@ -48,7 +48,7 @@ class CMDLineInterface:
 
         elif event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED \
             and event.ui_object_id == const.COMMAND_BOX_OBJECT_ID and event.text:
-                returned_text = event.text
+                returned_text = re.sub(" +", " ", event.text.strip())
                 self.command_box.UI.clear()
                 self.command_box.UI.focus()
         

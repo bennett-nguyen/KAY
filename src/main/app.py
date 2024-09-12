@@ -7,7 +7,6 @@ from src.utils import const
 from src.segment_tree import Node
 
 from src.app_state.app_state import AppState
-from src.main.rendering import Rendering
 from src.main.command_manager import CommandManager
 
 class App:
@@ -22,8 +21,6 @@ class App:
 
         self.app_state = AppState()
         self._init_app_state()
-
-        self.rendering = Rendering()
         self.command_manager = CommandManager()
 
     def process_input(self, events: list[pg.event.Event]):
@@ -66,17 +63,18 @@ class App:
         cmdline_interface = self.app_state.cmdline_interface
         tree_manager = self.app_state.tree_manager
         theme_manager = self.app_state.theme_manager
+        rendering = self.app_state.rendering
 
         cmdline_interface.update(dt_time)
-        self.rendering.request_theme(theme_manager.current_theme)
-        self.rendering.request_visibility(self.app_state.visibility_dict)
+        rendering.request_theme(theme_manager.current_theme)
+        rendering.request_visibility(self.app_state.visibility_dict)
 
         pygame_window.fill_background(theme_manager.current_theme.BACKGROUND_CLR)
 
         if tree_manager.segment_tree.array_length != 0:
-            hovered_node: Optional[Node] = self.rendering.draw_tree(tree_manager.segment_tree.root)
-            self.rendering.view_array(tree_manager.segment_tree.array, hovered_node)
-            self.rendering.view_hovered_node_info(hovered_node)
+            hovered_node: Optional[Node] = rendering.draw_tree(tree_manager.segment_tree.root)
+            rendering.view_array(tree_manager.segment_tree.array, hovered_node)
+            rendering.view_hovered_node_info(hovered_node)
 
         cmdline_interface.draw_ui(pygame_window.screen)
     
@@ -87,9 +85,9 @@ class App:
         tree_manager = self.app_state.tree_manager
 
         if (y > 0):
-            tree_manager.zoom_level = min(tree_manager.zoom_level+0.1, const.MAX_ZOOM_LEVEL)
+            tree_manager.zoom_level = min(tree_manager.zoom_level+const.ZOOM_INTENSITY, const.MAX_ZOOM_LEVEL)
         else:
-            tree_manager.zoom_level = max(tree_manager.zoom_level-0.1, const.MIN_ZOOM_LEVEL)
+            tree_manager.zoom_level = max(tree_manager.zoom_level-const.ZOOM_INTENSITY, const.MIN_ZOOM_LEVEL)
 
         tree_manager.compute_transformed_coordinates()
 
@@ -114,7 +112,6 @@ class App:
         tree_manager.compute_transformed_coordinates()
 
     def _init_app_state(self):
-        cmdline_interface = self.app_state.cmdline_interface
         tree_manager = self.app_state.tree_manager
         theme_manager = self.app_state.theme_manager
 

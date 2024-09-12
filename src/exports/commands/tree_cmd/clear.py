@@ -7,7 +7,6 @@ class Clear(BaseCommand):
         super().__init__(
             name="clear",
             description="Clear the segment tree's array.",
-            exit_on_error=False
         )
         
     def execute(self, args: list[str], app_state: AppState):

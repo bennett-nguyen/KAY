@@ -6,9 +6,9 @@ class Extend(BaseCommand):
     def __init__(self):
         super().__init__(
             name="extend",
-            description="Extend the segment tree's array with a sequence of numbers. If an index were given, it will insert that sequence at that index."
+            description="Extend the segment tree's array with a sequence of numbers. If an index were given, it will insert that sequence at that index.",
         )
-        
+
         self.parser.add_argument("sequence", type=int, nargs="+")
         self.parser.add_argument("-i", "--index", "-index", type=int, nargs="?", default=-1)
 

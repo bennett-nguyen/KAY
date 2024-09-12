@@ -1,11 +1,11 @@
-from typing import Optional
+from typing import Optional, Any
 from collections import deque
 
 import pygame as pg
 from pygame import gfxdraw
 
 from src.window import pygame_window
-from src.utils import VisibilityEnum, const
+from src.utils import VisibilityEnum, CommandRequestFields, const
 from src.dataclass import Theme, Node
 
 class Rendering:
@@ -21,6 +21,11 @@ class Rendering:
         self.visibility_dict: dict[VisibilityEnum, bool]
         self.node_data_font = pg.font.Font("./fonts/JetBrainsMonoNL-Regular.ttf", 27)
         self.tree_properties_font = pg.font.Font("./fonts/JetBrainsMonoNL-Regular.ttf", 40)
+
+        self.command_request_data: dict[CommandRequestFields, Any] = {
+            CommandRequestFields.HIGHLIGHT_RANGE_LOW: -1,
+            CommandRequestFields.HIGHLIGHT_RANGE_HIGH: -1,
+        }
 
     def request_theme(self, theme: Theme):
         """
@@ -156,6 +161,9 @@ class Rendering:
                 hovered_node = node
                 node_outline_clr = theme.NODE_OUTLINE_HIGHLIGHT_CLR
                 display_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
+            elif self.should_highlight_range(node):
+                node_outline_clr = theme.NODE_OUTLINE_HIGHLIGHT_CLR
+                display_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
             else:
                 node_outline_clr = theme.NODE_OUTLINE_CLR
                 display_data_clr = theme.NODE_DISPLAY_DATA_CLR
@@ -173,6 +181,12 @@ class Rendering:
                 queue.append(child)
 
         return hovered_node
+
+    def should_highlight_range(self, node: Node):
+        c_low = self.command_request_data[CommandRequestFields.HIGHLIGHT_RANGE_LOW]
+        c_high = self.command_request_data[CommandRequestFields.HIGHLIGHT_RANGE_HIGH]
+
+        return c_low <= node.low and node.high <= c_high
 
     def _view_segment(self, x: int, y: int, hovered_node: Node) -> int:
         """

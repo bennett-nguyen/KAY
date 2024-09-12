@@ -1,5 +1,5 @@
 from src.utils import VisibilityEnum
-from src.app_state.states import ThemeManager, TreeManager, CMDLineInterface
+from src.app_state.states import ThemeManager, TreeManager, CMDLineInterface, Rendering
 
 class AppState:
     def __init__(self):
@@ -13,6 +13,7 @@ class AppState:
         self.theme_manager = ThemeManager()
         self.tree_manager = TreeManager([1, 3, -2, 8, -7])
         self.cmdline_interface = CMDLineInterface()
+        self.rendering = Rendering()
 
         self.visibility_dict: dict[VisibilityEnum, bool] = {
             VisibilityEnum.ARRAY_FIELD: True,

@@ -17,7 +17,7 @@ class CommandManager:
         cmd_name = splited_text[0]
         args = splited_text[1:]
 
-        if (cmd_name not in self.loaded_commands):
+        if cmd_name not in self.loaded_commands:
             print("Command doesn't exist!")
             return
 
