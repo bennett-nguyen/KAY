@@ -8,7 +8,7 @@ class Clear(BaseCommand):
             name="clear",
             description="Clear the segment tree's array.",
         )
-        
+
     def execute(self, args: list[str], app_state: AppState):
         tree_manager = app_state.tree_manager
         tree_manager.segment_tree.array.clear()

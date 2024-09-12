@@ -10,7 +10,7 @@ class Home(BaseCommand):
             name="home",
             description="Move the tree to its original position."
         )
-    
+
     def execute(self, args: list[str], app_state: AppState):
         app_state.tree_manager.center_tree()
 

@@ -10,19 +10,21 @@ class TreeManager:
     """
     Manages the operations and structure of a tree, including loading functions,
     generating node positions, and manipulating tree coordinates. This class
-    provides methods to switch functions, move the tree, and compute coordinates
+    provides methods to switch query function, move the tree, and compute coordinates
     for rendering.
     """
 
     def __init__(self, data: list[int]):
-        """
-        Initializes the TreeManager with the provided data and sets up the available
-        functions. This constructor loads functions into the manager and initializes
-        the segment tree with the specified data and a default function.
+        """Initializes the TreeManager with the provided data.
+
+        This constructor sets up the available query functions,
+        initializes the current function to "add_f", and creates
+        a segment tree using the provided data. It also sets the
+        initial zoom level for the tree visualization.
 
         Args:
-            data (list[int]): A list of integers representing the data to be managed
-            by the segment tree.
+            data (list[int]): The list of integers to be used as
+            the initial data for the segment tree.
         """
 
         self.available_functions: dict[str, QueryFunction] = {}
@@ -46,17 +48,26 @@ class TreeManager:
         self.compute_transformed_coordinates()
 
     def center_tree(self):
+        """Centers the segment tree in the window.
+
+        This method calculates the horizontal offset needed to position the
+        segment tree's root at the center of the window. It then moves the
+        tree accordingly and updates the transformed coordinates for rendering.
+        """
+
         delta_x = pygame_window.half_window_width - self.segment_tree.root.x
         self.move_tree_by_delta_pos(delta_x, 0)
         self.compute_transformed_coordinates()
 
     def switch_function(self, name: str):
-        """
-        Switches the current function to the specified function by name. This method
-        updates the current function and applies it to the segment tree.
+        """Switches the current query function to the specified function name.
+
+        This method updates the current function used by the segment tree based
+        on the provided name. If the specified function does not exist, an error
+        message is printed to inform the user.
 
         Args:
-            name (str): The name of the function to switch to.
+            name (str): The name of the query function to switch to.
         """
 
         try:
@@ -67,15 +78,12 @@ class TreeManager:
         
     def load_functions(self, exported_functions: list[QueryFunction]):
         """
-        Loads a list of functions into the available functions dictionary. If a 
+        Loads a list of query functions into the available functions dictionary. If a 
         function already exists, it skips adding it and prints a message indicating
         the function was skipped.
 
         Args:
             exported_functions (list[QueryFunction]): A list of QueryFunction objects to be loaded.
-
-        Returns:
-            None
         """
 
         for function in exported_functions:

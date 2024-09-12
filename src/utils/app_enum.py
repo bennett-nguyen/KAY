@@ -53,5 +53,17 @@ class JSONThemeFieldsEnum(Enum):
 
 @unique
 class CommandRequestFields(Enum):
+    """Enumeration for command request fields.
+
+    This class defines a set of fields which commands
+    can change when they are executed, the application will
+    read whatever mapped data from these fields and make
+    changes to some aspects of the app state.
+
+    For example, a command can request which nodes are highlighted
+    by specifying a range where those nodes' managed segments are
+    inside of using HIGHLIGHT_RANGE_LOW and HIGHLIGHT_RANGE_HIGH.
+    """
+
     HIGHLIGHT_RANGE_LOW = auto()
     HIGHLIGHT_RANGE_HIGH = auto()

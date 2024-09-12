@@ -2,23 +2,23 @@ import math
 
 from src.dataclass import QueryFunction
 
-min_f = QueryFunction("min_f", min, -1)
-max_f = QueryFunction("max_f", max, -1)
+min_f = QueryFunction(name="min_f", description="min(x, y)", fn=min, invalid_query_val=-1)
+max_f = QueryFunction(name="max_f", description="max(x, y)", fn=max, invalid_query_val=-1)
 
-add_f = QueryFunction("add_f", lambda x, y: x + y, 0)
-sub_f = QueryFunction("sub_f", lambda x, y: x - y, 0)
-mul_f = QueryFunction("mul_f", lambda x, y: x * y, -1)
-exp_f = QueryFunction("exp_f", lambda x, y: x ** y, -1)
-mod_f = QueryFunction("mod_f", lambda x, y: x % y, -1)
+add_f = QueryFunction(name="add_f", description="x + y", fn=lambda x, y: x + y, invalid_query_val=0)
+sub_f = QueryFunction(name="sub_f", description="x - y", fn=lambda x, y: x - y, invalid_query_val=0)
+mul_f = QueryFunction(name="mul_f", description="x * y", fn=lambda x, y: x * y, invalid_query_val=-1)
+exp_f = QueryFunction(name="exp_f", description="x ** y", fn=lambda x, y: x ** y,invalid_query_val=-1)
+mod_f = QueryFunction(name="mod_f", description="x % y", fn=lambda x, y: x % y, invalid_query_val=-1)
 
-and_f = QueryFunction("and_f", lambda x, y: x & y, -1)
-or_f = QueryFunction("or_f", lambda x, y: x | y, -1)
-xor_f = QueryFunction("xor_f", lambda x, y: x ^ y, -1)
+and_f = QueryFunction(name="and_f", description="x & y", fn=lambda x, y: x & y, invalid_query_val=-1)
+or_f  = QueryFunction(name="or_f",  description="x | y", fn=lambda x, y: x | y, invalid_query_val=-1)
+xor_f = QueryFunction(name="xor_f", description="x ^ y", fn=lambda x, y: x ^ y, invalid_query_val=-1)
 
-lcm_f = QueryFunction("lcm_f", math.lcm, -1)
-gcd_f = QueryFunction("gcd_f", math.gcd, 1)
+lcm_f = QueryFunction(name="lcm_f", description="Least Common Multiple of x and y", fn=math.lcm, invalid_query_val=-1)
+gcd_f = QueryFunction(name="gcd_f", description="Greatest Common Divisor of x and y", fn=math.gcd, invalid_query_val=1)
 
-avg_f = QueryFunction("avg_f", lambda x, y: int((x+y)/2), 0)
+avg_f = QueryFunction(name="avg_f", description="The arithmetic mean of x and y", fn=lambda x, y: int((x+y)/2), invalid_query_val=0)
 
 exported_core_query_functions: list[QueryFunction] = [
     min_f,

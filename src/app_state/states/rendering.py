@@ -10,10 +10,12 @@ from src.dataclass import Theme, Node
 
 class Rendering:
     """
-    Handles the rendering and display of the application's user interface. This
-    class manages themes, visibility settings, and the graphical representation
-    of the segment tree, allowing for dynamic updates and visual feedback based
-    on user interactions.
+    Handles the rendering of the user interface for the application.
+
+    This class manages the visual representation of various UI elements,
+    including themes, visibility settings, and node information. It provides
+    methods to render text, draw tree structures, and display node data
+    dynamically based on user interactions.
     """
 
     def __init__(self):
@@ -21,6 +23,13 @@ class Rendering:
         self.visibility_dict: dict[VisibilityEnum, bool]
         self.node_data_font = pg.font.Font("./fonts/JetBrainsMonoNL-Regular.ttf", 27)
         self.tree_properties_font = pg.font.Font("./fonts/JetBrainsMonoNL-Regular.ttf", 40)
+
+        
+        self.visibility_dict: dict[VisibilityEnum, bool] = {
+            VisibilityEnum.ARRAY_FIELD: True,
+            VisibilityEnum.NODE_DATA_FIELD: True,
+            VisibilityEnum.NODE_INFO_FIELD: True
+        }
 
         self.command_request_data: dict[CommandRequestFields, Any] = {
             CommandRequestFields.HIGHLIGHT_RANGE_LOW: -1,
@@ -38,19 +47,6 @@ class Rendering:
         """
 
         self.current_theme = theme
-
-    def request_visibility(self, visibility_dict: dict[VisibilityEnum, bool]):
-        """
-        Requests to update the visibility settings of the view. This method sets the
-        visibility of various UI elements based on the provided dictionary, allowing
-        for dynamic control over what is displayed in the user interface.
-
-        Args:
-            visibility_dict (dict[VisibilityEnum, bool]): A dictionary that maps visibility
-            fields to their corresponding visibility states.
-        """
-
-        self.visibility_dict = visibility_dict
 
     def render_text(self, font: pg.font.Font, text: str, color: pg.Color) -> tuple[pg.Surface, pg.Rect]:
         """
@@ -129,17 +125,12 @@ class Rendering:
                 y = rect.bottom + const.LINE_SPACING
 
     def draw_tree(self, root: Node) -> Optional[Node]:
-        """
-        Draws the tree structure starting from the specified root node. This method
-        visually represents the nodes and their connections, highlighting the hovered
-        node and displaying data if visibility settings allow it. Returns the hovered
-        node it found during the drawing process.
+        """Draws the tree structure starting from the specified root node.
 
-        Args:
-            root (Node): The root node of the tree to be drawn.
-
-        Returns:
-            Optional[Node]: The node that is currently hovered over, or None if no node is hovered.
+        This method visually represents the nodes and their connections,
+        highlighting the hovered node and displaying data if visibility settings
+        allow it. It traverses the tree and renders each node, returning the
+        currently hovered node if applicable.
         """
 
         theme = self.current_theme
@@ -183,6 +174,14 @@ class Rendering:
         return hovered_node
 
     def should_highlight_range(self, node: Node):
+        """Determines if the specified node falls within the highlight range.
+
+        This method checks if the node's range is within the current command
+        request's highlight boundaries (from highlight-range). It returns a boolean
+        indicating whether the node should be highlighted based on the defined low
+        and high values.
+        """
+
         c_low = self.command_request_data[CommandRequestFields.HIGHLIGHT_RANGE_LOW]
         c_high = self.command_request_data[CommandRequestFields.HIGHLIGHT_RANGE_HIGH]
 

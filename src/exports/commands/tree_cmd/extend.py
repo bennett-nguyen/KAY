@@ -16,7 +16,7 @@ class Extend(BaseCommand):
         parsed_args: argparse.Namespace = self.parser.parse_args(args)
         tree_manager = app_state.tree_manager
         segment_tree = tree_manager.segment_tree
-        
+
         index_to_extend = len(segment_tree.array)
         if (parsed_args.index != -1):
             index_to_extend = parsed_args.index

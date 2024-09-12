@@ -10,9 +10,12 @@ from src.app_state.app_state import AppState
 from src.main.command_manager import CommandManager
 
 class App:
-    """
-    Handles the interaction between the model and the view in the application. This class processes
-    user input, updates the model state, and refreshes the view based on the current state of the model.
+    """Main application class that manages the overall functionality.
+
+    This class initializes the application state, processes user input,
+    updates the view, and handles window resizing and zooming. It serves
+    as the central hub for managing interactions between various components
+    of the application.
     """
 
     def __init__(self):
@@ -20,17 +23,28 @@ class App:
         self.current_mouse_pos = (0, 0)
 
         self.app_state = AppState()
-        self._init_app_state()
+        tree_manager = self.app_state.tree_manager
+        theme_manager = self.app_state.theme_manager
+        cmdline_interface = self.app_state.cmdline_interface
+
+        tree_manager.generate_node_position()
+        tree_manager.center_tree()
+        theme_manager.load_themes()
+        theme_manager.set_theme("Seria Dark")
+        cmdline_interface.set_theme(theme_manager.current_theme)
+
         self.command_manager = CommandManager()
 
     def process_input(self, events: list[pg.event.Event]):
-        """
-        Processes a list of input events to update the model's state based on user interactions. It specifically handles mouse wheel events for zooming and delegates other events to the command line interface.
+        """Processes user input events for the application.
 
-        This function checks each event in the provided list, applying zoom functionality when the mouse wheel is scrolled and the command box is not focused. Additionally, it processes each event through the command line interface and initiates panning if the command box remains unfocused.
+        This method handles various types of input events, including mouse
+        wheel scrolling for zooming, window resizing, and command input from the command
+        line interface. It updates the application state based on user interactions
+        and manages panning when the command box is not focused.
 
         Args:
-            events (list[pg.event.Event]): A list of Pygame event objects to be processed.
+            events (list[pg.event.Event]): A list of events to process.
         """
 
         cmdline_interface = self.app_state.cmdline_interface
@@ -51,13 +65,17 @@ class App:
             self.pan()
 
     def update_view(self, dt_time: float):
-        """
-        Updates the view based on the elapsed time and the current state of the model. It refreshes the command line interface, theme, visibility, and draws the segment tree if available.
+        """Updates the application view based on the elapsed time.
 
-        This function processes the time delta to update the command line interface and requests the current theme and visibility settings from the model. If the segment tree contains nodes, it draws the tree, displays the array, and shows information about the hovered node, while also rendering the user interface.
+        This method refreshes the user interface by updating the command
+        line interface, requesting the current theme for rendering, and
+        drawing the segment tree along with its associated data. It also
+        handles the display of any hovered node information and ensures
+        the UI is drawn correctly on the screen.
 
         Args:
-            dt_time (float): The time elapsed since the last update, used for animations and updates.
+            dt_time (float): The elapsed time since the last update,
+            used for animations and updates.
         """
 
         cmdline_interface = self.app_state.cmdline_interface
@@ -67,7 +85,6 @@ class App:
 
         cmdline_interface.update(dt_time)
         rendering.request_theme(theme_manager.current_theme)
-        rendering.request_visibility(self.app_state.visibility_dict)
 
         pygame_window.fill_background(theme_manager.current_theme.BACKGROUND_CLR)
 
@@ -77,11 +94,31 @@ class App:
             rendering.view_hovered_node_info(hovered_node)
 
         cmdline_interface.draw_ui(pygame_window.screen)
-    
+
     def on_window_size_changed(self):
+        """Handles the event when the window size changes.
+
+        This method updates the command line interface to adjust its
+        layout and components according to the new window size. It
+        ensures that the user interface remains functional and visually
+        appealing after a resize event.
+        """
+
         self.app_state.cmdline_interface.on_window_size_changed()
 
     def zoom(self, y: int):
+        """Adjusts the zoom level of the tree based on mouse wheel input.
+
+        This method increases or decreases the zoom level of the tree
+        visualization depending on the direction of the mouse wheel scroll.
+        It ensures that the zoom level remains within predefined minimum
+        and maximum limits and updates the transformed coordinates accordingly.
+
+        Args:
+            y (int): The amount of scroll input from the mouse wheel, where
+            positive values indicate zooming in and negative values indicate zooming out.
+        """
+
         tree_manager = self.app_state.tree_manager
 
         if (y > 0):
@@ -92,6 +129,13 @@ class App:
         tree_manager.compute_transformed_coordinates()
 
     def pan(self):
+        """Handles panning of the tree visualization based on mouse movement.
+
+        This method allows the user to move the tree view by clicking and dragging
+        the mouse. It calculates the change in mouse position and updates the tree's
+        position accordingly, ensuring that the view remains responsive to user input.
+        """
+
         tree_manager = self.app_state.tree_manager
         mouse_pressed = pg.mouse.get_pressed()
 
@@ -110,14 +154,3 @@ class App:
         tree_manager.move_tree_by_delta_pos(delta_x, delta_y)
         self.previous_mouse_pos = self.current_mouse_pos
         tree_manager.compute_transformed_coordinates()
-
-    def _init_app_state(self):
-        tree_manager = self.app_state.tree_manager
-        theme_manager = self.app_state.theme_manager
-
-        self.app_state.tree_manager.generate_node_position()
-        self.app_state.theme_manager.load_themes()
-        self.app_state.theme_manager.set_theme("Seria Dark")
-        self.app_state.cmdline_interface.set_theme(theme_manager.current_theme)
-
-        tree_manager.center_tree()

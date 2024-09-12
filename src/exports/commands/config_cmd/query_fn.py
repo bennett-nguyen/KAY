@@ -8,14 +8,14 @@ class QueryFN(BaseCommand):
             name="query-fn",
             description="Change the segment tree's query function.",
         )
-        
+
         self.parser.add_argument("fn_name", type=str)
     
     def execute(self, args: list[str], app_state: AppState):
         parsed_args: argparse.Namespace = self.parser.parse_args(args)
         tree_manager = app_state.tree_manager
         segment_tree = app_state.tree_manager.segment_tree
-        
+
         tree_manager.switch_function(parsed_args.fn_name)
         segment_tree.rebuild()
         tree_manager.generate_node_position()

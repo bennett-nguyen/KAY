@@ -11,7 +11,7 @@ class Insert(BaseCommand):
         
         self.parser.add_argument("value", type=int)
         self.parser.add_argument("index", type=int, default=-1, nargs='?')
-        
+
     def execute(self, args: list[str], app_state: AppState):
         parsed_args: argparse.Namespace = self.parser.parse_args(args)
         tree_manager = app_state.tree_manager

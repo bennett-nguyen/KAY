@@ -8,7 +8,7 @@ class Update(BaseCommand):
             name="update",
             description="Update an element at a particular index with a given value.",
         )
-        
+
         self.parser.add_argument("value", type=int)
         self.parser.add_argument("index", type=int)
     

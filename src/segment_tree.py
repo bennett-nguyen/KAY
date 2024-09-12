@@ -49,7 +49,7 @@ class SegmentTree:
         queries based on the provided function object.
 
         Args:
-            function_obj (Function): The new function object containing the function
+            function_obj (QueryFunction): The new function object containing the function
             for combining values and the value for invalid queries.
         """
 
@@ -84,9 +84,6 @@ class SegmentTree:
         Args:
             pos (int): The position in the segment tree to update.
             val (int): The new value to set at the specified position.
-
-        Returns:
-            None
         """
 
         self.array[pos] = val

@@ -11,6 +11,6 @@ class ViewNodeInfo(BaseCommand):
         )
 
     def execute(self, args: list[str], app_state: AppState):
-        app_state.visibility_dict[VisibilityEnum.NODE_INFO_FIELD] = not app_state.visibility_dict[VisibilityEnum.NODE_INFO_FIELD]
+        app_state.rendering.visibility_dict[VisibilityEnum.NODE_INFO_FIELD] = not app_state.rendering.visibility_dict[VisibilityEnum.NODE_INFO_FIELD]
 
 view_node_info_cmd = ViewNodeInfo()

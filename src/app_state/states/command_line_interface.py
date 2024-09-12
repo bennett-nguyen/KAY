@@ -21,14 +21,18 @@ class CMDLineInterface:
         self._focused_textbox = False
 
     def process_event(self, event: pg.event.Event) -> Optional[str]:
-        """
-        Processes input events for the command line interface. 
-        This method handles keyboard events to manage the focus state of the command box 
-        and processes text entry completion, allowing for user interaction with the interface.
+        """Processes a user event for the command line interface.
+
+        This function handles keyboard events and updates the user
+        interface accordingly. It focuses or unfocuses the command
+        box based on user input and returns any processed text from
+        the command box.
 
         Args:
-            event (pg.event.Event): The event to be processed, which may include keyboard 
-            inputs and UI interactions.
+            event (pg.event.Event): The event to process.
+
+        Returns:
+            Optional[str]: The processed command text if available, otherwise None.
         """
 
         returned_text: Optional[str] = None
@@ -51,7 +55,7 @@ class CMDLineInterface:
                 returned_text = re.sub(" +", " ", event.text.strip())
                 self.command_box.UI.clear()
                 self.command_box.UI.focus()
-        
+
         return returned_text
 
     def update(self, dt_time: float):

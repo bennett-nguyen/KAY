@@ -3,17 +3,21 @@ from dataclasses import dataclass
 
 @dataclass(slots=True, unsafe_hash=True, frozen=True)
 class QueryFunction:
-    """
-    Represents a function that can be used for making segment tree queries. This 
-    class encapsulates the function's name, the callable itself, and a value to 
-    return for invalid queries, providing a structured way to manage functions.
+    """Represents a query function with its associated metadata.
+
+    This class encapsulates the details of a query function, including its
+    name, description, the function itself, and a value indicating an invalid
+    query result. It is designed to provide a structured way to manage query
+    functions within the application.
 
     Attributes:
-        name (str): The name of the function.
-        fn (Callable[[int, int], int]): The callable function that takes two integers and returns an integer.
-        invalid_query_val (int): The value to return when a query is invalid.
+        name (str): The name of the query function.
+        description (str): A brief description of what the query function does.
+        fn (Callable[[int, int], int]): The actual function that performs the query operation.
+        invalid_query_val (int): The value returned when the query is invalid.
     """
 
     name: str
+    description: str
     fn: Callable[[int, int], int]
     invalid_query_val: int
