@@ -59,7 +59,7 @@ class App:
             input_text = cmdline_interface.process_event(event)
 
             if input_text is not None:
-                self.command_manager.read_inputs(input_text, self.app_state)
+                self.command_manager.parse_inputs(input_text, self.app_state)
 
         if not cmdline_interface.command_box.UI.is_focused:
             self.pan()

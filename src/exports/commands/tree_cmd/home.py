@@ -1,8 +1,8 @@
-from src.app_state.app_state import AppState
+from typing import Optional
 
 from src.base_command import BaseCommand
-from src.window import pygame_window
-from src.utils import const
+from src.app_state.app_state import AppState
+from src.exceptions import ArgumentError, CommandException
 
 class Home(BaseCommand):
     def __init__(self):
@@ -11,7 +11,7 @@ class Home(BaseCommand):
             description="Move the tree to its original position."
         )
 
-    def execute(self, args: list[str], app_state: AppState):
+    def execute(self, args: list[str], app_state: AppState) -> Optional[ArgumentError | CommandException]:
         app_state.tree_manager.center_tree()
 
 home_cmd = Home()

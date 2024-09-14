@@ -1,6 +1,7 @@
-from src.app_state.app_state import AppState
 from src.base_command import BaseCommand
+from src.app_state.app_state import AppState
 from src.exports.commands import exported_core_cmds
+from src.exceptions import ArgumentError, CommandException
 
 class CommandManager:
     """Manages the loading and execution of commands in the application.
@@ -47,7 +48,20 @@ class CommandManager:
         args = splited_text[1:]
 
         if cmd_name not in self.loaded_commands:
-            print("Command doesn't exist!")
+            print("\nCommand doesn't exist!")
             return
 
-        self.loaded_commands[cmd_name].execute(args, app_state)
+        exit_status = self.loaded_commands[cmd_name].execute(args, app_state)
+
+        if exit_status is None:
+            return
+        
+        if isinstance(exit_status, ArgumentError):
+            print("\n==== ERROR ====")
+            print(f"RAISED FROM COMMAND: {cmd_name}")
+            print(f"AFFECTED: {cmd_name}.{exit_status.argument_name}")
+            print(f"MESSAGE: \n{exit_status.message}")
+        elif isinstance(exit_status, CommandException):
+            print("\n==== ERROR ====")
+            print(f"RAISED FROM COMMAND: <{cmd_name}>")
+            print(f"MESSAGE: \n{exit_status.message}")

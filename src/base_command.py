@@ -1,7 +1,8 @@
 from typing import Optional
-import argparse
 
 from src.app_state.app_state import AppState
+from src.override import ArgumentParserNoExit
+from src.exceptions import CommandException, ArgumentError
 
 class BaseCommand:
     """Represents a command with a parser for handling arguments.
@@ -15,8 +16,8 @@ class BaseCommand:
 
     def __init__(self, name: Optional[str] = None, usage: Optional[str] = None, description: Optional[str] = None, \
         epilog: Optional[str] = None, exit_on_error: bool = False):
-        self.parser = argparse.ArgumentParser(name, usage, description, epilog,
+        self.parser = ArgumentParserNoExit(name, usage, description, epilog,
                                             exit_on_error=exit_on_error)
 
-    def execute(self, args: list[str], app_state: AppState):
+    def execute(self, args: list[str], app_state: AppState) -> Optional[ArgumentError | CommandException]:
         ...
