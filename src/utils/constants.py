@@ -1,10 +1,11 @@
 from src.utils import kay_typing
+
 # - General
 DEFAULT_SCREEN_OCCUPATION_PERCENTAGE: float = 80 / 100
 
 ACTIVE_FPS: int = 48
 IDLE_FPS: int = 1
-VERSION: str = "0.8.0-prealpha"
+VERSION: str = "0.8.1-prealpha"
 
 # -- Array viewer and hovered node viewer's constants
 MAX_X_PER_LINE: int = 500
@@ -20,16 +21,17 @@ ZOOM_INTENSITY: float = 0.1
 
 # - RT's algo constants
 # -- Scalar
-SCALE: int = 200
-VERTICAL_SCALE: int = 150
+SCALE: int = 240
+VERTICAL_SCALE: int = 160
 
 # -- Offset
 DEPTH_OFFSET: float = 1
 ROOT_DEPTH: int = 0
 
 # -- Shape's properties
-LINE_THICKNESS: int = 4
-NODE_CIRCLE_RADIUS: int = 40
+CIRCLE_OUTLINE_THICKNESS: int = 4
+LINE_THICKNESS: float = CIRCLE_OUTLINE_THICKNESS / 2.0
+NODE_CIRCLE_RADIUS: int = 45
 
 # -- Distance between nodes and subtrees
 NODE_DISTANCE: float = 0.7

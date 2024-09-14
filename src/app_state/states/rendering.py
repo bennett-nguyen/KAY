@@ -1,5 +1,6 @@
 from typing import Optional, Any
 from collections import deque
+from math import atan2, cos, degrees, radians, sin
 
 import pygame as pg
 from pygame import gfxdraw
@@ -266,7 +267,7 @@ class Rendering:
         theme = self.current_theme
         pg.draw.circle(pygame_window.screen, theme.NODE_FILLINGS_CLR, node.coordinates, const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS)
 
-        for depth in range(const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS, const.NODE_CIRCLE_RADIUS):
+        for depth in range(const.NODE_CIRCLE_RADIUS-const.CIRCLE_OUTLINE_THICKNESS, const.NODE_CIRCLE_RADIUS):
             gfxdraw.aacircle(pygame_window.screen, *node.coordinates, depth, outline_clr)
             gfxdraw.aacircle(pygame_window.screen, *node.coordinates, depth, outline_clr)
 
@@ -285,21 +286,20 @@ class Rendering:
         if node.is_leaf():
             return
 
-        pg.draw.line(
-            pygame_window.screen,
-            theme.LINE_CLR,
+        self._draw_antialiased_thick_line(
             node.coordinates,
             node.left.coordinates,
-            const.LINE_THICKNESS,
-        )
-
-        pg.draw.line(
-            pygame_window.screen,
             theme.LINE_CLR,
+            const.LINE_THICKNESS
+        )
+        
+        self._draw_antialiased_thick_line(
             node.coordinates,
             node.right.coordinates,
-            const.LINE_THICKNESS,
+            theme.LINE_CLR,
+            const.LINE_THICKNESS
         )
+
 
     def _draw_node_data(self, node: Node, display_data_clr: pg.Color):
         """
@@ -315,3 +315,40 @@ class Rendering:
         node_display_data, node_display_data_rect = self.render_text(self.node_data_font, f"{node.data}", display_data_clr)
         node_display_data_rect.center = node.coordinates
         pygame_window.screen.blit(node_display_data, node_display_data_rect)
+
+    def _draw_antialiased_thick_line(self, point_start: tuple[int, int], point_end: tuple[int, int], line_color: pg.Color, line_thickness: float):
+        """
+        Draw an antialiased polygon that resembles a line.
+
+        The idea behind this algorithm can be found here: https://stackoverflow.com/a/30599392
+        This function implements the more readable solution that's also in the same post: https://stackoverflow.com/a/67509308
+
+        Summary:
+        - Define the center point of the polygon from the starting point and ending point of the line.
+        - Find the slope of the line.
+        - Using the slope and the shape parameters to calculate the coordinates of the box ends.
+        - Draw a polygon using those coordinates and finally fill it.
+
+        Args:
+            point_start (tuple[int, int]): The starting point of the line
+            point_end (tuple[int, int]): The ending point of the line
+            line_color (pg.Color): The color of the line
+            line_thickness (float): The thickness of the line
+        """
+
+        slope = degrees(atan2(point_start[1] - point_end[1], point_start[0] - point_end[0]))
+
+        vertices = [
+            self._move(slope-90, line_thickness, point_start),
+            self._move(slope+90, line_thickness, point_start),
+            self._move(slope+90, line_thickness, point_end),
+            self._move(slope-90, line_thickness, point_end)
+        ]
+
+        gfxdraw.aapolygon(pygame_window.screen, vertices, line_color)
+        gfxdraw.filled_polygon(pygame_window.screen, vertices, line_color)
+
+    def _move(self, rotation: float, steps: int, position: tuple[int, int]) -> tuple[float, float]:
+        xPosition = cos(radians(rotation)) * steps + position[0]
+        yPosition = sin(radians(rotation)) * steps + position[1]
+        return (xPosition, yPosition)
