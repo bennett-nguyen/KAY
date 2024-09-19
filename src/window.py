@@ -1,4 +1,5 @@
 import pygame as pg
+import pygame_gui
 
 from pygame.locals import *
 
@@ -13,8 +14,9 @@ pg.event.set_allowed(
         MOUSEBUTTONDOWN,
         MOUSEBUTTONUP,
         MOUSEMOTION,
-        WINDOWFOCUSGAINED,
-        WINDOWFOCUSLOST
+        MOUSEWHEEL,
+        VIDEORESIZE,
+        pygame_gui.UI_TEXT_ENTRY_FINISHED
     ]
 )
 
