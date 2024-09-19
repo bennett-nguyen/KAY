@@ -74,7 +74,7 @@ class SegmentTree:
 
         return self._query(q_low, q_high, self.root, 0, self.array_length-1)
 
-    def update(self, pos: int, val: int) -> None:
+    def update_element_no_lazy(self, pos: int, val: int) -> None:
         """Update the value at a specified position in the segment tree.
 
         This function modifies the value of an element in the segment tree at the
@@ -87,7 +87,46 @@ class SegmentTree:
         """
 
         self.array[pos] = val
-        self._update(pos, val, self.root, 0, self.array_length-1)
+        self._update_element_no_lazy(pos, val, self.root, 0, self.array_length-1)
+
+    def update_segment_lazy(self, val: int, segment_low: int, segment_high: int):
+        """Updates a range of values in the segment tree with a given increment.
+
+        This function applies an increment to all elements within the specified segment range in the array. 
+        It also updates the segment tree structure via lazy propagation to reflect these changes, ensuring
+        that subsequent queries  will return the correct values.
+
+        Args:
+            val (int): The value to be added to each element in the specified range.
+            segment_low (int): The starting index of the segment to be updated.
+            segment_high (int): The ending index of the segment to be updated.
+        """
+
+        for idx in range(segment_low, segment_high+1):
+            self.array[idx] += val
+
+        self._update_segment_lazy(val, self.root, 0, self.array_length-1, segment_low, segment_high)
+
+    def propagate(self, node: Node):
+        """Propagates the lazy value down the segment tree.
+
+        This function updates the current node's data based on its lazy value and propagates the lazy value 
+        to its child nodes if the current node is not a leaf.
+
+        Args:
+            node (Node): The node in the segment tree to propagate the lazy value from.
+        """
+
+        if node.lazy_data == 0:
+            return
+
+        node.data += (node.high - node.low + 1) * node.lazy_data
+
+        if not node.is_leaf():
+            node.left.lazy_data += node.lazy_data
+            node.right.lazy_data += node.lazy_data
+
+        node.lazy_data = 0
 
     def rebuild(self):
         """Rebuild the segment tree from the current array.
@@ -132,7 +171,41 @@ class SegmentTree:
 
         node.data = self._fn(node.left.data, node.right.data)
 
-    def _update(self, pos: int, val: int, node: Node, low: int, high: int) -> None:
+    def _update_segment_lazy(self, val: int, node: Node, low: int, high: int, segment_low: int, segment_high: int):
+        """Recursively updates a segment in the segment tree with a lazy value.
+
+        This function applies a value to a specified segment of the segment tree, handling lazy propagation 
+        to ensure that all updates are correctly applied. It checks if the segment is valid and whether it 
+        falls within the range of the current node, updating the node's data and propagating changes as necessary.
+
+        Args:
+            val (int): The value to be added to the specified segment.
+            node (Node): The current node in the segment tree being updated.
+            low (int): The lower bound of the current segment.
+            high (int): The upper bound of the current segment.
+            segment_low (int): The starting index of the segment to be updated.
+            segment_high (int): The ending index of the segment to be updated.
+        """
+
+        self.propagate(node)
+
+        if self._is_segment_invalid(segment_low, segment_high, low, high):
+            return
+        if self._is_segment_within_range(segment_low, segment_high, low, high):
+            node.data += (node.high - node.low + 1) * val
+
+            if not node.is_leaf():
+                node.left.lazy_data += val
+                node.right.lazy_data += val
+
+            return
+
+        mid = (low+high) // 2
+        self._update_segment_lazy(val, node.left, low, mid, segment_low, segment_high)
+        self._update_segment_lazy(val, node.right, mid+1, high, segment_low, segment_high)
+        node.data = self._fn(node.left.data, node.right.data)
+
+    def _update_element_no_lazy(self, pos: int, val: int, node: Node, low: int, high: int) -> None:
         """Recursively update the value at a specified position in the segment tree.
 
         This function modifies the value of a node in the segment tree at the given
@@ -154,9 +227,9 @@ class SegmentTree:
 
         mid = (low+high) // 2
         if pos <= mid:
-            self._update(pos, val, node.left, low, mid)
+            self._update_element_no_lazy(pos, val, node.left, low, mid)
         else:
-            self._update(pos, val, node.right, mid+1, high)
+            self._update_element_no_lazy(pos, val, node.right, mid+1, high)
 
         node.data = self._fn(node.left.data, node.right.data)
 
@@ -177,9 +250,13 @@ class SegmentTree:
             high (int): The upper index of the range for the current node.
         """
 
-        if self._is_query_invalid(q_low, q_high, low, high):
+
+        if self._is_segment_invalid(q_low, q_high, low, high):
             return self._INVALID_QUERY
-        if self._is_query_within_range(q_low, q_high, low, high):
+
+        self.propagate(node)
+
+        if self._is_segment_within_range(q_low, q_high, low, high):
             return node.data
 
         mid = (low+high) // 2
@@ -188,42 +265,42 @@ class SegmentTree:
 
         return self._fn(left_child, right_child)
 
-    def _is_query_invalid(self, q_low: int, q_high: int, low: int, high: int) -> bool:
-        """Check if the query range is invalid.
+    def _is_segment_invalid(self, s_low: int, s_high: int, low: int, high: int) -> bool:
+        """Check if the segment is invalid.
 
-        This function determines whether the specified query range is valid by 
-        checking if the lower bound exceeds the upper bound or if the query range
+        This function determines whether the specified segment is valid by 
+        checking if the lower bound exceeds the upper bound or if the segment
         does not overlap with the current range. It returns a boolean indicating 
-        the validity of the query.
+        the validity of the segment.
 
         Args:
-            q_low (int): The lower bound of the query range.
-            q_high (int): The upper bound of the query range.
+            s_low (int): The lower bound of the segment.
+            s_high (int): The upper bound of the segment.
             low (int): The lower index of the current range.
             high (int): The upper index of the current range.
 
         Returns:
-            bool: True if the query range is invalid, otherwise False.
+            bool: True if the segment is invalid, otherwise False.
         """
 
-        return low > high or low > q_high or high < q_low
+        return low > high or low > s_high or high < s_low
 
-    def _is_query_within_range(self, q_low: int, q_high: int, low: int, high: int) -> bool:
-        """Check if the current range is fully within the query range.
+    def _is_segment_within_range(self, s_low: int, s_high: int, low: int, high: int) -> bool:
+        """Check if the current range is fully within a segment.
 
         This function determines whether the specified range defined by `low` and 
-        `high` is completely contained within the query range defined by `q_low` 
-        and `q_high`. It returns a boolean indicating if the current range is within
-        the bounds of the query.
+        `high` is completely contained within the segment defined by `s_low` 
+        and `s_high`. It returns a boolean indicating if the current range is within
+        the bounds of the segment.
 
         Args:
-            q_low (int): The lower bound of the query range.
-            q_high (int): The upper bound of the query range.
+            s_low (int): The lower bound of the segment.
+            s_high (int): The upper bound of the segment.
             low (int): The lower index of the current range.
             high (int): The upper index of the current range.
 
         Returns:
-            bool: True if the current range is within the query range, otherwise False.
+            bool: True if the current range is within the segment, otherwise False.
         """
 
-        return q_low <= low and high <= q_high
+        return s_low <= low and high <= s_high
