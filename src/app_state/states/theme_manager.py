@@ -1,4 +1,5 @@
 import json, os
+import pprint
 from typing import Any
 
 import pygame as pg
@@ -42,7 +43,7 @@ class ThemeManager:
 
                 self.themes[json_obj[JSONThemeFieldsEnum.NAME.value]] = self.create_theme(json_obj, f"theme/{entry}/{file_name}")
                 self.available_themes.append(json_obj[JSONThemeFieldsEnum.NAME.value])
-    
+
     def create_theme(self, json_obj: dict[str, Any], file_name: str) -> Theme:
         """
         Creates a new theme based on the provided JSON object. This function 
@@ -60,24 +61,24 @@ class ThemeManager:
         """
 
         palette_obj = json_obj[JSONThemeFieldsEnum.PALETTE.value]
-
         cmd_ui_file_path = None
 
         if not json_obj[JSONThemeFieldsEnum.USE_DEFAULT_CMD_UI.value]:
             cmd_ui_file_path = f"{file_name}-cmd.json"
 
-        return Theme(
-            CMD_UI_FILE_PATH=cmd_ui_file_path,
-            NAME=json_obj[JSONThemeFieldsEnum.NAME.value],
+        ignored_attribs = [
+            JSONThemeFieldsEnum.NAME.value,
+            JSONThemeFieldsEnum.PALETTE.value,
+            JSONThemeFieldsEnum.USE_DEFAULT_CMD_UI.value
+        ]
 
-            LINE_CLR=pg.Color(palette_obj[JSONThemeFieldsEnum.LINE.value]),
-            BACKGROUND_CLR=pg.Color(palette_obj[JSONThemeFieldsEnum.BACKGROUND.value]),
-            NODE_OUTLINE_CLR=pg.Color(palette_obj[JSONThemeFieldsEnum.NODE_OUTLINE.value]),
-            NODE_FILLINGS_CLR=pg.Color(palette_obj[JSONThemeFieldsEnum.NODE_FILLINGS.value]),
-            NODE_DISPLAY_DATA_CLR=pg.Color(palette_obj[JSONThemeFieldsEnum.NODE_DISPLAY_DATA.value]),
-            NODE_OUTLINE_HIGHLIGHT_CLR=pg.Color(palette_obj[JSONThemeFieldsEnum.NODE_OUTLINE_HIGHLIGHT.value]),
-            NODE_DISPLAY_DATA_HIGHLIGHT_CLR=pg.Color(palette_obj[JSONThemeFieldsEnum.NODE_DISPLAY_DATA_HIGHLIGHT.value]),
-        )
+        color_palette_dict = { 
+            item.name: pg.Color(palette_obj[item.value])
+                for item in list(JSONThemeFieldsEnum)
+                    if item.value not in ignored_attribs 
+        }
+
+        return Theme(CMD_UI_FILE_PATH=cmd_ui_file_path, NAME=json_obj[JSONThemeFieldsEnum.NAME.value], **color_palette_dict)
 
     def set_theme(self, name: str):
         """
