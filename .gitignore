@@ -3,3 +3,4 @@ __pycache__
 *.pyc
 .venv
 cmdline_ui-DO-NOT-EDIT.json
+history.txt
