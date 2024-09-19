@@ -43,13 +43,26 @@ class JSONThemeFieldsEnum(Enum):
     PALETTE = "Palette"
     USE_DEFAULT_CMD_UI = "use_default_cmd_ui"
 
-    BACKGROUND = "background"
-    NODE_OUTLINE = "node_outline"
-    NODE_OUTLINE_HIGHLIGHT = "node_outline_highlight"
-    NODE_FILLINGS = "node_fillings"
-    NODE_DISPLAY_DATA = "node_display_data"
-    NODE_DISPLAY_DATA_HIGHLIGHT = "node_display_data_highlight"
-    LINE = "line"
+    BACKGROUND_CLR = "background_clr"
+
+    NODE_INFO_TEXT_CLR = "node_info_text_clr"
+    NODE_INFO_DATA_CLR = "node_info_data_clr"
+    NODE_FILLINGS_CLR = "node_fillings_clr"
+    NODE_OUTLINE_CLR = "node_outline_clr"
+    NODE_DISPLAY_DATA_CLR = "node_display_data_clr"
+
+    NODE_OUTLINE_HIGHLIGHT_CLR = "node_outline_highlight_clr"
+    NODE_DISPLAY_DATA_HIGHLIGHT_CLR = "node_display_data_highlight_clr"
+    NODE_LAZY_DATA_CLR = "node_lazy_data_clr"
+    NODE_LAZY_DATA_HIGHLIGHT_CLR = "node_lazy_data_highlight_clr"
+
+    ARRAY_TEXT_CLR="array_text_clr"
+    ARRAY_HIGHLIGHT_CLR="array_highlight_clr"
+
+    LINE_CLR = "line_clr"
+    LINE_HIGHLIGHT_CLR = "line_highlight_clr"
+    NODE_LAZY_LINE_CLR = "node_lazy_line_clr"
+    NODE_LAZY_LINE_HIGHLIGHT_CLR = "node_lazy_line_highlight_clr"
 
 @unique
 class CommandRequestFields(Enum):
