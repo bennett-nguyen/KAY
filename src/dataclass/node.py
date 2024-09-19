@@ -16,6 +16,7 @@ class Node:
         "x", "y",
         "preliminary_x", "modifier", "depth",
         "data", "ID",
+        "lazy_data",
         "x_offset", "y_offset",
         "original_x", "original_y",
         "x", "y"
@@ -27,6 +28,7 @@ class Node:
         self.parent: Optional[Node] = None
 
         self.data: int = 0
+        self.lazy_data: int = 0
         self.low: int = 0
         self.high: int = 0
 
@@ -84,6 +86,7 @@ class Node:
         Returns:
             tuple[Node, Node]: A tuple containing the left and right child nodes.
         """
+
         return (self.left, self.right)
 
     @property
@@ -96,6 +99,7 @@ class Node:
         Returns:
             Optional[Node]: The previous sibling node, or None if there is no sibling.
         """
+
         return None if self.is_root() or self.is_left_node() \
             else self.parent.left
 
@@ -108,6 +112,7 @@ class Node:
         Returns:
             tuple[int, int]: A tuple containing the x and y coordinates of the node.
         """
+
         return (self.x, self.y)
 
     def is_leaf(self) -> bool:
@@ -119,6 +124,7 @@ class Node:
         Returns:
             bool: True if the node is a leaf, False otherwise.
         """
+
         return self.left is None and self.right is None
 
     def is_root(self) -> bool:
@@ -129,6 +135,7 @@ class Node:
         Returns:
             bool: True if the node is the root, False otherwise.
         """
+
         return self.parent is None
 
     def is_left_node(self) -> bool:
@@ -140,6 +147,7 @@ class Node:
         Returns:
             bool: True if the node is a left child, False otherwise.
         """
+
         try:
             return self is self.parent.left
         except AttributeError:
