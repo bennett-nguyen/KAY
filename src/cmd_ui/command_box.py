@@ -33,5 +33,5 @@ class CommandBox:
         """
         Updates the dimensions of the command box when the window size changes. 
         """
-    
+
         self.UI.set_dimensions((pygame_window.window_width - const.COMMAND_BOX_ANCHOR_OFFSET * 2, const.COMMAND_BOX_HEIGHT))
