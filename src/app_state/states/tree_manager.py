@@ -75,7 +75,7 @@ class TreeManager:
             self.segment_tree.switch_function(self.current_function)
         except KeyError:
             print(f"QueryFunction named <{name}> doesn't exist!")
-        
+
     def load_functions(self, exported_functions: list[QueryFunction]):
         """
         Loads a list of query functions into the available functions dictionary. If a 
