@@ -55,7 +55,7 @@ class CommandManager:
 
         if exit_status is None:
             return
-        
+
         if isinstance(exit_status, ArgumentError):
             print("\n==== ERROR ====")
             print(f"RAISED FROM COMMAND: {cmd_name}")
