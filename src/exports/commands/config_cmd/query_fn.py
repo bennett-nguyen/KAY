@@ -13,7 +13,7 @@ class QueryFN(BaseCommand):
         )
 
         self.parser.add_argument("fn_name", type=str)
-    
+
     def execute(self, args: list[str], app_state: AppState) -> Optional[ArgumentError | CommandException]:
         try:
             parsed_args: argparse.Namespace = self.parser.parse_args(args)
@@ -25,9 +25,7 @@ class QueryFN(BaseCommand):
             tree_manager.generate_node_position()
             tree_manager.compute_transformed_coordinates()
             tree_manager.center_tree()
-        except argparse.ArgumentError as e:
-            return e
-        except CommandException as e:
+        except (ArgumentError, CommandException) as e:
             return e
 
 query_fn_cmd = QueryFN()

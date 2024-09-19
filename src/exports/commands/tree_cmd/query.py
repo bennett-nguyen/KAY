@@ -20,9 +20,7 @@ class Query(BaseCommand):
             parsed_args: argparse.Namespace = self.parser.parse_args(args)
             segment_tree = app_state.tree_manager.segment_tree
             print(segment_tree.query(parsed_args.low, parsed_args.high))
-        except ArgumentError as e:
-            return e
-        except CommandException as e:
+        except (ArgumentError, CommandException) as e:
             return e
 
 query_cmd = Query()

@@ -22,9 +22,7 @@ class HighlightRange(BaseCommand):
             command_request_data = app_state.rendering.command_request_data
             command_request_data[CommandRequestFields.HIGHLIGHT_RANGE_LOW] = parsed_args.low
             command_request_data[CommandRequestFields.HIGHLIGHT_RANGE_HIGH] = parsed_args.high
-        except ArgumentError as e:
-            return e
-        except CommandException as e:
+        except (ArgumentError, CommandException) as e:
             return e
 
 highlight_range_cmd = HighlightRange()

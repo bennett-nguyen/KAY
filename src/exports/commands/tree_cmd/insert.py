@@ -11,7 +11,7 @@ class Insert(BaseCommand):
             name="insert",
             description="Insert an element to an array at a particular index, insert to the end of the array if no index were given.",
         )
-        
+
         self.parser.add_argument("value", type=int)
         self.parser.add_argument("index", type=int, default=-1, nargs='?')
 
@@ -20,7 +20,7 @@ class Insert(BaseCommand):
             parsed_args: argparse.Namespace = self.parser.parse_args(args)
             tree_manager = app_state.tree_manager
             segment_tree = tree_manager.segment_tree
-            
+
             index_to_insert = len(segment_tree.array)
             if (parsed_args.index != -1):
                 index_to_insert = parsed_args.index
@@ -30,9 +30,7 @@ class Insert(BaseCommand):
             tree_manager.generate_node_position()
             tree_manager.compute_transformed_coordinates()
             tree_manager.center_tree()
-        except ArgumentError as e:
-            return e
-        except CommandException as e:
+        except (ArgumentError, CommandException) as e:
             return e
 
 insert_cmd = Insert()

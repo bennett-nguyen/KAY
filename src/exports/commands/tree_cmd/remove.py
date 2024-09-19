@@ -29,9 +29,7 @@ class Remove(BaseCommand):
             tree_manager.generate_node_position()
             tree_manager.compute_transformed_coordinates()
             tree_manager.center_tree()
-        except ArgumentError as e:
-            return e
-        except CommandException as e:
+        except (ArgumentError, CommandException) as e:
             return e
 
 remove_cmd = Remove()
