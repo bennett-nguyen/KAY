@@ -19,12 +19,22 @@ class Theme:
     BACKGROUND_CLR: pg.Color
 
     # Node
+    NODE_INFO_TEXT_CLR: pg.Color
+    NODE_INFO_DATA_CLR: pg.Color
     NODE_FILLINGS_CLR: pg.Color
     NODE_OUTLINE_CLR: pg.Color
     NODE_DISPLAY_DATA_CLR: pg.Color
 
     NODE_OUTLINE_HIGHLIGHT_CLR: pg.Color
     NODE_DISPLAY_DATA_HIGHLIGHT_CLR: pg.Color
+    NODE_LAZY_DATA_CLR: pg.Color
+    NODE_LAZY_DATA_HIGHLIGHT_CLR: pg.Color
+
+    ARRAY_TEXT_CLR: pg.Color
+    ARRAY_HIGHLIGHT_CLR: pg.Color
 
     # Line
     LINE_CLR: pg.Color
+    LINE_HIGHLIGHT_CLR: pg.Color
+    NODE_LAZY_LINE_CLR: pg.Color
+    NODE_LAZY_LINE_HIGHLIGHT_CLR: pg.Color
