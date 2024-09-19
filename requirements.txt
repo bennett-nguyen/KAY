@@ -1,2 +1,4 @@
 pygame-ce>=2.1.4
 pygame-gui>=0.6.9
+opencv-python>=4.10.0.84
+numpy>=2.1.1

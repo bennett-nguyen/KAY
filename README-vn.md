@@ -13,6 +13,8 @@ Yêu cầu:
 - Python 3.10+
 - Pygame Community Edition 2.1.4+
 - pygame-gui 0.6.9+
+- OpenCV 4.10.0.84+
+- Numpy 2.1.1+
 
 Đi đến [release page](https://github.com/bennett-nguyen/KAY/releases) và tải phiên bản mới nhất. Nếu không thì bạn có thể git clone repo này về hoặc nhấn vào nút Download as ZIP.
 
