@@ -2,6 +2,7 @@ from typing import Optional, Any
 from collections import deque
 from math import atan2, cos, degrees, radians, sin
 
+import cv2, numpy
 import pygame as pg
 from pygame import gfxdraw
 
@@ -88,8 +89,11 @@ class Rendering:
         x, y = (pygame_window.window_width - const.X_OFFSET, const.Y_OFFSET)
         segment_rect_bounding_box_bottom = self._view_segment(x, y, hovered_node)
 
-        y = segment_rect_bounding_box_bottom + const.LINE_SPACING
-        self._view_ID(x, y, hovered_node)
+        y = segment_rect_bounding_box_bottom + const.LINE_SPACING + 9
+        ID_rect_bounding_box_bottom = self._view_ID(x, y, hovered_node)
+
+        y = ID_rect_bounding_box_bottom + const.LINE_SPACING
+        self._view_lazy_value(x, y, hovered_node)
 
     def view_array(self, array: list[int], hovered_node: Optional[Node]):
         """
@@ -111,9 +115,9 @@ class Rendering:
         theme = self.current_theme
 
         for (idx, element) in enumerate(array):
-            data_color = theme.NODE_DISPLAY_DATA_CLR
+            data_color = theme.ARRAY_TEXT_CLR
             if hovered_node is not None and hovered_node.low <= idx <= hovered_node.high:
-                data_color = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
+                data_color = theme.ARRAY_HIGHLIGHT_CLR
 
             text, rect = self.render_text(self.tree_properties_font, f"{element}", data_color)
             rect.topleft = (x, y)
@@ -153,18 +157,25 @@ class Rendering:
                 hovered_node = node
                 node_outline_clr = theme.NODE_OUTLINE_HIGHLIGHT_CLR
                 display_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
+                lazy_line_clr = theme.NODE_LAZY_LINE_HIGHLIGHT_CLR
+                lazy_data_clr = theme.NODE_LAZY_DATA_HIGHLIGHT_CLR
             elif self.should_highlight_range(node):
                 node_outline_clr = theme.NODE_OUTLINE_HIGHLIGHT_CLR
                 display_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
+                lazy_line_clr = theme.NODE_LAZY_LINE_HIGHLIGHT_CLR
+                lazy_data_clr = theme.NODE_LAZY_DATA_HIGHLIGHT_CLR
             else:
                 node_outline_clr = theme.NODE_OUTLINE_CLR
                 display_data_clr = theme.NODE_DISPLAY_DATA_CLR
+                lazy_line_clr = theme.NODE_LAZY_LINE_CLR
+                lazy_data_clr = theme.NODE_LAZY_DATA_CLR
 
             self._draw_lines(node)
-            self._draw_circles(node, node_outline_clr)
+            self._draw_AA_circle(node, node_outline_clr)
 
             if self.visibility_dict[VisibilityEnum.NODE_DATA_FIELD]:
                 self._draw_node_data(node, display_data_clr)
+                self._draw_lazy_value_per_node(node, lazy_line_clr, lazy_data_clr)
 
             if node.is_leaf():
                 continue
@@ -206,8 +217,8 @@ class Rendering:
 
         theme = self.current_theme
 
-        data_clr = theme.NODE_DISPLAY_DATA_CLR
-        highlight_data_clr = theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR
+        data_clr = theme.NODE_INFO_TEXT_CLR
+        highlight_data_clr = theme.NODE_INFO_DATA_CLR
 
         text_to_render: list[str] = ["[", f"{hovered_node.low}", "; ", f"{hovered_node.high}", "]"]
         font_for_each_text: list[pg.font.Font] = [self.tree_properties_font, self.tree_properties_font, self.tree_properties_font, self.tree_properties_font, self.tree_properties_font]
@@ -230,7 +241,7 @@ class Rendering:
 
         return text_surf_and_rect[0][1].bottom
 
-    def _view_ID(self, x: int, y: int, hovered_node: Node):
+    def _view_ID(self, x: int, y: int, hovered_node: Node) -> int:
         """
         Displays the ID of the currently hovered node in the user interface. This method
         renders the ID label and its corresponding value, positioning them according to
@@ -244,32 +255,59 @@ class Rendering:
 
         theme = self.current_theme
 
-        ID_text, ID_rect = self.render_text(self.tree_properties_font, "ID: ", theme.NODE_DISPLAY_DATA_CLR)
-        ID_dat_text, ID_dat_rect = self.render_text(self.tree_properties_font, f"{hovered_node.ID}", theme.NODE_DISPLAY_DATA_HIGHLIGHT_CLR)
+        ID_text, ID_rect = self.render_text(self.tree_properties_font, "ID: ", theme.NODE_INFO_TEXT_CLR)
+        ID_dat_text, ID_dat_rect = self.render_text(self.tree_properties_font, f"{hovered_node.ID}", theme.NODE_INFO_DATA_CLR)
 
         ID_dat_rect.topright = (x, y)
         ID_rect.midright = ID_dat_rect.midleft
 
         pygame_window.screen.blit(ID_text, ID_rect)
         pygame_window.screen.blit(ID_dat_text, ID_dat_rect)
+        
+        return ID_rect.bottom
+    
+    def _view_lazy_value(self, x: int, y: int, hovered_node: Node):
+        """Displays the lazy value information for a hovered node.
 
-    def _draw_circles(self, node: Node, outline_clr: pg.Color):
-        """
-        Draws filled and outlined circles representing a specified node in the user 
-        interface. This method uses the current theme's colors to render the circles,
-        visually representing the node's position and enhancing its appearance.
+        This function renders the label "Lazy:" and the corresponding lazy value of the hovered node at the specified 
+        screen coordinates. The text is styled according to the current theme, ensuring a consistent appearance.
 
         Args:
-            node (Node): The node for which the circles are to be drawn.
-            outline_clr (pg.Color): The color used for the outline of the circles.
+            x (int): The x-coordinate on the screen where the lazy value information will be displayed.
+            y (int): The y-coordinate on the screen where the lazy value information will be displayed.
+            hovered_node (Node): The node whose lazy value is being displayed.
         """
 
         theme = self.current_theme
-        pg.draw.circle(pygame_window.screen, theme.NODE_FILLINGS_CLR, node.coordinates, const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS)
 
-        for depth in range(const.NODE_CIRCLE_RADIUS-const.CIRCLE_OUTLINE_THICKNESS, const.NODE_CIRCLE_RADIUS):
-            gfxdraw.aacircle(pygame_window.screen, *node.coordinates, depth, outline_clr)
-            gfxdraw.aacircle(pygame_window.screen, *node.coordinates, depth, outline_clr)
+        lazy_text, lazy_rect = self.render_text(self.tree_properties_font, "Lazy: ", theme.NODE_INFO_TEXT_CLR)
+        lazy_dat_text, lazy_dat_rect = self.render_text(self.tree_properties_font, f"{hovered_node.lazy_data}", theme.NODE_INFO_DATA_CLR)
+
+        lazy_dat_rect.topright = (x, y)
+        lazy_rect.midright = lazy_dat_rect.midleft
+
+        pygame_window.screen.blit(lazy_text, lazy_rect)
+        pygame_window.screen.blit(lazy_dat_text, lazy_dat_rect)
+
+    def _draw_AA_circle(self, node: Node, outline_clr: pg.Color):
+        """Draws an anti-aliased circle on the screen.
+
+        This function renders a filled circle and an outlined circle at the specified node's coordinates. 
+        It utilizes the current theme's filling color for the inner circle and the provided outline color for the outer circle.
+
+        Args:
+            node (Node): The node containing the coordinates where the circle will be drawn.
+            outline_clr (pg.Color): The color of the circle's outline.
+        """
+
+        radius = const.NODE_CIRCLE_RADIUS
+        width = const.CIRCLE_OUTLINE_THICKNESS
+        pg.draw.circle(pygame_window.screen, self.current_theme.NODE_FILLINGS_CLR, node.coordinates, const.NODE_CIRCLE_RADIUS-const.LINE_THICKNESS)
+
+        circle_image = numpy.zeros((const.NODE_CIRCLE_RADIUS*2+4, radius*2+4, 4), dtype = numpy.uint8)
+        circle_image = cv2.circle(circle_image, (radius+2, radius+2), radius-width, (outline_clr.r, outline_clr.g, outline_clr.b, 255), width, lineType=cv2.LINE_AA)  
+        circle_surface = pg.image.frombuffer(circle_image.flatten(), (radius*2+4, radius*2+4), 'RGBA')
+        pygame_window.screen.blit(circle_surface, circle_surface.get_rect(center=node.coordinates))
 
     def _draw_lines(self, node: Node):
         """
@@ -292,7 +330,7 @@ class Rendering:
             theme.LINE_CLR,
             const.LINE_THICKNESS
         )
-        
+
         self._draw_antialiased_thick_line(
             node.coordinates,
             node.right.coordinates,
@@ -300,6 +338,33 @@ class Rendering:
             const.LINE_THICKNESS
         )
 
+    def _draw_lazy_value_per_node(self, node: Node, line_color: pg.Color, data_color: pg.Color):
+        """Draws the lazy value associated with a node.
+
+        This function checks if the node has a lazy value and, if so, renders the corresponding text and a line 
+        indicating the lazy value's position relative to the node. The line's color and the text's color can be customized.
+
+        Args:
+            node (Node): The node for which the lazy value is being drawn.
+            line_color (pg.Color): The color of the line indicating the lazy value.
+            data_color (pg.Color): The color of the text displaying the lazy value.
+        """
+
+        if node.lazy_data == 0: return
+
+        lazy_text, lazy_rect = self.render_text(self.node_data_font, f"{node.lazy_data}", data_color)
+
+        beginning_coords = node.x + const.LAZY_LINE_OFFSET, node.y - const.LAZY_LINE_OFFSET
+        destined_coords = beginning_coords[0] + const.LAZY_LINE_LENGTH, beginning_coords[1] - const.LAZY_LINE_LENGTH
+        lazy_rect.bottomleft = destined_coords
+
+        if node.is_left_node():
+            beginning_coords = node.x - const.LAZY_LINE_OFFSET, node.y - const.LAZY_LINE_OFFSET
+            destined_coords = beginning_coords[0] - const.LAZY_LINE_LENGTH, beginning_coords[1] - const.LAZY_LINE_LENGTH
+            lazy_rect.bottomright = destined_coords
+
+        self._draw_antialiased_thick_line(beginning_coords, destined_coords, line_color, const.LAZY_LINE_THICKNESS)
+        pygame_window.screen.blit(lazy_text, lazy_rect)
 
     def _draw_node_data(self, node: Node, display_data_clr: pg.Color):
         """
@@ -336,13 +401,13 @@ class Rendering:
             line_thickness (float): The thickness of the line
         """
 
-        slope = degrees(atan2(point_start[1] - point_end[1], point_start[0] - point_end[0]))
+        angle = degrees(atan2(point_start[1] - point_end[1], point_start[0] - point_end[0]))
 
         vertices = [
-            self._move(slope-90, line_thickness, point_start),
-            self._move(slope+90, line_thickness, point_start),
-            self._move(slope+90, line_thickness, point_end),
-            self._move(slope-90, line_thickness, point_end)
+            self._move(angle-90, line_thickness, point_start),
+            self._move(angle+90, line_thickness, point_start),
+            self._move(angle+90, line_thickness, point_end),
+            self._move(angle-90, line_thickness, point_end)
         ]
 
         gfxdraw.aapolygon(pygame_window.screen, vertices, line_color)
