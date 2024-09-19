@@ -8,12 +8,12 @@ class ContourEnum(Enum):
     which can be used to specify the direction of contours in tree-related operations.
 
     Attributes:
-        LEFT (str): Represents the left side contour.
-        RIGHT (str): Represents the right side contour.
+        LEFT: Represents the left side contour.
+        RIGHT: Represents the right side contour.
     """
 
-    LEFT = "left"
-    RIGHT = "right"
+    LEFT = auto()
+    RIGHT = auto()
 
 @unique
 class VisibilityEnum(Enum):
